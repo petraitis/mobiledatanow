@@ -1,0 +1,84 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from GoogleSearchService WSDL service -->
+
+  <service name="GoogleSearchPort" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="urn:GoogleSearch"/>
+      <parameter name="wsdlServiceElement" value="GoogleSearchService"/>
+      <parameter name="schemaUnqualified" value="urn:GoogleSearch"/>
+      <parameter name="wsdlServicePort" value="GoogleSearchPort"/>
+      <parameter name="className" value="GoogleSearch.GoogleSearchBindingImpl"/>
+      <parameter name="wsdlPortType" value="GoogleSearchPort"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="doGetCachedPage" qname="operNS:doGetCachedPage" xmlns:operNS="urn:GoogleSearch" returnQName="return" returnType="rtns:base64Binary" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="urn:GoogleSearchAction" >
+        <parameter qname="key" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="url" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="doSpellingSuggestion" qname="operNS:doSpellingSuggestion" xmlns:operNS="urn:GoogleSearch" returnQName="return" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="urn:GoogleSearchAction" >
+        <parameter qname="key" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="phrase" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="doGoogleSearch" qname="operNS:doGoogleSearch" xmlns:operNS="urn:GoogleSearch" returnQName="return" returnType="rtns:GoogleSearchResult" xmlns:rtns="urn:GoogleSearch" soapAction="urn:GoogleSearchAction" >
+        <parameter qname="key" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="q" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="start" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="maxResults" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="filter" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="restrict" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="safeSearch" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="lr" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ie" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="oe" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="doSpellingSuggestion doGoogleSearch doGetCachedPage"/>
+
+      <arrayMapping
+        xmlns:ns="urn:GoogleSearch"
+        qname="ns:ResultElementArray"
+        type="java:GoogleSearch.ResultElement[]"
+        innerType="cmp-ns:ResultElement" xmlns:cmp-ns="urn:GoogleSearch"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="urn:GoogleSearch"
+        qname="ns:DirectoryCategory"
+        type="java:GoogleSearch.DirectoryCategory"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="urn:GoogleSearch"
+        qname="ns:ResultElement"
+        type="java:GoogleSearch.ResultElement"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="urn:GoogleSearch"
+        qname="ns:DirectoryCategoryArray"
+        type="java:GoogleSearch.DirectoryCategory[]"
+        innerType="cmp-ns:DirectoryCategory" xmlns:cmp-ns="urn:GoogleSearch"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="urn:GoogleSearch"
+        qname="ns:GoogleSearchResult"
+        type="java:GoogleSearch.GoogleSearchResult"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>
