@@ -1,0 +1,267 @@
+<project name="Mobile Data Now" basedir="." default="all">
+
+	<!-- set properties specific to this environment -->
+	<!-- Define:
+		installanywhere.path
+		tomcat.path
+		build.type (optional, defaults to 'production')
+	-->
+	<property file="${basedir}/build.properties" /> 
+	
+	<property name="installer.work" value="${basedir}/installer/work" />
+	<property name="java.src" value="${basedir}/src" />
+	<property name="java.bin" value="${basedir}/bin" />
+	<property name="java.lib" value="${basedir}/lib" />
+	<property name="openlaszlo.path" value="${basedir}/lps-3.3.3" />
+	
+	<taskdef name="buildinstaller" 
+		classname="com.zerog.ia.integration.ant.InstallAnywhereAntTask" 
+		classpath="${java.lib}/build-only/iaant.jar"
+	/>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	  <classpath>
+	    <pathelement location="${java.lib}/build-only/ant-contrib-1.0b3.jar"/>
+	  </classpath>
+	</taskdef>
+	
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${java.bin}/"  />
+			<fileset dir="${installer.work}/" />
+		</delete>
+		<mkdir dir="${java.bin}" />
+		<mkdir dir="${installer.work}/" />
+		
+		<delete failonerror="false">
+			<fileset dir="${openlaszlo.path}/WEB-INF/lps/work/cache/" includes="**" />
+			<fileset dir="${openlaszlo.path}/WEB-INF/lps/work/scache/" includes="**" />
+		</delete>
+		
+		<delete failonerror="false">
+			<fileset dir="${basedir}/installer/MDN-SOLO_Build_Output/" includes="**" />
+		</delete>
+	</target>
+	
+	<target name="init">
+		<!-- set the java build classpath -->
+		<path id="build.classpath">
+			<fileset dir="${java.lib}/build-only">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${java.lib}/mdnlib">
+				<include name="*.jar" />
+				<include name="*.zip" />
+				<exclude name="runtime-only/*" />
+			</fileset>
+			<fileset dir="${java.lib}/dashwell">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		
+		<!-- set the openlaszlo compiler build classpath -->
+		<path id="laszlo.classpath">
+			<pathelement location="${openlaszlo.path}/WEB-INF/lps/server/bin" />
+			<pathelement location="${openlaszlo.path}/WEB-INF/lps/classes" />
+			<pathelement location="${java.lib}/mdnlib/servlet.jar" />
+			<fileset dir="${openlaszlo.path}/WEB-INF/lib" includes="**/*.jar" />
+		</path>
+		
+		<!-- set the classpath for running the derby tools -->
+		<path id="derbytools.classpath">
+			<pathelement location="${java.lib}/build-only/derbytools.jar" />
+			<pathelement location="${java.lib}/mdnlib/runtime-only/derby.jar" />
+		</path>
+	</target>
+	
+	<target name="compile.java" depends="init">
+		<javac srcdir="${java.src}" destdir="${java.bin}" 
+			debug="on" source="1.6" target="1.6" excludes="com/framedobjects/dashwell/tests/**">
+				<!-- 
+					Have to include servlet.jar before the other jars
+					Because jclaim.jar has a conflicting and incomplete HttpServletRequest class
+				-->
+				<classpath path="${java.lib}/mdnlib/servlet.jar" />
+				<classpath refid="build.classpath" />
+
+		</javac>
+		
+		<rmic base="${java.bin}" verify="true" debug="true">
+			<classpath refid="build.classpath" />
+			<include name="wsl/fw/security/SecurityServant.class" />
+			<include name="wsl/fw/remote/TerminatorServant.class" />
+			<include name="wsl/fw/remote/RmiServantBase.class" />
+			<include name="wsl/fw/remote/SecureRegistryServer.class" />
+			<include name="wsl/fw/notification/NotifierServant.class" />
+			<include name="wsl/fw/notification/NotificationListenerServant.class" />
+			<include name="wsl/fw/datasource/RemoteDataManagerServant.class" />
+			<include name="wsl/fw/datasource/RemoteDataSourceServant.class" />
+		</rmic>
+		
+		<rmic base="${java.bin}" debug="true">
+			<classpath refid="build.classpath" />
+			<classpath>
+				<pathelement path="build.classpath" />
+				<dirset dir="${java.bin}/">
+					<include name="**/*.class" />
+				</dirset>
+			</classpath>
+			<include name="wsl/mdn/server/RemoteLicenseManagerServant.class" />
+		</rmic>
+
+	</target>
+	
+	<target name="mdncore" depends="compile.java">
+		<mkdir dir="${java.bin}/wsl/mdn/resource" />
+		<copy todir="${java.bin}/wsl/mdn/resource/">
+			<fileset dir="${java.src}/wsl/mdn/resource" includes="**" />
+		</copy>
+		
+		<copy todir="${java.bin}/wsl/fw/resource/">
+			<fileset dir="${java.src}/wsl/fw/resource" includes="**" />
+		</copy>
+		
+		<copy todir="${java.bin}/wsl/mdn/licence/">
+			<fileset dir="${java.src}/wsl/mdn/licence" includes="*" excludes="*.java" />
+		</copy>
+		
+		<jar destfile="${installer.work}/dashwell.war/WEB-INF/lib/mdncore.jar" 
+			basedir="${java.bin}"
+			excludes="wsl/config/**"
+			includes="wsl/**"
+		 />
+	</target>
+	
+	<target name="framedobjects" depends="compile.java">
+		<copy todir="${java.bin}/com/framedobjects/dashwell/" file="${java.src}/com/framedobjects/dashwell/config.properties" />
+		<copy todir="${java.bin}/com/framedobjects/dashwell/" file="${java.src}/com/framedobjects/dashwell/db.properties" />
+		
+		<jar destfile="${installer.work}/dashwell.war/WEB-INF/lib/framedobjects.jar"
+			basedir="bin"
+			includes="com/**" excludes="com/framedobjects/dashwell/tests/**"
+		/>
+	</target>
+
+	<target name="compile.swf" description="Compile main.lzx to a .swf">
+		<echo message="OpenLaszlo compiling ${basedir}/dashwell/main.lzx with args --runtime=swf8" />
+		<echo message="Using LPS_HOME ${openlaszlo.path}" />
+		<java classpathref="laszlo.classpath" classname="org.openlaszlo.compiler.Main" fork="yes">
+			<jvmarg value="-Xmx512M" />
+			<jvmarg value="-DLPS_HOME=${openlaszlo.path}" />
+			<arg line="--runtime=swf8 '${basedir}/dashwell/main.lzx'" />
+		</java>
+		
+		<move file="${basedir}/dashwell/main.swf" todir="${installer.work}/dashwell.war/" />
+	</target>
+	
+	
+	<target name="database.development">
+		<delete dir="${basedir}/resources/config/development/mdn.drby" includeemptydirs="true" />
+		
+		<java classpathref="derbytools.classpath" classname="org.apache.derby.tools.ij" fork="yes">
+			<jvmarg value="-Dij.database=jdbc:derby:${basedir}/resources/config/development/mdn.drby;create=true" />
+			<arg line="'${basedir}/resources/config/create-development.sql'" />
+		</java>
+	</target>
+
+	<target name="database.production">
+		<delete dir="${basedir}/resources/config/production/mdn.drby" includeemptydirs="true" />
+		
+		<java classpathref="derbytools.classpath" classname="org.apache.derby.tools.ij" fork="yes">
+			<jvmarg value="-Dij.database=jdbc:derby:${basedir}/resources/config/production/mdn.drby;create=true" />
+			<arg line="'${basedir}/resources/config/create-production.sql'" />
+		</java>
+	</target>
+	
+	<target name="setup.tomcat" depends="init">
+		<echo>Copying files..</echo>
+		
+		<!-- Dashwell -->
+		<mkdir dir="${installer.work}/dashwell.war" />
+		<mkdir dir="${installer.work}/dashwell.war/style" />
+		<mkdir dir="${installer.work}/dashwell.war/js" />
+		<mkdir dir="${installer.work}/dashwell.war/images" />
+		<mkdir dir="${installer.work}/dashwell.war/images/launchpad" />
+		<mkdir dir="${installer.work}/dashwell.war/lang" />
+		<mkdir dir="${installer.work}/dashwell.war/WEB-INF" />
+		<mkdir dir="${installer.work}/dashwell.war/WEB-INF/classes" />
+		<mkdir dir="${installer.work}/dashwell.war/WEB-INF/lib" />
+
+		<copy todir="${installer.work}/dashwell.war/WEB-INF/" file="${basedir}/dashwell/WEB-INF/web.xml" />
+		
+		<copy todir="${installer.work}/dashwell.war/WEB-INF/lib">
+			<fileset dir="${basedir}/lib/dashwell/" includes="*.jar" />	
+			<fileset dir="${basedir}/lib/dashwell/shared/" includes="*.jar" />				
+		</copy>
+		
+		<copy todir="${installer.work}/dashwell.war/lang/">
+			<fileset dir="${basedir}/dashwell/lang/" includes="*" />
+		</copy>
+
+		<copy todir="${installer.work}/dashwell.war/" file="${basedir}/dashwell/index.html" />
+		<copy todir="${installer.work}/dashwell.war/" file="${basedir}/dashwell/laszlo.html" />
+		<copy todir="${installer.work}/dashwell.war/" file="${basedir}/dashwell/favicon.ico" />
+		<copy todir="${installer.work}/dashwell.war/style/" file="${basedir}/dashwell/style/dashwell.css" />
+		<copy todir="${installer.work}/dashwell.war/images/" file="${basedir}/dashwell/images/mdn_logo.gif" />
+		<copy todir="${installer.work}/dashwell.war/images/" file="${basedir}/dashwell/images/container_background.jpg" />
+		<copy todir="${installer.work}/dashwell.war/images/" file="${basedir}/dashwell/images/main_background.jpg" />
+		<copy todir="${installer.work}/dashwell.war/images/" file="${basedir}/dashwell/images/get_flash_player.jpg" />
+		<copy todir="${installer.work}/dashwell.war/images/launchpad">
+			<fileset dir="${basedir}/dashwell/images/launchpad/" includes="*.gif" />
+		</copy>
+		<copy todir="${installer.work}/dashwell.war/js/">
+			<fileset dir="${basedir}/dashwell/js/" includes="*.js" />			
+		</copy>
+		
+		<if>
+			<equals arg1="{build.type}" arg2="development" />
+			<then>
+				<antcall target="database.development" />
+				<property name="mdn.config" value="${basedir}/resources/config/development" />
+			</then>
+			<else>
+				<antcall target="database.production" />
+				<property name="mdn.config" value="${basedir}/resources/config/production" />
+			</else>
+		</if>
+
+		<copy todir="${installer.work}/dashwell.war/WEB-INF/classes">
+			<fileset dir="${mdn.config}/" />
+		</copy>
+		
+	</target>
+	
+	<target name="installer" depends="all">
+		<echo>IA Dir: ${installanywhere.path}</echo>
+		<buildinstaller	
+			ialocation="${installanywhere.path}/"
+			iaprojectfile="${basedir}/installer/MDN-SOLO.iap_xml"
+		/>
+	</target>
+
+	<target name="deploy">
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${tomcat.path}/webapps/dashwell.war" />
+		</delete>
+		<mkdir dir="${tomcat.path}/webapps/dashwell.war" />
+		<copy todir="${tomcat.path}/webapps/dashwell.war/">
+			<fileset dir="${installer.work}/dashwell.war" includes="**" />
+		</copy>
+	</target>
+	
+	<target name="all" depends="setup.tomcat,mdncore,framedobjects,compile.swf">
+		<echo>'All' Build complete</echo>
+	</target>
+
+	<target name="lzxfilechanges" depends="compile.swf, deploy">
+		<echo>'lzxfilechanges' Build complete</echo>
+	</target>	
+	
+	<target name="framedobjectschanges" depends="framedobjects, deploy">
+		<echo>'framedobjectschanges' Build complete</echo>
+	</target>
+	
+	<target name="mdncorechanges" depends="mdncore, deploy">
+		<echo>'mdncorechanges' Build complete</echo>
+	</target>	
+</project>
