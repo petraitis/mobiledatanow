@@ -1,6 +1,0 @@
-<library>
-    <include href="../opttree/library.lzx" />
-    <include href="icontreenode.lzx" />
-
-
-</library>

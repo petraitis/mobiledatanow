@@ -1,9 +1,0 @@
-<library>
-    <resource name="r_expander">
-        <frame src="resources/blank.gif"/>
-        <frame src="resources/plus.gif"/>
-        <frame src="resources/minus.gif"/>
-    </resource>
-
-    <resource src="resources/LZXplorer_loader.swf" name="r_waiter"/>
-</library>

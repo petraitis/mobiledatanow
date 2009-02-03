@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<root>
-	<node row="1" type="query" used="true" indent="0" parent="" number="1" field="First Name" compID="1" comparison="is equal to" value="Jens" connection="and" value2="_____" grouping="all"/>
-	<node row="2" type="query" used="true" indent="0" parent="" number="2" field="Last Name" compID="2" comparison="is not equal to" value="Richnow" connection="and" value2="_____" grouping="all"/>
-</root>

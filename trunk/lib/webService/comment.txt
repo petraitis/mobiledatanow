@@ -1,3 +1,0 @@
-"Array of String" is not considered a ComplexType in SOAPService.setSchemaComplexType(), thus no type mapping is defined for it.
-
-But SOAPService.extractParams() wrapped an "Array of String" as ObjectWrapper. So Call.invoke() failed.

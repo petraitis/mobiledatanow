@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<root>
-	<node id="259" row="1" type="query" valueOrCondition="value" used="true" indent="0" parent="CategoryID" number="1" field="CategoryID" compID="1" comparison="is equal to" value="2" connection="and" value2="_____" grouping="undefined" valueUserInput="undefined" value2UserInput="undefined" />
-	<node id="260" row="2" type="query" valueOrCondition="condition" used="true" indent="0" parent="CategoryID" number="2" field="CategoryName" compID="1" comparison="is equal to" value="G" connection="and" value2="_____" grouping="undefined" valueUserInput="undefined" value2UserInput="undefined" />
-</root>

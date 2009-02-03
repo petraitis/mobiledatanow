@@ -1,6 +1,0 @@
-<library>
-    <include href="../opttree/library.lzx" />
-    <include href="dragtreefloater.lzx" />
-    <include href="dragtree.lzx" />
-    <include href="dragtreenode.lzx"/>
-</library>

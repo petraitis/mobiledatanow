@@ -1,7 +1,0 @@
-<library>
-	<include href="controller.lzx" />
-	<include href="querybuilder.lzx" />
-	<include href="grouping.lzx" />
-	<include href="condition.lzx" />
-	<include href="requestnew.lzx" />
-</library>
