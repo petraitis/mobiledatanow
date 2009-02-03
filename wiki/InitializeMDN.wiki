@@ -2,18 +2,18 @@ Set classpath. All dependencies is in Mobiledatanow/lib directory<br>
 For configuration to build developer need to set below properties:<br>
 
  
-JdbcDataSource.url
-DatabaseDriver.uploadUrl
-ExportProject.downloadUrl
-ImportProject.uploadUrl
-WebService.compileFilePath
-logFile.filePath 
+JdbcDataSource.url<br>
+DatabaseDriver.uploadUrl<br>
+ExportProject.downloadUrl<br>
+ImportProject.uploadUrl<br>
+WebService.compileFilePath<br>
+logFile.filePath <br>
 
  
-on MobileDataNow\resources\config\development\wsl\config\mdn\MdnRmiServer.conf file
-And tomcat.path property in build.xml to run ant target order to build.xml MDN
+on MobileDataNow\resources\config\development\wsl\config\mdn\MdnRmiServer.conf file<br>
+And tomcat.path property in build.xml to run ant target order to build.xml MDN<br>
 
--          “database.development” target to make a empty DB 
--          “all” target
--           “deploy” target
--          “setup.tomcat”
+-          “database.development” target to make a empty DB <br>
+-          “all” target<br>
+-           “deploy” target<br>
+-          “setup.tomcat”<br>
