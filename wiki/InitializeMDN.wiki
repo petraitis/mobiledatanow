@@ -1,5 +1,5 @@
-Set classpath. All dependencies is in Mobiledatanow/lib directory
-For configuration to build developer need to set below properties:
+Set classpath. All dependencies is in Mobiledatanow/lib directory<br>
+For configuration to build developer need to set below properties:<br>
 
  
 JdbcDataSource.url
