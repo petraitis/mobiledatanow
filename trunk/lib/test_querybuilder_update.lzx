@@ -1,0 +1,210 @@
+<library>
+   <!-- The Add Select Query Class. -->
+   <class name="addUpdateDbQueries" width="${rightView.width - 1}" 
+        height="${projectTabs.currTab._projectView._rightView._upperPart.height - header.height - 1}" bgcolor="${canvas.bgcolor}"
+        extends="mdn_roundrect">
+
+    <attribute name="currDB"/>
+    <view width="${immediateparent.width}" height="${immediateparent.height}" >
+        <view width="${immediateparent.width - 40}" 
+                height="${immediateparent.height - 40}"
+                x="20" y="20">
+        <simplelayout axis="x" spacing="50"/>
+
+        <!-- The panel -->
+        <view height="${immediateparent.height}" width="${immediateparent.width}">
+			<simplelayout axis="y" spacing="5"/>           
+            
+           <!-- Properties slider -->
+           <view width="${immediateparent.width-40}" align="center">
+               <simplelayout axis="y" spacing="2"/>
+               <view height="5"/>
+                <view >
+                    <simplelayout axis="x"/>
+                    <text datapath="gui:/gui-labels/lbl-query-name/@label" width="100"/>
+                    <edittext id="txtQueryNameUpdate" datapath="dbQuery:/root/query" text="$path{'@name'}" width="250"/>
+                </view>
+                <view>
+                    <simplelayout axis="x"/>
+                    <text datapath="gui:/gui-labels/lbl-description/@label" width="100"/>
+                    <edittext id="txtQueryDescriptionUpdate" datapath="dbQuery:/root/query" text="$path{'@description'}" 
+                                        width="250" height="60" multiline="true"/>
+                </view>
+                <!--
+                <view>
+                    <simplelayout axis="x"/>
+                    <text datapath="gui:/gui-labels/lbl-query-results-fields/@label" width="100" multiline="true"/>
+                    <edittext text="CompanyName, Orders" 
+                                        width="250" height="60" multiline="true" />
+                </view>
+                -->
+		   </view>
+           <tabslider id="dbQuerySliderForUpdate" width="${immediateparent.width}" height="280">
+                <!-- Define Update Criteria slider. -->
+                <tabelement datapath="gui:/gui-labels/slider-update-criteria/@label" 
+                                        width="${immediateparent.width}" selected="true" align="center">
+                    <simplelayout axis="y" spacing="2"/>
+                        <method event="onclick">
+                        	
+                        </method>
+                        <view height="5"/>
+                        <querybuilder id="qb_query_builder_update" width="${immediateparent.width}" 
+                            height="${immediateparent.height}" bgcolor="white" ><!-- queryType="update" -->
+                        </querybuilder >
+                        
+                        <view height="10"/>
+                        <view align="center">
+                            <simplelayout axis="x" spacing="2"/>
+                            <mdn_button datapath="gui:/gui-labels/btn-add-condition/@label"/>
+                            <mdn_button datapath="gui:/gui-labels/btn-add-bracket/@label"/>
+                            <mdn_button datapath="gui:/gui-labels/btn-delete-condition/@label"/>
+                        </view>
+                </tabelement>
+            </tabslider>
+            
+            <view>
+                <simplelayout axis="x" spacing="2"/>
+                <!-- Test Query Button -->
+                <mdn_button datapath="gui:/gui-labels/btn-test-query/@label">
+                    <method event="onclick">
+                        var sqlString = qb_controller.getSQLForUpdate();
+                        qb_sql_text.setAttribute("text", sqlString);
+                        //var p = dbQuery.getPointer();
+			            //p.selectChild(2);
+			            //Debug.write(p);
+			            //var queryId = p.p.getAttr('queryID');
+			            //Debug.write('++ queryID: ' + queryId  );
+                        controller.getUpdateQueryResult(connIDConstants, sqlString);
+                        var p2 = qb_query_result.getPointer();
+                        Debug.write(p2);     
+                    </method>
+                </mdn_button>
+                <!-- Direct SQL Button -->
+                <mdn_button datapath="gui:/gui-labels/btn-direct-sql/@label"/>
+                <mdn_button datapath="gui:/gui-labels/btn-save-sql/@label">
+                	<method event="onclick">
+                	<![CDATA[
+                        qb_sql_text.setAttribute("text", qb_controller.getSQLForUpdate());
+
+                		var queryName = txtQueryNameUpdate.getText();
+                		var queryDescription = txtQueryDescriptionUpdate.getText();
+                		
+                		var dbQueryP = dbQuery.getPointer();
+                		dbQueryP.selectChild(2);
+                		var tableID = dbQueryP.getNodeAttribute("viewOrTableID");
+                		Debug.write("***************tableID: " + tableID);
+ 
+                        var queryId = dbQueryP.p.getAttr('queryID');
+			            Debug.write('SAVE QUERY BUTTON CLICKED ++ queryID: ' + queryId  );
+                		
+                		var saveState = "0";//DataObject.NEW default
+                		if (queryId == "-1"){
+                			saveState = "0";//DataObject.NEW
+                		}else{
+                			saveState = "1";//DataObject.IN_DB
+                		}
+                		
+                		var p = qb_query.getPointer();
+                		var ok = p.selectChild(2);
+                		Debug.write("qb_query: " + p);
+                		
+                		var nodename = p.getNodeName();
+						Debug.write("***************nodename: " + nodename);
+						
+		        		var valueOrConditions = [];
+		        		var ids = [];
+		        		var rows = [];
+		        		var types = [];
+		        		var useds = [];
+		        		var indents = [];
+		        		var parents = [];
+		        		var numbers = [];
+		        		var fields = [];
+		        		var compIDs = [];	
+		        		var comparisons = [];
+		        		var values = [];
+		        		var connections = [];
+		        		var value2s = [];	// The second value field, 'value2'. It is only used and visible when
+											//	dealing with the 'is between' and 'is not between' operators.					
+		        		var groupings = [];
+		        		var userInputSeqs = [];
+		        		var userInputSeqs2 = [];
+		        								
+						var tableIndex = 0;
+		        		
+		        		while (ok){
+							var id = p.getNodeAttribute("id");
+		        			var row = p.getNodeAttribute("row");
+		        			var type = p.getNodeAttribute("type");
+		        			var used = p.getNodeAttribute("used");
+		        			var indent = p.getNodeAttribute("indent");
+			        		var valueOrCondition = p.getNodeAttribute("valueOrCondition");
+		        			var number = p.getNodeAttribute("number");	
+		        			var parent = p.getNodeAttribute("parent");		        		
+			        		var field = p.getNodeAttribute("field");  			        		
+			        		var compID = p.getNodeAttribute("compID");
+		        			var comparison = p.getNodeAttribute("comparison");			        		
+			        		var value = p.getNodeAttribute("value");  			        		
+			        		var connection = p.getNodeAttribute("connection");
+		        			var value2 = p.getNodeAttribute("value2");			        		
+			        		var grouping = p.getNodeAttribute("grouping");
+			        		var userInputSeq = p.getNodeAttribute("valueUserInput");
+			        		var userInputSeq2 = p.getNodeAttribute("value2UserInput");
+			        					        		
+			        		ids[tableIndex] = id;
+			        		rows[tableIndex] = row;
+			        		types[tableIndex] = type;
+							useds[tableIndex] = used;
+							indents[tableIndex] = indent;
+		        			valueOrConditions[tableIndex] = valueOrCondition;
+		        			numbers[tableIndex] = number;
+		        			parents[tableIndex] = parent;
+		        			fields[tableIndex] = field;
+		        			compIDs[tableIndex] = compID;	
+			        		comparisons[tableIndex] = comparison;
+			        		values[tableIndex] = value;
+			        		connections[tableIndex] = connection;
+			        		value2s[tableIndex] = value2;
+			        		groupings[tableIndex] = grouping;
+			        		userInputSeqs[tableIndex] = userInputSeq;
+			        		userInputSeqs2[tableIndex] = userInputSeq2;
+			        				        			
+		        			tableIndex++;
+		        			ok = p.selectNext();
+		        		}		
+		        						
+                        if (tableIndex == 0){
+                            return;                       
+                        }
+		        		var sqlText = qb_controller.getSQLForUpdate();
+		        		controller.saveQuery(saveState, connIDConstants, queryId, queryName, queryDescription, tableID, "update", sqlText, ids, rows, types, useds, indents, valueOrConditions, parents, numbers, fields, compIDs, comparisons, values, connections, value2s, groupings, userInputSeqs, userInputSeqs2,"undefined", "undefined");						
+                	]]>
+                	</method>
+                </mdn_button>                
+            </view>
+            
+            <tabs width="${immediateparent.width}" height="100">
+                <!-- Query itselt -->
+                <tabpane datapath="gui:/gui-labels/tab-sql/@label" >
+                    <inputtext id="qb_sql_text" multiline="true" width="400"/>
+                </tabpane>
+                <!-- Query Result -->
+                <tabpane >
+
+                </tabpane>
+            </tabs>
+            <!-- Query Result -->
+            <view align="left">
+                <simplelayout axis="x" spacing="2"/>
+                <text datapath="gui:/gui-labels/tab-query-result/@label" width="100"/>
+                <text id="txtUpdateQueryResult" text="" fgcolor="red" fontstyle="bold" resize="true" />
+            </view>                                
+		</view>
+	</view>
+</view>
+    <method name="setQueryResult" args="queryResult">
+        txtUpdateQueryResult.setAttribute('text', queryResult);
+    </method>   
+   </class>
+   
+</library>   

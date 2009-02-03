@@ -1,0 +1,20 @@
+<library>
+    <class name="busybanner" bgcolor="red" fgcolor="white" width="70" height="20"
+           visible="false">
+        <attribute name="fontsize" value="11"/> 
+        <attribute name="label" type="string" value="Working..."/> 
+        <attribute name="labelX" value="0"/> 
+        <attribute name="labelY" value="0"/> 
+       <text fontsize="$once{classroot.fontsize}" text="$once{classroot.label}"
+             x="${classroot.labelX}" y="${classroot.labelY}"> 
+           <handler name="oninit">
+           </handler>
+       </text>
+       <method name="open">
+           this.setVisible(true);
+       </method>
+       <method name="close">
+           this.setVisible(false);
+       </method>
+    </class>
+</library>

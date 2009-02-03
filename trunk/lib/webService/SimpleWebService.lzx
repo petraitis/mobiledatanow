@@ -1,0 +1,53 @@
+<canvas debug="true">
+
+<soap name="stockquote"
+  wsdl="http://localhost:8080/xfire-stockquote/services/StockQuote?wsdl">
+
+<!-- Method to make a document for SOAP message requests -->
+<method name="makegetQuoteDoc" args="symbol">
+	Debug.write('Entering makegetQuoteDoc function');
+<![CDATA[
+    var s =  '<getStockQuote xmlns="http://localhost:8080/xfire-stockquote/services/stockQuote" ><security>'+symbol+'</security></getStockQuote>';
+
+Debug.write(s);
+    return s;
+]]>
+</method>
+
+<handler name="onload">
+    // make buttons visible once SOAP object is loaded
+		canvas.buttons.setAttribute('visible', true);
+		Debug.write('StockQuote soap service loaded');
+    Debug.write('StockQuote WSDL at ' + this.wsdl);
+    Debug.write('proxy:');
+    Debug.inspect(this.proxy);
+</handler>
+
+<handler name="onerror" args="error">
+    Debug.write('error:', error);
+</handler>
+
+<handler name="ontimeout" args="error">
+    Debug.write('timeout:', error);
+</handler>
+
+<remotecall funcname="getStockQuote" >
+  <param value="${ canvas.stockquote.makegetQuoteDoc(symbol.text) }" />
+  <method event="ondata" args="value">
+		    Debug.write("Got data!");
+		    result.setText(value);
+  </method>
+</remotecall>
+
+</soap>
+
+<view name="buttons" x="10" y="10" visible="false" layout="spacing: 10" >
+<text><b>Stock Quote Service</b></text>
+<view layout="axis: x" ><text y="3">Symbol:</text><edittext id="symbol" text="IBM"/></view>
+<view layout="axis: x" ><text>Result:</text><text id="result"/></view>
+
+<button text="Get Quote" onclick="canvas.stockquote.getStockQuote.invoke()" />
+
+</view>
+
+</canvas>

@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library>
+	<class name="navigationSettings" datapath="gui:/gui-labels" clip="true"><!--  -->
+
+		<datapointer name="copyFrom_dp" />
+	    <datapointer name="copyTo_dp" />
+		
+		<!-- Settings. -->
+	    <view selected="true" width="${classroot.width}" height="${classroot.height}">
+			<method event="oninit">
+				Debug.write("======================settings oninit navigation height", this.height);
+		    
+		    </method>  
+	        <!-- <method name="openned">
+	            super.openned();
+				
+				controller.getNavSett();
+				//controller.getEmptyRecycleBin();
+				
+	            //Debug.write("received navSett: " + d.serialize());
+	            // TODO change to ondata event and figure first node out.
+	            //controller.generalSettings("Bliss");
+	            
+	            //controller.showLanguage();
+	            //fileProgressBar.setVisible(false);
+	            controller.showAccount();
+	        </method> -->
+	        <text datapath="menu-settings/@label" font="tabsFont" fgcolor="0x454545" fontsize="16" resize="true" />
+	        <view width="${immediateparent.width}"
+	              height="${immediateparent.height - parent.buttonpanel.height - 44}" y="24">
+	            <view width="100%" height="100%" clip="true">
+	                <dragtree 	id="treeSett" 
+	                			datapath="navSett:/root"
+	                            nodepath="node" 
+	                            nodeclass="dragfiletreenode"
+	                            floaterref="${floater5}" 
+	                            multiselect="true"
+	                            width="100%"
+	                            showtreelines="false">
+	                    <attribute name="currselnode" value="null"/>
+					    <attribute name="newRoundRectWidth" value="285" />
+					    <handler name="oncurrselnode">
+		                    this.select(this.getAttribute("currselnode"));
+		                </handler>
+					    <method event="oninit">
+							this.getAttribute('floaterref').setAttribute('_dragtreeref', this);				            
+				            Debug.write("************treeSett oninit **********", this.floaterref);				            	
+					    </method> 						
+						<method event="onselect" args="sel">
+		                    Debug.write("CURRENT SELECTION: ", this.getSelection());
+		                    myCurrSelectionToDel = this.getSelection();
+	                       	Debug.write("sel: ", sel);
+	                       	if(sel != null){ 
+							  	this.setAttribute("currselnode", sel);
+		                    } 
+	                       	var selNode = sel.data;
+	                       	var selNodeName = selNode.attributes.name;
+	                       	var selNodeType = selNode.attributes.type;
+	                       	var selNodeValue = selNode.attributes.value;
+	                       	Debug.write("node: " + selNode);
+							if (selNodeType == 'general'){
+	                       		//controller.generalSettings("Bliss");
+	                       	} /*else if (selNodeType == 'language'){
+	                        	
+	                        	controller.showLanguage();
+	                        	fileProgressBar.setVisible(false);
+	                        } */
+	                        //else if (selNodeType == 'account'){
+	                        	//controller.showAccount();
+	                        //}
+	                         else if (selNodeType == 'add-lang'){
+	                        	controller.getNewLanguage();
+	                        	controller.showLanguage();
+	                        	//fileProgressBar.setVisible(false);
+	                        	//fileUploadError.setText("");
+	                        	languageSett.clearData();
+	                        } else if (selNodeType == 'lang'){
+	                        	controller.getLanguage(selNodeValue);
+	                        	controller.showLanguage();
+	                        	//fileProgressBar.setVisible(false);
+	                        	//fileUploadError.setText("");
+	                        	languageSett.clearData();
+	                        } else if (selNodeType == 'drivers'){
+	                        	//controller.showDbDrivers();
+	                       	} else if (selNodeType == 'add-driver'){
+	                        	controller.getNewDriver();
+	                        	controller.showDbDriver();
+	                        	dbDriverClassID.clearData();
+	                        	
+	                       	} else if (selNodeType == 'driver'){
+	                        	var selNodeId = selNode.attributes.id;
+	                        	Debug.write("---------------------Driver Id-------------------", selNodeId);
+	                        	controller.getDriver(selNodeId);
+	                        	controller.showDbDriver();
+	                        	dbDriverClassID.clearData();
+	                        	
+	                       	} else if (selNodeType == 'mirror'){
+	                        	controller.showMirrorDB("Bliss");
+	                       	} else if (selNodeType == 'lookandfeel'){
+	                        	controller.showLookAndFeel();
+		                   } else if (selNodeType == "msg-sep"){
+	                      		Debug.write("MSG Separator");
+	                      		controller.displayMsgSeperator();
+		                   } else if (selNodeType == "msg-controls"){
+	                      		Debug.write("MSG controls");
+	                      		controller.displayMsgControles();	                      		
+	                      		msgControles.clearData();
+	                       	} else if (selNodeType == 'msg'){
+	                         	Debug.write("msg: ", this.getSelection());
+	                        	controller.displayEmptyIMConnection();
+	                       	} else if (selNodeType == "add_im"){
+	                      		Debug.write("Add IM Begin");
+	                      		controller.displayEmptyIMConnection();
+	                      		newIM.clearDataFromNewIMConnPage();	                      		
+	                       	} else if (selNodeType == "im-conn"){
+	                      		var connID = selNode.attributes.value;
+	                      		controller.getAndDisplayConn(connID);
+	                      		imConn.clearData();
+	                       	} else if (selNodeType == "email"){
+	                      		Debug.write("email");
+	                       	} else if (selNodeType == "set_smtp"){
+	                      		Debug.write("Set SMTP");
+	                      		controller.setSmtp();
+	                      		setSmtp.clearData();
+	                      		
+	                       	} else if (selNodeType == "add_mdn_email"){
+	                      		Debug.write("Add MDN Email");
+	                      		controller.addMdnEmail();
+	                      		addMdnEmail.clearData();
+	                       	} else if (selNodeType == "edit_mdn_email"){
+	                      		Debug.write("Edit MDN Email");
+	                      		var emailId = selNode.attributes.value;
+	                      		controller.editMdnEmail(emailId);
+	                      		editMdnEmail.clearData();
+	                       	} else if (selNodeType == "sms-sett"){
+	                      		Debug.write("SMS Setting");
+	                      		controller.displaySmsSett();
+	                      		smsSett.clearData(); 
+	                      		
+	                       	} else if (selNodeType == "sms-conn"){
+	                      		Debug.write("SMS Connection");
+	                      		controller.displaySmsConn();
+	                      		smsConn.clearData();
+	                      		
+	                       	} else if (selNodeType == "msg-sep"){
+	                      		Debug.write("MSG Separator");
+	                      		//controller.displayMsgSeperator();
+							}else if(selNodeType == "search"){
+	                      		searchMsg.clearData();							
+	                      		controller.displaySearchMsg();							
+							}else if(selNodeType == "smpp-sett"){
+	                      		Debug.write("smpp-sett");
+	                      		var id = selNode.attributes.value;
+	                      		gatewaySmppSett.clearData();
+	                      		controller.displaySmpp(id);							
+							}else if(selNodeType == "add-smpp"){
+	                      		Debug.write("add-smpp");
+	                      		addSmpp.clearData();
+	                      		controller.displayAddSmpp();							
+							}else if(selNodeType == "pub-msg-log"){
+	                      		Debug.write("pubMsgLog");
+	                      		pubMsgLog.clearData();
+	                      		controller.displayPubMsgLog();							
+							}		
+									
+						</method>
+						<method reference="treeSett" event="ondragdrop" args="resp">
+						      	Debug.write("treeSett Drag Drop start working ##", resp);
+						      	var dragees = resp.draggedNodes;
+					    	  	var fromNode = resp.from;
+					    	  	Debug.write("drag method for im tree dragtrees: ", dragees);
+						      	Debug.write("fromNode: ", fromNode);
+								var toNode = resp.to.datapath.p;
+								if (resp.type=="external") {
+							      // Dragging a node from a tree to an outside drop
+						    	  switch (resp.to) {
+						        	case rubbishViewForSettings.rubbishBinIcon:
+							        	rubbishViewForSettings.setAttribute("isFull", true);
+								        Debug.write(">> Dropping into rubbish bin");
+								        for (var i in dragees) {
+								            var isPresent = false;
+							    	        classroot.copyFrom_dp.setPointer(dragees[i]);
+							        	    var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+							            	var draggedValue = classroot.copyFrom_dp.getNodeAttribute("value");
+							    	        var draggedID = classroot.copyFrom_dp.getNodeAttribute("id");
+								            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+								            Debug.write(" Dragged name is: "+ draggedName + ", id: " + draggedID + ", type: " + draggedType);
+							    	        if (draggedType == 'im-conn'){
+							    	        	var connID = draggedValue;
+							    	       		Debug.write(" IM CONN ID ==>> "+  connID);
+								            	controller.deleteIMConn(connID);
+											} else if(draggedType == 'edit_mdn_email'){
+							    	        	var emailId = draggedValue;
+							    	       		Debug.write(" emailId ==>> "+  emailId);
+								            	controller.deleteEmailSett(emailId);
+											} else if(draggedType == 'driver'){
+							    	        	var driverId = draggedID;
+							    	       		Debug.write(" driverId ==>> "+  driverId);
+								            	controller.recycleDriver(driverId);
+											} else if(draggedType == 'lang'){
+							    	        	var languageId = draggedValue;
+							    	       		Debug.write(" languageId ==>> "+  languageId);
+								            	controller.recycleLanguage(languageId);
+											} else if(draggedType == 'smpp-sett'){
+							    	        	var smppId = draggedValue;
+							    	       		Debug.write(" darag to recycle bin");
+								            	controller.recycleSmpp(smppId);
+											}
+								            toNode = recycleData.getFirstChild();
+											classroot.copyTo_dp.setPointer(toNode);
+								            classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);
+								            classroot.copyFrom_dp.deleteNode();
+							          	}
+							          	// Update the recycle bin dataset.
+							          	controller.updateSettingsRecycleBin();
+						          		break;
+						      }
+						    }
+						</method>	
+	                </dragtree>
+			        <handler name="oncontextselect" args="o" reference="treeSett">
+			            Debug.write("oncontextselect", o.datanode, o.caption);
+			            Debug.write(o.caption + " Is the Selection: " + o.datanode.getAttr("name"));
+			            resp = o.datanode;
+			            Debug.write("treeSett Drag Drop start working ## ", o.datanode);
+				      	var dragees = myCurrSelectionToDel;
+			    	  	var fromNode = o.datanode;
+			    	  	Debug.write("drag method for im tree ##$ ", dragees);
+				      	Debug.write("fromNode: ", fromNode);
+						var toNode = resp.to.datapath.p;
+				       
+				        for (var i in dragees) {
+				            var isPresent = false;
+			    	        classroot.copyFrom_dp.setPointer(dragees[i]);
+			        	    var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+			            	var draggedValue = classroot.copyFrom_dp.getNodeAttribute("value");
+			    	        var draggedID = classroot.copyFrom_dp.getNodeAttribute("id");
+				            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+				            Debug.write(" Dragged name is: "+ draggedName + ", id: " + draggedID + ", type: " + draggedType);
+			    	        if (draggedType == 'im-conn'){
+			    	        	var connID = draggedValue;
+			    	       		Debug.write(" IM CONN ID ==>> "+  connID);
+				            	controller.deleteIMConn(connID);
+							} else if(draggedType == 'edit_mdn_email'){
+			    	        	var emailId = draggedValue;
+			    	       		Debug.write(" emailId ==>> "+  emailId);
+				            	controller.deleteEmailSett(emailId);
+							} else if(draggedType == 'driver'){
+			    	        	var driverId = draggedID;
+			    	       		Debug.write(" driverId ==>> "+  driverId);
+				            	controller.recycleDriver(driverId);
+							} else if(draggedType == 'lang'){
+			    	        	var languageId = draggedValue;
+			    	       		Debug.write(" languageId ==>> "+  languageId);
+				            	controller.recycleLanguage(languageId);
+							} else if(draggedType == 'smpp-sett'){
+			    	        	var smppId = draggedValue;
+			    	       		Debug.write("smppId ==>> "+  smppId);
+				            	controller.recycleSmpp(smppId);
+							}
+				            toNode = recycleData.getFirstChild();
+							classroot.copyTo_dp.setPointer(toNode);
+				            classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);
+				            classroot.copyFrom_dp.deleteNode();
+			          	}
+			          	// Update the recycle bin dataset.
+			          	controller.updateSettingsRecycleBin();
+			            
+			            switch (o.caption) {
+			                case "Delete Driver":
+			                    Debug.write("Lets Delete the Driver");
+			                break;
+			                case "Parsley":
+			                    // Disable the current caption, since it's done now.
+			                    var dp = new LzDatapointer();
+			                    dp.setAttribute("p", o.datanode);
+			                    dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+			                    dp.setNodeAttribute("enabled", "false");
+			                break;
+			                case "Thyme":
+			                    // Disable the current caption, since it's done now.
+			                    var dp = new LzDatapointer();
+			                    dp.setAttribute("p", o.datanode);
+			                    dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+			                    dp.setNodeAttribute("enabled", "false");
+			                break;
+			            }
+			        </handler>
+	                <smartvscollbar repmanager="nodeinst" /><!-- SL:09/05/2006 Ticket LZ_SUP #IMU-28097-761 -->
+	            </view>
+	        </view>
+	        <view name="buttonpanel" width="${immediateparent.width}" datapath="gui:/gui-labels" y="430">
+	            <simplelayout axis="y" spacing="3" />
+	      		<binView id="rubbishViewForSettings" align="left" whichTree="$once{treeSett}"/>
+	        </view>        
+	    </view>
+	</class>  
+
+
+	
+	<class name="settingview" extends="basewindow" height="0" clip="true" x="${(canvas.width / 2) - (this.width / 2)}" y="${(canvas.height / 2) - (535 / 2)}">
+    	
+    	<!-- <view width="423" x="250" height="0"> -->
+	        <attribute name="goToSpecialView" type="boolean" value="false"/>
+	        <attribute name="currView" type="string" value=""/>
+			
+			
+			
+		   	<method name="setCaptions" args="newCap, newSubCap">
+				navSettHeader.setAttribute('text' , newCap);
+				//navSettHeader.setAttribute('datapath' , newCap);
+				//navSettHeader.allCaptions.subCaption.setAttribute('text' , newSubCap);
+		   	</method>
+		   	
+		   	<method name="setCaptionsNew" args="newCap, newSubCap">
+				navSettHeader.setAttribute('datapath' , newCap);
+		   	</method>		
+		   	
+		   	<method name="setCaption" args="newCap">
+				navSettHeader.setAttribute('text' , newCap);
+		   	</method>
+		
+		   	<method name="setSubCaption" args="newSubCap">
+				//navSettHeader.allCaptions.subCaption.setAttribute('text' , newSubCap);
+		   	</method>
+	        
+	        <method name="open">
+	            this.down.doStart();
+	        </method>
+	        <method name="close">
+	            this.up.doStart();
+	        </method>
+	        
+	        <animator name="up" attribute="height" to="0" duration="1000" start="false">
+	            <handler name="onstop">
+	                 // Removes the parent view (and all the views below it) from the stack of modal views   
+	                 //LzModeManager.release(parent);
+	                 //grayout.allAnimator.doStart();
+	                 //grayout.setVisible(false);
+	            </handler>
+	        </animator>
+	        <animator name="down" attribute="height" to="535" duration="1000" start="false">
+	            <handler name="onstart">
+	                //grayout.bringToFront();
+	                //grayout.blackout.doStart();
+	                // Pushes parent view onto the stack of modal views      
+	                //LzModeManager.makeModal(parent);
+	                parent.bringToFront();
+	                
+					controller.getNavSett();
+					controller.updateSettingsRecycleBin();
+					
+		            //Debug.write("received navSett: " + d.serialize());
+		            // TODO change to ondata event and figure first node out.
+		            var selectedNode = treeSett.getAttribute("currselnode");
+		            var spe = classroot.getAttribute("goToSpecialView");
+		            Debug.write("goToSpecialView", spe);
+		            if (selectedNode == undefined){
+	                   	if (spe == false){
+	                   		//controller.showAccount();
+	                   		controller.getNewLanguage();
+	                        controller.showLanguage();
+	                   	}
+		            }		                
+	            </handler>
+	        </animator>
+
+			<method name="switchMainView" args="nextView">
+				<![CDATA[
+				var states = [_projectView._rightView._upperPart._mainView._generalSett,
+		                      _projectView._rightView._upperPart._mainView._driverSett, 
+		                      //_projectView._rightView._upperPart._mainView._accountSett,
+		                      _projectView._rightView._upperPart._mainView._LanguageSett, 
+		                      _projectView._rightView._upperPart._mainView._lookSett, 
+		                      _projectView._rightView._upperPart._mainView._mirrorSett, 
+		                      _projectView._rightView._upperPart._mainView._imConn, 
+		                      _projectView._rightView._upperPart._mainView._newIM, 
+		                      _projectView._rightView._upperPart._mainView._addMdnEmail, 
+		                      _projectView._rightView._upperPart._mainView._editMdnEmail,  
+		                      _projectView._rightView._upperPart._mainView._addressBook, 
+		                      _projectView._rightView._upperPart._mainView._smsConn, 
+		                      _projectView._rightView._upperPart._mainView._smsSett,
+		                      _projectView._rightView._upperPart._mainView._conditionSeparator,
+		                      _projectView._rightView._upperPart._mainView._msgControles,
+		                      _projectView._rightView._upperPart._mainView._searchMsg, 
+		                      _projectView._rightView._upperPart._mainView._gatewaySmppSett,
+							  _projectView._rightView._upperPart._mainView._addSmpp,
+							  _projectView._rightView._upperPart._mainView._pubMsgLog];
+				                            
+				Debug.write("Prepare to switch view to: " + nextView);
+				
+				if (this.currView != null && this.currView == nextView){
+					Debug.write("Same as current view: " + this.currView);
+					return;
+				}
+				else{
+					//Remove everything first
+					for (var i in states) {
+						states[i].remove();
+					}
+					
+					//Apply the next view
+					for (var i in states) {	
+						//Debug.write("NO Same as current view: ", states[i].name , nextView);
+					
+						if (states[i].name == nextView) {
+						  Debug.write("Switch view to: " + nextView);
+						  states[i].apply();
+						  this.setAttribute("currView", nextView);
+						  Debug.write("Set current view to: " + nextView);
+						}
+					}     
+				}
+				
+				]]>
+			</method>
+	       
+	       <roundrect name="strokeRoundRect" width="911" height="535" backgroundStartColor="#2b5686" backgroundStopColor="#2b5686" borderColor="#2b5686" borderRadius="4">
+				<method event="oninit">
+					this.content.setAttribute("x", 1);
+					this.content.setAttribute("y", 1);
+				</method>
+			<roundrect name="blueRoundRect" width="${parent.width - 2}" height="${parent.height - 2}" backgroundStartColor="#3b72b1" backgroundStopColor="#3b72b1" borderColor="#4579b3" borderRadius="4">
+				<method event="oninit">
+					this.content.setAttribute("x", 0);
+					this.content.setAttribute("y", 2);
+				</method>
+				<view width="${parent.width - 2}" height="26" x="1">
+					<!-- <view width="100%" height="100%" resource="../images/window_highlight_top.gif" stretches="width" />  -->
+					<view width="20" height="19" x="884" y="2" resource="close_button" clickable="true">
+						<method event="onclick">
+							classroot.close();
+						</method>
+						
+						<method event="onmouseover">
+					    	this.setResourceNumber(2);
+					    </method>
+					    
+					    <method event="onmouseout">
+					   		this.setResourceNumber(1);
+					    </method>
+					</view>
+					 
+				</view>
+				<!-- 
+				<roundrect name="whiteRoundRect" width="404" height="${(parent.height - this.y) - 8}" x="${(parent.width / 2) - (this.width / 2)}" backgroundStartColor="#F9F9F9" backgroundStopColor="#F9F9F9" borderColor="#455463" borderRadius="4">
+					<method event="oninit">
+						this.content.setAttribute("x", 23);
+						this.content.setAttribute("y", 23);
+					</method>
+					<view name="_wholeView" width="${parent.width - 46}" visible="true" opacity="1">
+	       			</view>
+	       		</roundrect>
+	       		 -->
+	       	</roundrect>
+	       </roundrect>
+	       
+	         <!-- some content start-->	         
+			<view name="_projectView" x="6" y="28" width="899"
+		    	height="500" visible="true" opacity="1">
+			    <simplelayout axis="x" locked="true" />
+			    
+			    <method event="oninit">
+					Debug.write("******************setting width height*************************", this.width, this.height);						   
+			    </method>			    
+			    
+				<roundrect name="whiteRoundRect" width="295" height="${parent.height}" backgroundStartColor="#FFFFFF" backgroundStopColor="#FFFFFF" borderColor="#315f94" borderRadius="4">
+					<method event="oninit">
+						this.content.setAttribute("x", 5);
+						this.content.setAttribute("y", 5);
+					</method>
+					<view width="${(parent.width - 5) - 5}" height="${(parent.height - 5) - 5}">
+				        <navigationSettings id="navSettTabslider" width="${parent.width}" height="${parent.height}"/><!--  -->      
+			        </view>
+			    </roundrect><!-- leftPanel -->
+			    
+			    <view name="_rightView" id="navsett_rightView" x="300" width="599" height="${parent.height}">
+			
+			        <method event="onwidth">
+			            navSettUpperPart._mainView.setAttribute("width", this.width - 1);
+			        </method>
+			        
+			        <roundrect name="whiteRoundRect" width="${parent.width}" height="${parent.height}" backgroundStartColor="#FFFFFF" backgroundStopColor="#FFFFFF" borderColor="#315f94" borderRadius="4">
+						<method event="oninit">
+							this.content.setAttribute("x", 0);
+							this.content.setAttribute("y", 0);
+						</method>
+					</roundrect>
+					
+			        <view name="_upperPart" id="navSettUpperPart" width="${immediateparent.width}" height="${immediateparent.height - parent.closeButton.height}">
+			            <simplelayout axis="y" />
+			
+			            <!-- The header view. -->
+			            <!-- 
+			            <captionView id="navSettHeader" parentView="${classroot}" bgcolor="red" />
+			             -->
+			            <view height="15" /> 
+			            <text id="navSettHeader" fgcolor="0x454545" fontsize="16" font="tabsFont" resize="true" x="22" />
+			             
+			            <!-- The main view. -->
+			            <view name="_mainView" width="${immediateparent.width}"
+			                        height="${navSettUpperPart.height - navSettHeader.height}">
+						    <method event="oninit">
+								Debug.write("navigation setting height", this.height);	  
+						    </method> 			                
+			                <!-- Settings Views. -->
+			                <state name="_generalSett" pooling="true">
+			                    <generalSettings width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <!-- licensee <state name="_accountSett" pooling="true">
+			                    <myMDNAccount width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state> -->
+			                <state name="_driverSett" pooling="true">
+			                    <dbDriverClass id="dbDriverClassID" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <!-- <state name="_languageSett" pooling="true">
+			                    <languageSettings width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state> -->			                
+			                <state name="_LanguageSett" pooling="true">
+			                    <LanguageSetting id="languageSett" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <state name="_conditionSeparator" pooling="true">
+			                    <viewConditionSeparator id="conditionSeparator" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <state name="_msgControles" pooling="true">
+			                    <viewMsgControles id="msgControles" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>			                
+			                
+			                <state name="_searchMsg" pooling="true">
+			                    <viewSearchMsg id="searchMsg" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>			   
+			                <state name="_gatewaySmppSett" pooling="true">
+			                    <viewGatewaySmppSett id="gatewaySmppSett" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>			                			
+			                <state name="_addSmpp" pooling="true">
+			                    <viewAddSmpp id="addSmpp" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>			    
+			                <state name="_pubMsgLog" pooling="true">
+			                    <viewPubMsgLog id="pubMsgLog" maintab="${classroot}" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>				                
+			                            			                			                             			                			                                			                             			                
+			                <!-- The Messaging Settings. -->
+			                <state name="_newIM" pooling="true">
+			                    <newIMm id="newIM" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}">
+			                    	 <handler name="oninit">
+							             navSettTabslider.setAttribute("newIMobj",this);
+							         </handler>
+							    </newIMm>
+			                </state>
+			                <state name="_imConn" pooling="true">
+			                    <viewImConn id="imConn" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <!-- email -->
+			                <state name="_addMdnEmail" pooling="true">
+			                    <addMdnEmailView id="addMdnEmail" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <state name="_editMdnEmail" pooling="true">
+			                    <editMdnEmailView id="editMdnEmail" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+	
+			                <state name="_addressBook" pooling="true">
+			                    <addressBookView id="addressBook" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                
+			                <state name="_lookSett" pooling="true">
+			                    <lookAndFeel width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <state name="_mirrorSett" pooling="true">
+			                    <mirrorDB width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                
+			                <!-- SMS -->
+			                <state name="_smsConn" pooling="true">
+			                    <viewSmsConn id="smsConn" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+			                <state name="_smsSett" pooling="true">
+			                    <viewSmsSett id="smsSett" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state>
+	
+<!-- 			                <state name="_conditionSeparator" pooling="true">
+			                    <viewConditionSeparator id="conditionSeparator" width="${immediateparent.width}"
+			                            height="${navSettUpperPart.height - navSettHeader.height}"/>
+			                </state> -->
+
+			                
+			            </view><!-- _mainView -->
+
+			        </view><!-- upperPart -->
+			
+			        <!-- 
+			        <view id="navsett_right_vert_divider" name="_right_vert_divider" y="${immediateparent.height / 5 * 4}" 
+			                        bgcolor="#e3e3e3" height="5" width="${immediateparent.width}" 
+			                        onmousedown="dragging_rv.apply()"
+			                		onmouseup="dragging_rv.remove()">
+			            <state name="dragging_rv">
+			                <attribute name="minY" value="200"/>
+			                <attribute name="maxY" value="${parent.height - 35}"/>
+			                <attribute name="thisY" value="${parent.getMouse('y')}"/>
+			           		<attribute name="y" value="${Math.max(Math.min(this.maxY, this.thisY), this.minY)}"/>
+						</state>
+				        <animator name="min" attribute="y" to="${parent.parent.parent.height - 40}" duration="1000" start="false"/>
+				        <animator name="mid" attribute="y" to="${parent.parent.parent.height - 140}" duration="1000" start="false"/>
+				        <animator name="max" attribute="y" to="200" duration="1000" start="false"/>
+			        </view> --><!-- navsett_right_vert_divider -->
+			
+			        <!-- <helpView name="navsett_help_name" parentView="${classroot}" width="${immediateparent.width - 1}"
+			                y="${navsett_right_vert_divider.y - navsett_right_vert_divider.height}"
+			                height="${parent.parent.height - navSettUpperPart.height - 7}"/> -->
+					<view name="closeButton" x="15" y="463" height="28">
+						
+					</view>			        
+				</view><!-- navsett_rightView -->
+	
+			</view><!-- project view -->  
+			<!-- <button >close</button> -->
+			<!-- <roundrectbutton name="closeButton" text="X" height="17" width="17" x="${immediateparent.width-18}" y="1" onclick="parent.close();" />  -->      
+         	<!-- some content end-->
+         <!-- </view> -->
+    </class>
+	              
+</library>

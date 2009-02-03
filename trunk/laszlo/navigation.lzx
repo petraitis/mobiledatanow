@@ -1,0 +1,990 @@
+<library>
+
+
+   <!-- This class represents the left-hand navigation menu. -->   
+   <class name="navigationView" x="0" y="0"
+                datapath="gui:/gui-labels" extends="tabslider_horizontal" clip="false" slideduration="5" >
+	    <!-- width="${immediateparent.width / 5}"
+                height="${immediateparent.height}" -->
+	    <attribute name="maintab"/>
+	    
+	    
+	    <attribute name="treeDbs" />	    
+        <attribute name="treeDbsDatapath" type="string"/>
+        <attribute name="treeDbsFloater"/>
+        
+	    <attribute name="treeUsersGroups" />
+        <attribute name="treeUsersGroupsDatapath" type="string"/>
+        <attribute name="treeUsersGroupsFloater"/>
+        
+	    <attribute name="treeAccess" />
+        <attribute name="treeAccessDatapath" type="string"/>
+        <attribute name="treeAccessFloater"/>
+        
+	    <attribute name="treeDeployment" />
+        <attribute name="treeDeploymentDatapath" type="string"/>
+        <attribute name="treeDeploymentFloater"/>
+	    
+	    <attribute name="newIMobj"/>
+	    
+	    <attribute name="rubbishViewForDatabases" />
+		
+		<attribute name="currSelectedWhite" type="string" />
+        <!-- <attribute name="dragtree"/> -->
+
+	    
+	    <method event="oninit">
+			//Debug.write("Current project id in navigationView oninit", classroot.maintab.currProjectId);    
+			Debug.write("navigation height--------------------", this.height);
+			Debug.write("navigation height immediateparent--------------------", this.immediateparent, this.immediateparent.height);
+			Debug.write("navigation height parent --------------------", this.parent, this.parent.height);	
+	    </method>        
+
+		<datapointer xpath="dbNavDbs:/*" rerunxpath="true"
+				ondata="processData();" onerror="canvas.showError(this);"
+				ontimeout="canvas.showTimeout();">
+			<method name="processData">
+				Debug.write("received dbNavDbs data: " + this.serialize());
+				var selectedNode = classroot.treeDbs.getAttribute("currselnode");
+				if (selectedNode == undefined){
+		            this.selectChild(2);
+		            Debug.write('navDbsdp', this, this.getNodeName(), this.p);
+		            classroot.treeDbs.select(classroot.treeDbs.getLeafForNode(this.p));				
+				}				
+			</method>	
+		</datapointer>
+          
+        <datapointer xpath="dbUsergroups:/root" rerunxpath="true"
+	        ondata="processData();" onerror="canvas.showError(this);"
+	        ontimeout="canvas.showTimeout();">
+	        <method name="processData">
+	            <![CDATA[
+	            Debug.write("*************************** received usergroups: " + this.serialize());
+				var selectedNode = classroot.treeUsersGroups.getAttribute("currselnode");
+            	if (selectedNode == undefined){
+ 		            this.selectChild(2);
+		            Debug.write('userdp', this, this.getNodeName(), this.p);
+		            classroot.treeUsersGroups.select(classroot.treeUsersGroups.getLeafForNode(this.p));           		
+	            }
+	            ]]>
+	        </method>
+	    </datapointer>
+		
+        <datapointer xpath="navPres:/root" rerunxpath="true"
+	        ondata="processData();" onerror="canvas.showError(this);"
+	        ontimeout="canvas.showTimeout();">
+	        <method name="processData">
+	            <![CDATA[
+	            Debug.write("received access data: " + this.serialize());
+				var selectedNode = classroot.treeAccess.getAttribute("currselnode");
+            	if (selectedNode == undefined ){
+ 		            this.selectChild(2);
+		            Debug.write('accessdp', this, this.getNodeName(), this.p);
+		            classroot.treeAccess.select(classroot.treeAccess.getLeafForNode(this.p));           		
+	            }
+	            ]]>
+	        </method>
+	    </datapointer>
+		
+	<datapointer name="copyFrom_dp" />
+    <datapointer name="copyTo_dp" /> 
+    
+    <!-- Home -->
+    <lhTabelement datapath="menu-home" text="$path{'@label'}" selected="true" name="projectinformation">
+		<attribute name="whichIcon" value="1" />
+		<attribute name="xBarPos" value="7" />
+		<method event="oninit">
+			Debug.write("navigation height", this.height);
+			classroot.maintab.setAttribute("currTabelement", this);
+			Debug.write("******************************** Project Setup", this.subviews[0].shdw);
+			this.subviews[0].shdw.destroy();
+			
+			//Start Selected            
+            this.setAttribute("tabstate", 2);
+            this.top.bkgnd.setAttribute("bgcolor", 0xFFFFFF);
+            this.top.header.setAttribute("fgcolor", 0x38689e);
+            parent.setAttribute("currSelectedWhite", this);
+	    </method> 
+        <method name="openned">
+            super.openned();
+            controller.displayHome(classroot.maintab.currProjectId);
+            controller.navigateProject(classroot.maintab.currProjectId);
+            mdnIsLoading.letsCloseLoading();
+        </method>
+       	<stableborderlayout axis="y" />
+       	<view width="${immediateparent.width}" height="${immediateparent.height}" x="0" y="0" clip="true">               
+            <dragtree 	name="treeProject"  
+            			datapath="navProject:/root"                			
+            			nodepath="node" 
+                        nodeclass="dragfiletreenode" 
+            			width="100%" 
+            			showtreelines="false">
+ 				<method event="onselect" args="sel">
+                <![CDATA[
+                	var selNode = sel.data;   
+                	var selNodeType = selNode.attributes.type;        			
+                    if (selNodeType == "project"){
+                   		Debug.write("-----------------------------------display project Begin--------------------");
+                   		controller.displayHome(classroot.maintab.currProjectId);
+                   	}
+                ]]>
+                </method>
+           </dragtree>
+           <smartvscollbar repmanager="nodeinst" /><!-- SL:08/31/2006 task 4.1.2 -->
+        </view>
+        <view name="dummyspacer" height="10" />
+        <mdn_button datapath="gui:/gui-labels/btn-export/@label" width="${immediateparent.width - 70}" height="24" align="center"> 
+        	<hinttip tipid="Home-project-export" />
+        	<method event="onclick">
+        		controller.displayExport(classroot.currProjectID);
+        	</method>
+        </mdn_button>
+        <view name="dummyspacer" height="10" />
+    </lhTabelement>
+
+	
+    <!-- Databases. -->
+    <lhTabelement datapath="menu-databases" text="$path{'@label'}" name="datasources">
+		<attribute name="whichIcon" value="2" />
+		<attribute name="xBarPos" value="${parent.projectinformation.top.width + parent.projectinformation.xBarPos + 1}" />
+		<method name="openned">
+            super.openned();
+            mdnIsLoading.letsCloseLoading();
+            Debug.write("Current project id in navigationView", classroot.maintab.currProjectId);
+            // Needs to be changed to ondata event and finding the first database.
+            classroot.maintab.setAttribute("currTabelement", this); 
+            classroot.maintab.setAttribute("currTree", classroot.treeDbs); 
+      		
+      		controller.updateDBRecycleBin(classroot.maintab.currProjectId);
+      		
+            //Debug.write("!!!!!!!!!!!!!!!!!current DB view", classroot.maintab.currDBView);
+            var selectedNode = classroot.treeDbs.getAttribute("currselnode");
+            Debug.write("selected node in the database tree", selectedNode);
+            if (selectedNode == undefined){//(classroot.maintab.currDBView == "none" ){            
+	      		controller.updateDatabases(classroot.maintab.currProjectId);
+	      		Debug.write("Add Database Begin");
+	      		controller.getTablesTree(classroot.maintab.currProjectId);
+	      		controller.getTable();
+	      		controller.getField();
+	      		classroot.maintab.databaseCtrler.displayEmptyDBConnection();
+	      		newDbConnectionWindow.clearData();
+            } else {                
+	      		//If there are multi projects, need to reload the databases tree
+	      		if (projectTabs.newtabpaneArray.length > 1)
+	      			controller.updateDatabases(classroot.maintab.currProjectId);
+
+       	    	Debug.write("DB openned A DB view exists already.", 
+       	    				classroot.maintab.currProjectId, 
+                   			selectedNode.datapath.p.getAttr("name")); 
+                   			
+                classroot.treeDbs.select(selectedNode);
+                selectedNode.setAttribute("__OPTTREE_META_open", "true");
+                return;
+            }       		
+        </method>
+        <stableborderlayout axis="y" />
+        
+        <view width="${immediateparent.width}" height="${parent.height - parent.buttonpanel.height - 30}">
+			<method event="oninit">
+	            Debug.write("databases height inside view", immediateparent);
+	            Debug.write("databases height inside view", parent);
+	            Debug.write("databases height inside view", this.height, immediateparent.height, parent.buttonpanel.height);
+		    </method> 
+            <view width="${immediateparent.width}" height="${immediateparent.height}" x="0" y="0" clip="true">
+                
+                <dragtree 	name="treeDbsName"                 			
+                			nodepath="node" 
+                            nodeclass="dragfiletreenode" 
+                			width="100%" 
+                			showtreelines="false"><!-- datapath="navDbs:/root"  -->
+					
+				    <method event="oninit">
+						classroot.setAttribute("treeDbs",this);						
+						//classroot.setAttribute('dragtree', this);
+						
+                        this.setAttribute("datapath", classroot.getAttribute('treeDbsDatapath'));
+                        this.setAttribute('floaterref', classroot.getAttribute('treeDbsFloater'));
+                        this.getAttribute('floaterref').setAttribute('_dragtreeref', this);
+			            
+			            Debug.write("************treeDbs oninit **********", this.floaterref);
+			            
+			            //mydp.selectChild();
+			            //mydp.selectChild();
+			            //this.select(this.getLeafForNode(mydp.p));	
+				    </method>                   
+                    
+                    <attribute name="currselnode" value="null"/>
+				    <handler name="oncurrselnode">
+	                    this.select(this.getAttribute("currselnode"));
+	                </handler>
+	                
+
+				    	                                  
+                   <method event="onselect" args="sel">
+                   <![CDATA[
+                      Debug.write("CURRENT SELECTION: ", this.getSelection());
+                      Debug.write("sel: ", sel);
+                      if(sel != null){ 
+					  	this.setAttribute("currselnode", sel);
+                      }                     
+                      
+                      var selNode = sel.data;                      
+                      
+                      var selNodeType = selNode.attributes.type;
+                      Debug.write("node: " + selNode);
+                      Debug.write("node.name: " + selNode.attributes.name);
+                      Debug.write("node.type: " + selNodeType);
+                      var selNodeDepth = selNode.attributes.__OPTTREE_META_depth;
+                      Debug.write("node.depth: " + selNodeDepth);
+                      
+                      if (selNodeType == "add-database"){
+                      		Debug.write("-----------------------------------Add Database Begin--------------------");
+                      		//Get new drivers again
+                      		dbDrivers.doRequest();
+                      		controller.getTablesTree(classroot.maintab.currProjectId);
+                      		controller.getTable();
+                      		controller.getField();
+                      		newDbConnectionWindow.clearData();
+                      		classroot.maintab.databaseCtrler.displayEmptyDBConnection();
+                      		newDbConnectionWindow.clearData();
+                      		newDbConnectionWindow.body.backView.errorView.error.setText('');
+                      		//Set Where We Are
+                      		projectTabs.setAttribute("whereami", this);
+                      }
+                      // Get the database parent node which gives us the database name.
+                      if (selNodeDepth > 1){
+	                        var parentNode = selNode.parentNode;
+	                        var dbName = null;
+	                        var connID = 0;
+	                        while (true){
+	                            var parentNodeDepth = parentNode.attributes.__OPTTREE_META_depth;
+	                            if (parentNodeDepth == 1){
+	                                Debug.write("Got database parent:");
+	                                Debug.write("parent.node.type: " + parentNode.attributes.type);
+	                                dbName = parentNode.attributes.name;
+	                                connID = parentNode.attributes.id;
+	                                Debug.write("parent.node.name: " + dbName);
+	                            	Debug.write("parent.node.depth: " + parentNodeDepth);
+	                            	
+	                            	//ViewOfAddNewView.setAttribute("connID", connID);
+	                        		//Debug.write("ViewOfAddNewView.connID: " + ViewOfAddNewView.connID);
+	                            	
+	                            	connIDConstants = connID;
+	                            	Debug.write("connIDConstants: " + connIDConstants);
+	                            	connNameConstants = dbName;
+	                            	
+	                                break;
+	                            } else {
+	                                parentNode = parentNode.parentNode;
+	                            }
+	                        }                   
+	                        if (selNodeType == 'connection'){
+	                        	controller.getTablesTree(classroot.maintab.currProjectId, connID);
+	                        	classroot.maintab.databaseCtrler.displayDBConnection(classroot.maintab.currProjectId, dbName);
+	                        } else if (selNodeType == 'Add View'){
+	                        	//ViewOfAddNewView.setAttribute("connID", connID);
+	                        	//Debug.write("ViewOfAddNewView.connID: " + ViewOfAddNewView.connID);
+	                        	controller.getView(null, false);
+	                        	controller.getTablesViewTreeNew(classroot.maintab.currProjectId, connID, null);
+	                        	controller.displayViews(dbName);
+	                        	ViewOfAddNewView.clearData();
+	                        } else if (selNodeType == 'view'){
+	                        	//Get view ID
+	                        	var viewID = selNode.attributes.value;
+					           	Debug.write("viewID: " + viewID);
+					           	controller.getView(viewID, true);
+					           	                        		                        	
+	                        	//Get table tree
+	                        	controller.getTablesViewTree(classroot.maintab.currProjectId, connID, viewID);
+	                        	
+	                        	var viewName = selNode.attributes.name;
+	                        	controller.displayView(dbName, viewID);
+	                        	ViewOfEditView.clearData();
+	                        }
+                        }
+ 	                    if (selNodeType == 'add-web-service'){
+ 	                    	controller.getAllSampleWebServices();
+                        	controller.getAllThirdPartyWebServices();
+                        	classroot.maintab.databaseCtrler.displayAddWebServices();
+                        }
+                        else if (selNodeType == 'web-service-operation'){
+							mdnIsLoading.letsOpenLoading();
+							var ID = selNode.attributes.value;
+							
+							controller.getWebServiceOperation(ID);
+							
+					        /*var p = dbWebServiceOperation.getPointer();
+					        p.selectChild(2);
+					        var nodeName = p.getNodeName();
+					        Debug.write("***************nodeName: " + nodeName);
+					        Debug.write("***Web Service data: " + p); 
+					        */
+					        var url = selNode.attributes.url;
+					        var operation = selNode.attributes.operation;			
+							Debug.write("Url: " + url, "operation", operation);
+							
+							controller.getWebServiceDescription(url, operation);							
+							webServiceUrlConstants = url;						
+														
+							classroot.maintab.databaseCtrler.displayWebServiceSecondPage();
+							saveWebServiceOperationError.setAttribute('text', "");
+							//mdnIsLoading.letsCloseLoading();							
+                        }/*
+						else if (selNodeType == "web-service-query"){		                        	
+                        	//Get query ID
+                        	var queryID = selNode.attributes.value;
+				           	Debug.write("queryID: " + queryID);
+				           	controller.getQuery(queryID);
+				           	controller.getQueryCriteria(queryID);
+	                						           	
+				           	var dbQueryP = dbQuery.getPointer();
+	                		dbQueryP.selectChild(2);
+	                		var queryNode = dbQueryP.getNodeName();
+	                		Debug.write("***************queryNode: " + queryNode);
+	                		var queryType = dbQueryP.getNodeAttribute("queryType");
+	                		Debug.write("***************queryType: " + queryType);
+	                		var url = dbQueryP.getNodeAttribute("sql");//use sql field to hold web service url
+	                		Debug.write("***************url: " + url);
+	                		var operation = dbQueryP.getNodeAttribute("sort");//use sort field to hold web service operation
+	                		Debug.write("***************operation: " + operation);
+	                		
+
+					        var url = selNode.attributes.url;
+					        var operation = selNode.attributes.operation;			
+							Debug.write("Url: " + url, "operation", operation);
+	                		
+							webServicesSoap.setAttribute("wsdl", url);
+							//webServicesSoap.setAttribute("service", services[0]);
+							//webServicesSoap.setAttribute("port", ports[0]);
+							webServicesSoap.setAttribute("autoload", false);
+							webServicesSoap.remotecallFunc.setAttribute("funcname", operation);
+							webServicesSoap.init();				            
+				            webServicesSoap.remotecallFunc.init();
+				            webServicesSoap.load();	                		
+	                		
+	                		
+	                		//set the button invisible to false
+	                		btnBackToSecondPage.setAttribute("visible", false);
+                        	
+                        	if (url != null && url != "null")
+				            	txtWebServiseURL.setText(url);
+				            else
+				            	txtWebServiseURL.setText("");
+				            	
+				            if (operation != null && operation != "null")	
+				            	txtWebServiseOperation.setText(operation);
+                        	else
+                        		txtWebServiseOperation.setText("");
+                        	
+                        	classroot.maintab.databaseCtrler.displayWebServiceThirdPage();
+                        	
+                        		
+                        	controller.getSimpleComps();
+                        	qb_query_builder_select.setQueryType("webservice");
+                        	qb_query_builder_select.setVisibleForNewRequestLine("true");
+                        	qb_query_builder_select.setVisibleForGroupingForUpdateQuery("false");
+                        	qb_query_builder_select.setVisibleForNewRequestLineForUpdateQuery("false");
+		                }*/
+                    ]]>
+                    </method>
+					<method reference="classroot.getAttribute('treeDbs')" event="ondragdrop" args="resp">
+						Debug.write("treeDbs Drag Drop start working!!!!!!!!!!!!!!!!!");
+						var dragees = resp.draggedNodes;
+						var fromNode = resp.from;
+						Debug.write("drag method for Databases tree");
+						
+						var toNode = resp.to;
+						Debug.write("toNode: ", toNode);
+
+						/*var selectedNode = classroot.treeDbs.getAttribute("currselnode");
+        	    		Debug.write("DB openned A DB view exists already.", 
+        	    				classroot.maintab.currProjectId, 
+                    			selectedNode.datapath.p.getAttr("name")); 
+						*/
+						//var fromNode = selectedNode;
+						Debug.write("fromNode: ", fromNode);
+						
+						if (resp.type=="external") {
+						      // Dragging a node from a tree to an outside drop target
+						   	  
+						   	  switch (resp.to) {
+						       	case classroot.rubbishViewForDatabases.rubbishBinIcon:
+						        	classroot.rubbishViewForDatabases.setAttribute("isFull", true);
+							        Debug.write(">> Dropping into rubbish bin");
+							        for (var i in dragees) {
+							            var isPresent = false;
+						    	        classroot.copyFrom_dp.setPointer(dragees[i]);
+						        	    var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+						            	var draggedID = classroot.copyFrom_dp.getNodeAttribute("id");
+							            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+							            Debug.write("Dragged name is: "+ draggedName + ", id: " + draggedID + ", type: " + draggedType);
+						    	        
+						    	        if (draggedType == 'view'){
+						    	        	var viewID = classroot.copyFrom_dp.getNodeAttribute("value");
+						    	       		Debug.write(" View ID ==>> "+  viewID);
+							            	controller.recycleDataView(viewID);
+										}
+						    	        else if (draggedType == 'database'){
+						    	        	var projectID = classroot.copyFrom_dp.getNodeAttribute("projectId");
+						    	        	var connID = classroot.copyFrom_dp.getNodeAttribute("id");
+						    	       		Debug.write("Request to delete the connection ", projectID, connID);
+								            var params = new LzParam();
+								            params.addValue('action', 'recycleConn', true);
+								            params.addValue('projectID', projectID, true);
+								            params.addValue('connID', connID, true);
+								            dbNewConn.setQueryString(params);
+								            dbNewConn.doRequest();
+										}									
+							            toNode = recycleData.getFirstChild();
+										classroot.copyTo_dp.setPointer(toNode);
+							            classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);
+							            classroot.copyFrom_dp.deleteNode();
+						         	}
+							         // Update the recycle bin dataset.
+							         controller.updateDBRecycleBin(classroot.maintab.currProjectId);
+							         break;
+							}
+					}
+				</method>                    
+			    <datapath xpath="dbNavDbs:/root/node/@name">
+			        <handler name="onclones">
+			            var lastClone = clones[clones.length - 1];
+			            if (!this['del']) {
+			                this.del = new LzDelegate(this,"replicationDone");
+			                this.del.register(lastClone, "ontext");
+			            }
+			        </handler>
+			        <method name="replicationDone">
+			            Debug.write("--------------------Database data Replication Done!-------------------------");
+			        </method>
+			    </datapath>
+				    
+               </dragtree>
+               <smartvscollbar repmanager="nodeinst" /><!-- SL:08/31/2006 task 4.1.2 -->
+            </view>
+        </view>
+
+        <view name="dummyspacer" height="10" />
+
+        <!-- The database buttons. --> 
+        
+        <view name="buttonpanel" height="50" width="${immediateparent.width}" datapath="gui:/gui-labels">
+            <simplelayout axis="y" spacing="3" />
+      		<binView align="left" whichTree="${classroot.treeDbs}" maintab="${classroot.maintab}">
+	 			<method event="oninit">
+		            classroot.setAttribute("rubbishViewForDatabases",this);
+		            Debug.write("rubbishViewForDatabases this.whichTree", this.whichTree);
+			    </method>      			
+      		</binView>
+        </view>
+         
+    </lhTabelement>
+    
+    <attribute name="currUserSelNode"/>
+    
+    <!-- Users & Groups -->
+    <lhTabelement name="usersTabelement" datapath="menu-users" text="$path{'@label'}">
+		<attribute name="whichIcon" value="3" />
+		<attribute name="xBarPos" value="${parent.datasources.top.width + parent.datasources.xBarPos + 1}" />
+		<method event="oninit">
+			Debug.write("navigation height", this.height);	    
+	    </method> 
+        <method name="openned">
+        	mdnIsLoading.letsCloseLoading();
+            super.openned();
+			//Debug.write("Users openned Current tab is: ", projectTabs.currTab.currProjectId);
+            var currProjectId = classroot.maintab.currProjectId;
+            //Debug.write("users tabelement OPENNED currProjectId", currProjectId);
+            
+            //Debug.write("Request usergroups from server.");
+            
+
+            //dbUserView.setEditErrorText('');
+            //dbUserView.setAddErrorText('');
+
+            classroot.maintab.setAttribute("currTabelement", this);
+			classroot.maintab.setAttribute("currTree", classroot.treeUsersGroups); 
+            
+            controller.updateUsersRecycleBin(classroot.maintab.currProjectId);
+            
+            //Debug.write("current user view", classroot.maintab.currUserView);
+            var selectedNode = classroot.treeUsersGroups.getAttribute("currselnode");
+            if (selectedNode == undefined){//(classroot.maintab.currUserView == "none" ){
+                controller.getAllUsersGroups(classroot.maintab.currProjectId);
+                controller.displayEmptyUser(classroot.maintab.currProjectId);                
+                newUser.clearDataFromNewUserPage();
+                //tabUser.setAttribute("selected", true);
+                //dbUserView.setAddErrorText('');
+            } else {
+       	    	if (projectTabs.newtabpaneArray.length > 1)
+       	    		controller.getAllUsersGroups(classroot.maintab.currProjectId);
+       	    	
+       	    	Debug.write("DB openned A DB view exists already.", classroot.maintab.currProjectId, 
+                   selectedNode.datapath.p.getAttr("name"));
+                classroot.treeUsersGroups.select(selectedNode);
+                return;
+            }            
+  
+        </method>
+        <stableborderlayout axis="y"/>
+
+        <view name="usersTreeBody" width="${immediateparent.width}"
+              height="${immediateparent.height - parent.buttonpanel.height - 10}">
+            <view name="usersTree" width="100%" height="100%" clip="true">
+                <dragtree 	name="treeNavUsers" 
+                			nodepath="node" 
+                            nodeclass="dragfiletreenode"                             
+                            multiselect="true"
+                            width="100%"
+                            showtreelines="false">
+                            
+				    <method event="oninit">
+						classroot.setAttribute("treeUsersGroups",this);						
+						
+                        this.setAttribute("datapath", classroot.getAttribute('treeUsersGroupsDatapath'));
+                        this.setAttribute('floaterref', classroot.getAttribute('treeUsersGroupsFloater'));
+                        this.getAttribute('floaterref').setAttribute('_dragtreeref', this);						
+			            
+			            Debug.write("************treeUsersGroups oninit **********", this.floaterref);							
+				    </method>   
+
+				    <attribute name="currselnode" />
+				    <handler name="oncurrselnode">
+                        //Debug.write("currselnode has been changed to :", this.getAttribute("currselnode"));
+                        Debug.write("classroot.name:", classroot.name);
+                        this.select(this.getAttribute("currselnode"));
+                    </handler>
+
+				    <attribute name="currselnodeData" />
+				    <handler name="oncurrselnodeData">
+                        //Debug.write("currselnodeData has been changed to :", this.getAttribute("currselnodeData"), this.getAttribute("currselnodeData").getAttr("name"));
+                    	Debug.write("classroot.name:", classroot.name);                    	
+                    </handler>                    
+                    
+                         
+                    <method event="onselect" args="selNode">
+                        this.setAttribute("currselnode", selNode);
+                        
+                        var selNode_dp = selNode.datapath.p;                        
+                        this.setAttribute("currselnodeData", selNode_dp);                       
+                        
+                        classroot.maintab.setAttribute("currUserSelNode", selNode);
+                        
+                        var selNodeName = selNode_dp.getAttr("name");
+                        var selNodeID = selNode_dp.getAttr("id");
+                        
+                        Debug.write("Selected node is: ", selNode, selNode.datapath.p.getAttr("type"));
+                        Debug.write("Selected node is selNodeName: ", selNode, selNodeName, "selNodeID", selNodeID);
+                        
+                        if (selNode_dp.getAttr("type") == 'group'){
+                            //dbGroupView.setErrorText('');
+                            dbGroupView.clear();
+                            controller.getGroupPermissions(classroot.maintab.currProjectId, selNodeID);//classroot.maintab.currProjectId
+                            controller.displayGroup(selNodeName, selNodeID);
+                        } else if (selNode_dp.getAttr("type") == "add_group"){
+	                        controller.getAllView(classroot.maintab.currProjectId);
+                      		controller.displayEmptyGroup();
+                      		newGroupView.clearDataFromNewGroupPage();
+                        } else if (selNode_dp.getAttr("type") == 'user') {
+                            //classroot.maintab.userGroupCtrler.displayUser(classroot.maintab.currProjectId, selNodeName, selNodeID);
+                            controller.displayUser(classroot.maintab.currProjectId, selNodeName, selNodeID);
+                            dbUserView.setEditErrorText('');
+                            dbUserView.clearData();
+                            //Set Where We Are
+                      		projectTabs.setAttribute("whereami", this);
+                      		Debug.write("Selecting a SAVED User: ", selNodeName);
+                        } else if (selNode_dp.getAttr("type") == "add_user"){
+	                        controller.displayEmptyUser(classroot.maintab.currProjectId);
+	                       // dbUserView.setAddErrorText('');
+	                        newUser.clearDataFromNewUserPage();                      		
+                        } else if (selNode_dp.getAttr("type") == "user_custom"){
+                        	customQueryView.clearData();
+                      		controller.displayCustomQuery();
+                      		//newGroupView.clearDataFromNewGroupPage();
+	                    }    
+                    </method>
+					<!-- Manage drag and drop for users & groups. -->
+					<method reference="classroot.treeUsersGroups" event="ondragdrop" args="resp">
+					<![CDATA[
+				      Debug.write("treeNavUsers Drag Drop start working!!!!!!!!!!!!!!!!!");
+				      var dragees = resp.draggedNodes;
+				      var fromNode = resp.from;
+				      Debug.write("fromNode: ", fromNode);
+				      
+				      if (resp.type == "internal") {
+					        // Dragging a node from one place in the tree to another node
+					        var toNode = resp.to.datapath.p;
+					        switch (toNode.getAttr("type")) {
+					          case "group":
+					           	if (fromNode.getAttr("type") == 'groups'){
+					              	Debug.write( ">> Same parent. Don't so anything!");
+					             	return;
+					            }
+					            Debug.write( ">> copying user to group");
+					            Debug.write(fromNode.getAttr("type"));
+						        for (var i in dragees) {
+						            var isPresent = false;
+						            classroot.copyFrom_dp.setPointer(dragees[i]);
+						            var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+						            
+						            Debug.write("Dragged name is: "+ draggedName);
+						            if (toNode.childNodes != null){
+										var numberNodes = toNode.childNodes.length;
+										var subNode = null;
+										for (var i = 0; i < numberNodes; i++){
+											subNode = toNode.childNodes[i];
+											if (subNode.getAttr("name") == draggedName){
+												Debug.write("Don't add, exists already");
+												isPresent = true;
+											}
+										}
+									}
+									if (! isPresent){
+								      var draggedID2 = classroot.copyFrom_dp.getNodeAttribute("id");
+									
+						              classroot.copyTo_dp.setPointer(toNode);
+						              classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);//here am c
+
+						              var groupId = toNode.getAttr("id");
+						              controller.copyUserToGroup(draggedID2,groupId,classroot.maintab.currProjectId);
+						              classroot.treeUsersGroups.setY(-2000);
+						              classroot.treeUsersGroups.setY(0);
+						              
+						              controller.getAllUsersGroups(classroot.maintab.currProjectId);
+						            }
+						          }
+						          break;
+						      case "users":
+						          if (fromNode.getAttr("type") == 'users'){
+							          Debug.write( ">> Same parent. Don't so anything!");
+						            return;
+						          }
+						          for (var i in dragees) {
+						            Debug.write( ">> 'Moving' user back and remove from group/test");
+						            classroot.copyFrom_dp.setPointer(dragees[i]);
+						            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+						            if (draggedType == 'user'){
+						               classroot.copyFrom_dp.deleteNode();
+						            }
+						          }
+						        break;
+						      }
+					    } else if (resp.type=="external") {
+						      Debug.write("drag users or groups into rubbish bin-------------- ");
+						      // Dragging a node from a tree to an outside drop
+						      // target
+						      switch (resp.to) {
+						        case rubbishViewForNavUsers.rubbishBinIcon:
+					        	  rubbishViewForNavUsers.setAttribute("isFull", true);
+						          Debug.write(">> Dropping into rubbish bin");
+						          var clearUserView = false;
+						          var changed = false;
+						          for (var i in dragees) {
+						            var isPresent = false;
+						            classroot.copyFrom_dp.setPointer(dragees[i]);
+						            var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+						            var draggedID = classroot.copyFrom_dp.getNodeAttribute("id");
+						            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+						            Debug.write(" Dragged name is: "+ draggedName + ", id: " + draggedID + ", type: " + draggedType);
+						            
+						            if (draggedType == 'user'){
+						            	// TODO try to do this in an array.
+						            	controller.updateUserDeleteStatus('recycleUser',draggedID,classroot.maintab.currProjectId);
+						            	clearUserView = true;
+						            	changed = true;
+									} else if (draggedType = 'group'){
+										controller.updateGroupDeleteStatus('recycleGroup',draggedID,classroot.maintab.currProjectId);
+									} else if (draggedType = 'query'){
+										var queryID = classroot.copyFrom_dp.getNodeAttribute("value");
+										Debug.write("Dragged queryID is: "+ queryID);
+										controller.updateQueryDeleteStatus('deleteQuery', queryID);
+									}
+						            toNode = recycleData.getFirstChild();
+									classroot.copyTo_dp.setPointer(toNode);
+						            classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);
+						            classroot.copyFrom_dp.deleteNode();
+						          }
+						          if (changed == true){
+						          	controller.getAllUsersGroups(classroot.maintab.currProjectId);
+						          }
+						          
+						          // Update the recycle bin dataset.
+						          controller.updateUsersRecycleBin(classroot.maintab.currProjectId);
+						          if (clearUserView){
+							          dbUserView.clearData();
+							      }
+						          break;
+						      }
+					    }
+				  	  ]]>
+					  </method>                
+                </dragtree>
+                <smartvscollbar repmanager="nodeinst" /><!-- SL:09/05/2006 Ticket LZ_SUP #IMU-28097-761 -->
+            </view>
+        </view>
+
+        <view name="dummyspacer" height="10" />
+
+        <view name="buttonpanel" align="center" width="${immediateparent.width}"
+                datapath="gui:/gui-labels">
+            <simplelayout axis="y" spacing="3" />
+			<binView id="rubbishViewForNavUsers" align="left"  whichTree="${classroot.treeUsersGroups}" maintab="${classroot.maintab}"/>
+        </view>
+    </lhTabelement>
+        
+    <!-- End-User Access. -->
+    <lhTabelement datapath="menu-presentation" text="$path{'@label'}" name="enduseraccess">
+		<attribute name="whichIcon" value="4" />
+		<attribute name="xBarPos" value="${parent.usersTabelement.top.width + parent.usersTabelement.xBarPos + 1}" />
+		<method event="oninit">
+			Debug.write("navigation height", this.height);	    
+	    </method> 
+        <method name="openned">
+            super.openned();
+			mdnIsLoading.letsCloseLoading();
+            
+            // Needs to be changed to display on ondata event; finding the first node.
+            //controller.displayPresentation("Bliss","Presentation1");
+
+            classroot.maintab.setAttribute("currTabelement", this);
+            classroot.maintab.setAttribute("currTree", classroot.treeAccess);
+            
+            controller.getEmptyRecycleBin();
+            
+            var selectedNode = classroot.treeAccess.getAttribute("currselnode");
+            if (selectedNode == undefined ){         
+	      		controller.navEndUserAccess(classroot.maintab.currProjectId);
+           		//controller.displayEmptyMsg('-1', classroot.maintab.currProjectId);
+           		//newMsg.clearData();
+           		selectedNode = "dragfiletreenode";
+           		classroot.treeAccess.select(selectedNode);
+            } else {              
+       	    	if (projectTabs.newtabpaneArray.length > 1){
+                    controller.navEndUserAccess(classroot.maintab.currProjectId);
+       	    	}
+       	    	
+       	    	//Debug.write("A Messaging view exists already.", classroot.maintab.currProjectId, selectedNode.datapath.p.getAttr("name"));               
+                
+                classroot.treeAccess.select(selectedNode);                
+                
+                return;
+            }            
+            
+            
+        </method>
+        <stableborderlayout axis="y"/>
+
+        <view width="${immediateparent.width}"
+              height="${immediateparent.height - parent.buttonpanel.height - 10}">
+            <view width="100%" height="100%" clip="true">
+                <dragtree 	nodepath="node" 
+                            nodeclass="dragfiletreenode"
+                            multiselect="true"
+                            width="100%"
+                            showtreelines="false">
+				    <method event="oninit">
+						classroot.setAttribute("treeAccess",this);
+						
+                        this.setAttribute("datapath", classroot.getAttribute('treeAccessDatapath'));
+                        this.setAttribute('floaterref', classroot.getAttribute('treeAccessFloater'));
+                        this.getAttribute('floaterref').setAttribute('_dragtreeref', this);						
+						
+						Debug.write("************treePres oninit **********8", this.floaterref);	
+						 
+				    </method>                     
+				    <attribute name="currselnode" />
+				    <handler name="oncurrselnode">
+                        Debug.write("classroot.name:", classroot.name);
+                        this.select(this.getAttribute("currselnode"));
+                    </handler>
+                    <method event="onselect" args="sel">
+                       this.setAttribute("currselnode", sel);
+                       Debug.write("CURRENT SELECTION for Queries: ", this.getSelection());
+                       projectTabs.setAttribute("whereami", this);
+					   //Debug.write("############ YOU ARE AT: ", projectTabs.whereami);
+					   //Debug.write("############ Selected Node Is: ", projectTabs.whereami.currselnode);
+                       var selNode = sel.data;
+                       var selNodeName = selNode.attributes.name;
+                       var selNodeType = selNode.attributes.type;
+						Debug.write("selNodeType : ", selNodeType);                       
+                       //var selNodeID = selNode.attributes.id;
+                       Debug.write("node: " + selNode);
+                       /*if (selNodeType == 'presentation'){
+                        controller.displayPresentation("Bliss",selNodeName);
+                       } else*/ 
+						if (selNodeType == "add_msg"){
+                      		controller.displayEmptyMsg('-1', classroot.maintab.currProjectId);
+                      		newMsg.clearData();
+                       } else if (selNodeType == undefined){
+                      		controller.displayEmptyMsg('-1', classroot.maintab.currProjectId);
+                      		newMsg.clearData();
+                       } else if (selNodeType == "msg-info"){
+                       		var msgId = selNode.attributes.value;
+			           		msgInfo.clearData();
+			           		controller.displayMsgInfo(msgId,classroot.maintab.currProjectId);
+			           		//controller.displayMessagingInfo(msgId);
+                       } else if (selNodeType == "add_user_reply"){
+                      		Debug.write("Add User Reply");
+                      		var msgId = selNode.attributes.value;
+                      		controller.displayAddUserReply(msgId,classroot.maintab.currProjectId);
+                      		addUserReply.clearData();
+                      		
+                       } else if (selNodeType == "user_reply"){
+                      		Debug.write("Edit User Reply");
+                      		var urId = selNode.attributes.value;
+                      		editUserReply.clearData();
+                      		controller.displayUrPropsInfo(urId,classroot.maintab.currProjectId);
+                       }
+
+                     </method>
+ 
+					<method reference="classroot.getAttribute('treeAccess')" event="ondragdrop" args="resp">
+				      	var dragees = resp.draggedNodes;
+			    	  	var fromNode = resp.from;
+			    	  	Debug.write("drag method for End-User Access tree");
+				      	Debug.write("fromNode: ", fromNode);
+						var toNode = resp.to.datapath.p;
+						if (resp.type=="external") {
+					      // Dragging a node from a tree to an outside drop target
+				    	  switch (resp.to) {
+				        	case rubbishViewForAccess.rubbishBinIcon:
+				        	rubbishViewForAccess.setAttribute("isFull", true);
+					        for (var i in dragees) {
+					            var isPresent = false;
+				    	        classroot.copyFrom_dp.setPointer(dragees[i]);
+				        	    var draggedName = classroot.copyFrom_dp.getNodeAttribute("name");
+				            	var draggedID = classroot.copyFrom_dp.getNodeAttribute("id");
+					            var draggedType = classroot.copyFrom_dp.getNodeAttribute("type");
+					            Debug.write("Dragged name is: "+ draggedName + ", id: " + draggedID + ", type: " + draggedType);
+				    	        if (draggedType == 'msg-info'){
+				    	        	var msgID = classroot.copyFrom_dp.getNodeAttribute("value");
+					            	controller.deleteMsgInfo(msgID,classroot.maintab.currProjectId);
+								}
+								if (draggedType == 'user_reply'){
+				    	        	var urId = classroot.copyFrom_dp.getNodeAttribute("value");
+					            	controller.deleteUR(urId);
+								}
+				            toNode = recycleData.getFirstChild();
+							classroot.copyTo_dp.setPointer(toNode);
+				            classroot.copyTo_dp.addNodeFromPointer(classroot.copyFrom_dp);
+				            classroot.copyFrom_dp.deleteNode();
+				          }
+				          // Update the recycle bin dataset.
+				          //controller.updateAccessRecycleBin(classroot.maintab.currProjectId);
+				          break;
+				      	 }
+				      }
+					</method>
+                </dragtree>
+                <smartvscollbar repmanager="nodeinst" /><!-- SL:09/05/2006 Ticket LZ_SUP #IMU-28097-761 -->
+            </view>
+        </view>
+
+        <view name="dummyspacer" height="10" />
+
+        <view name="buttonpanel" align="center" width="${immediateparent.width}"
+                datapath="gui:/gui-labels">
+            <!-- 
+            <simplelayout axis="y" spacing="3" />
+            <mdn_button datapath="btn-add-screen/@label" width="${immediateparent.width - 10}" align="center"> </mdn_button>
+            <mdn_button datapath="btn-new-presentation/@label" width="${immediateparent.width - 10}" align="center"> </mdn_button>
+        	 -->
+        	 <binView id="rubbishViewForAccess" align="left"  whichTree="${classroot.treeAccess}" maintab="${classroot.maintab}"/>
+        </view>
+    </lhTabelement>
+    
+    <!-- Deployment -->
+    <!-- 
+    <tabelement id="deployment" datapath="menu-deployment/@label">
+		<method event="oninit">
+			Debug.write("navigation height", this.height);	    
+	    </method> 
+        <method name="openned">
+            super.openned();
+            var d = canvas.datasets.navDepl;
+            d.setQueryParam("action", "navDepl");
+            d.doRequest();
+            Debug.write("received navDepl: " + d.serialize());
+            // TODO Change to displayf content of first node dynamially (ondata event)
+            classroot.maintab.setAttribute("currTabelement", this);
+            classroot.maintab.setAttribute("currTree", classroot.treeDeployment);
+            
+            var selectedNode = classroot.treeDeployment.getAttribute("currselnode");
+            if (selectedNode == undefined ){            
+	      		controller.usergroupsDeployment("Northwind");           
+            } else {              
+       	    	Debug.write("A Deployment view exists already.", 
+       	    				classroot.maintab.currProjectId, 
+                   			selectedNode.datapath.p.getAttr("name"));               
+                
+                classroot.treeDeployment.select(selectedNode);               
+                return;
+            }              
+            
+        </method>
+        <view width="${immediateparent.width}"
+              height="${immediateparent.height}">
+            <view width="100%" height="100%" clip="true">
+                <opttree id="treeDepl" 
+                        nodepath="node" nodeclass="filetreenode"
+                        width="100%"
+                        showtreelines="false">
+				    <method event="oninit">
+						classroot.setAttribute("treeDeployment",this);
+						
+                        this.setAttribute("datapath", classroot.getAttribute('treeDeploymentDatapath'));
+                        this.setAttribute('floaterref', classroot.getAttribute('treeDeploymentFloater'));
+                        this.getAttribute('floaterref').setAttribute('_dragtreeref', this);							
+						
+						Debug.write("************treeDeployment oninit **********8", this.floaterref);							
+				    </method> 
+				    <attribute name="currselnode" />
+				    <handler name="oncurrselnode">
+                        this.select(this.getAttribute("currselnode"));
+                    </handler>
+                    <method event="onselect" args="sel">
+                       this.setAttribute("currselnode", sel);
+                       
+                       Debug.write("CURRENT SELECTION: ", this.getSelection());
+                       Debug.write("sel: ", sel);
+                       var selNode = sel.data;
+                       var selNodeName = selNode.attributes.name;
+                       var selNodeType = selNode.attributes.type;
+                       var selDB = "Northwind";
+                       Debug.write("node: " + selNode);
+                       if (selNodeType == 'user-groups'){
+                        controller.usergroupsDeployment(selDB);
+                       } else if (selNodeType == 'notif-email'){
+                        controller.emailNotif(selDB, selNodeName);
+                       }
+                     </method>
+                </opttree>
+                <smartvscollbar repmanager="nodeinst" />--><!-- SL:09/05/2006 Ticket LZ_SUP #IMU-28097-761 -->
+            	<!--
+                <tree datapath="gui:/gui-labels/tree-deployment/@label" open="true" fontstyle="bold">
+                    <tree datapath="gui:/gui-labels/tree-users-groups/@label" isleaf="true" fontstyle="plain">
+                        <method event="onclick">
+                            var selDB = this.getRoot().getAttribute('text');
+                            navigation.usergroupsDeployment(selDB);
+                        </method>
+                    </tree>
+                    <tree datapath="gui:/gui-labels/tree-notif-email/@label" open="true" fontstyle="plain">
+                        <tree datapath="dbUsergroups:/usergroups/groups/group/@name" isleaf="true">
+                            <method event="onclick">
+                                var groupName = this.getSelection().getAttribute('text');
+                                var selDB = this.getRoot().getAttribute('text');
+                                navigation.emailNotif(selDB, groupName);
+                            </method>
+                        </tree>
+                    </tree>
+                </tree>
+                     -->
+<!-- 
+            </view>
+        </view>
+    </tabelement>
+ -->     
+    
+    
+    </class>
+</library> 

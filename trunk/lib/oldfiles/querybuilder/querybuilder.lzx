@@ -1,0 +1,435 @@
+<library>
+	<class name="querybuilder" extends="list" dataoption="pooling">
+		
+		<!-- Naming convention: all global attributes start with '_qb_'. -->
+		<attribute name="_qb_inputControl" />
+		<attribute name="_qb_calendarControl" />
+		<attribute name="_qb_booleanControl" />
+		
+		<attribute name="_qb_mode" type="boolean" value="true" />
+		<attribute name="_qb_grouping_value" type="number" value="1" />
+		
+		<controller id="qb_controller" datapath="qb_query:/root"/>
+		
+		<method event="onclick">
+			qb_controller.listVisibility();
+		</method>
+	  
+		<method name="addNewRequest">
+			var newRequ = new requestnew(this);
+			newRequ.setAttribute("value", 50);
+		</method>
+		
+		<simplelayout axis="y" spacing="2"/>
+		
+		<grouping value="0"/>
+		
+		<condition datapath="qb_query:/root/node" value="$path{'@row'}" />
+		
+		<requestnew value="50"/>
+				
+		<!-- Grouping list -->
+		<floatinglist id="qb_grouping_list" visible="false" width="100">
+			<attribute name="trackgroup" type="string" value="track_qb_grouping_list"/>
+			<attribute name="isGlobal" type="boolean"/>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+				this.setAttribute("visible", false);
+		    </method>
+		    <method event="onvisible">
+		    	if (this.getAttribute("visible") == true){
+		    		LzTrack.activate('track_qb_grouping_list');
+		    	} else {
+		    		LzTrack.deactivate('track_qb_grouping_list');
+		    	}
+		    </method>
+			<textlistitem datapath="qb_comps:/root/group" text="$path{'@name'}" value="$path{'@value'}">
+				<method event="onclick">
+					if (parent.isGlobal){
+						Debug.write("Dealing with global");
+						parent.attachtarget.parent.parent.setAttribute("_qb_grouping_value", this.getValue());
+					} else {
+						Debug.write("Dealing with local");
+						parent.attachtarget.parent.datapath.setNodeAttribute("grouping", this.getAttribute("text"));
+					}
+					parent.attachtarget.setText(this.getAttribute("text"));
+					qb_grouping_list.setVisible(false);
+				</method>
+			</textlistitem>
+		</floatinglist>
+		
+		<!-- Actions floating list. -->
+		<floatinglist id="qb_actions_list" visible="false" width="200" focusable="true">
+			<attribute name="trackgroup" type="string" value="track_qb_actions_list"/>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+				this.setAttribute("visible", false);
+		    </method>
+		    <method event="onvisible">
+		    	this.setAttribute("onfocus", true);
+		    	if (this.getAttribute("visible") == true){
+		    		LzTrack.activate('track_qb_actions_list');
+		    	} else {
+		    		LzTrack.deactivate('track_qb_actions_list');
+		    	}
+		    </method>
+			<textlistitem datapath="qb_comps:/root/action" text="$path{'@name'}" value="$path{'@value'}">
+				<method event="onclick">
+					var val = this.getValue();
+					if (val == 1){	// add new condition after this.
+						var currQueryNode = parent.attachtarget.parent.datapath;
+						Debug.write("Current dataelement: " + currQueryNode);
+						qb_controller.addCondition(currQueryNode);
+					} else if (val == 2) {	// add bracket.
+						var currQueryNode = parent.attachtarget.parent.datapath;
+						Debug.write("Current dataelement: " + currQueryNode);
+						qb_controller.addBracket(currQueryNode);
+					} else if (val == 3){	// delete this condition.
+						parent.attachtarget.parent.datapath.deleteNode();
+						qb_controller.updateNumbering();
+					} else if (val == 4){	// enable/disable this condition.
+						parent.attachtarget.parent.toggleEnabled();
+					}
+					qb_actions_list.setVisible(false);
+				</method>
+			</textlistitem>
+		</floatinglist>
+		
+		<!-- Views floating list. -->
+		<!-- The first view. -->
+		<floatinglist id="qb_views_list" visible="false" datapath="qb_views:/root" >
+			<attribute name="trackgroup" type="string" value="track_qb_views_list"/>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+		    	<![CDATA[
+				if (!qb_subviews_list.getAttribute('visible')){
+			      	this.setAttribute("visible", false);
+				} else {
+			      	var thisX = this.getMouse('x');
+			      	var thisW = this.width;
+			      	Debug.write("subview is visible; x=" + thisX + " width=" + thisW);
+			      	if (thisX >= thisW) {
+			      		Debug.write("subview is visible and x exceeded");
+			      	} else {
+			      		Debug.write("close subview");
+				      	this.setAttribute("visible", false);
+			      	}
+				}
+				]]>
+		    </method>
+		    <method event="onvisible">
+		    	if (this.getAttribute("visible") == true){
+			    	Debug.write("active view track from view");
+		    		LzTrack.activate('track_qb_views_list');
+		    	} else {
+		    		Debug.write("deactive view track from view");
+		    		LzTrack.deactivate('track_qb_views_list');
+		    	}
+		    </method>
+			<textlistitem datapath="node/@field">
+				<method event="onclick">
+					if (!this.datapath.p.hasChildNodes()){
+						parent.attachtarget.parent.datapath.setNodeAttribute("field", this.getValue());
+						qb_views_list.setVisible(false);
+					}
+				</method>
+				<method event="onmouseover">
+					// Find out whether there is a subview.
+					if (this.datapath.p.hasChildNodes()){
+		    		qb_subviews_list.datapath.setPointer(this.datapath.p);
+		    		qb_subviews_list.setAttachTarget(this);
+		    		qb_subviews_list.setAttribute("attach", "right");
+		    		qb_subviews_list.setVisible(true);
+	    		} else {
+	    			qb_subviews_list.setAttachTarget(null);
+	    			qb_subviews_list.setTracking(null);
+		    		qb_subviews_list.setVisible(false);
+	    		}
+				</method>
+			</textlistitem>
+		</floatinglist>
+		<!-- The subview. -->
+		<floatinglist id="qb_subviews_list" visible="false" datapath="">
+			<attribute name="trackgroup" type="string" value="track_qb_subviews_list"/>
+			<attribute name="isTracking" type="boolean" value="false"/>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+		    	this.setAttribute("isTracking", false);
+				this.setAttribute("visible", false);
+		    </method>
+		    <method event="onmousetrackover">
+			    this.setAttribute("isTracking", true);
+				//Debug.write("onmousetrackover for subview");
+		    </method>
+		    <method event="onvisible">
+		    	if (this.getAttribute("visible") == true){
+		    		LzTrack.activate('track_qb_subviews_list');
+		    	} else {
+		    		LzTrack.deactivate('track_qb_subviews_list');
+		    	}
+		    </method>
+			<textlistitem datapath="subnode/@field">
+				<method event="onclick">
+					qb_views_list.attachtarget.parent.datapath.setNodeAttribute("field", this.getValue());
+					qb_views_list.setVisible(false);
+					qb_subviews_list.setVisible(false);
+				</method>
+			</textlistitem>
+			<state apply="${!qb_views_list.visible}">
+				<attribute name="visible" value="false"/>
+			</state>
+		</floatinglist>
+		
+		<!-- Comparisons floating list. -->
+		<floatinglist id="qb_comp_list" visible="false" width="200" focusable="true">
+			<attribute name="trackgroup" type="string" value="track_qb_comp_list"/>
+			<textlistitem datapath="qb_comps:/root/comp/" text="$path{'@name'}" value="$path{'@value'}">
+				<method event="onclick">
+					var thisValue = this.getAttribute("value");
+					switch (thisValue){
+						case 7: 	// is null.
+							Debug.write("IS NULL: need to disable the value field");
+							//parent.attachtarget.parent.datapath.setNodeAttribute("value", "_____");
+							parent.attachtarget.parent._val.setAttribute("visible", false);
+							parent.attachtarget.parent._betw_op.setAttribute("visible", false);
+							parent.attachtarget.parent._val2.setAttribute("visible", false);
+							parent.attachtarget.parent._conn.setAttribute("visible", false);
+							
+							break;
+						case 14:	// between.
+						case 15:	// is not between.
+							parent.attachtarget.parent._val.setAttribute("visible", true);
+							parent.attachtarget.parent._betw_op.setAttribute("visible", true);
+							parent.attachtarget.parent._val2.setAttribute("visible", true);
+							break;
+						default:  // make the value field visible if not IS NULL.
+							parent.attachtarget.parent._val.setAttribute("visible", true);
+							parent.attachtarget.parent._betw_op.setAttribute("visible", false);
+							parent.attachtarget.parent._val2.setAttribute("visible", false);
+							parent.attachtarget.parent._conn.setAttribute("visible", false);
+					}
+					parent.attachtarget.parent.datapath.setNodeAttribute("compID", thisValue);
+					parent.attachtarget.parent.datapath.setNodeAttribute("comparison", this.getAttribute("text"));
+					parent.setVisible(false);
+				</method>
+			</textlistitem>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+				this.setAttribute("visible", false);
+		    </method>
+		    <method event="onvisible">
+		    	if (this.getAttribute("visible") == true){
+		    		LzTrack.activate('track_qb_comp_list');
+		    	} else {
+		    		LzTrack.deactivate('track_qb_comp_list');
+		    	}
+		    </method>
+			
+			<method event="onblur">
+				this.setAttribute("visible", false);
+			</method>
+		</floatinglist>
+		
+		<!-- Value floating list. -->
+		<floatinglist id="qb_value_list" visible="false" width="100">
+			<attribute name="trackgroup" type="string" value="track_qb_value_list"/>
+			<method event="oninit">
+				LzTrack.register(this, this.trackgroup);
+		    </method>
+		    <method event="onmousetrackout">
+				//Debug.write("onmousetrackout");
+				this.setAttribute("visible", false);
+		    </method>
+		    <method event="onvisible">
+		    	if (this.getAttribute("visible") == true){
+		    		LzTrack.activate('track_qb_value_list');
+		    	} else {
+		    		LzTrack.deactivate('track_qb_value_list');
+		    	}
+		    </method>
+			<textlistitem datapath="qb_comps:/root/value/@name">
+				<method event="onclick">
+					var thisValue = this.datapath.getNodeAttribute("value");
+					var replaceField = parent.attachtarget;
+					Debug.write("replaceField is: " + replaceField);
+					var replaceParent = parent.attachtarget.parent;
+					if (thisValue == 1) { // input field.
+						replaceField.setAttribute("visible", false);
+						//replaceParent._val.setAttribute("visible", false);
+						if (parent.parent._qb_inputControl == null){
+							var input = new qb_inputtext();
+							parent.parent._qb_inputControl = input;
+						} else {
+							var input = parent.parent._qb_inputControl;
+						}
+						//input.setAttribute("x", replaceParent._val.x + 10);
+						input.setAttribute("x", replaceField.x + 10);
+						input.setAttribute("y", replaceParent.y + 11);
+						input.setAttribute("trackReplacement", replaceField);
+						//input.setAttribute("trackReplacement", replaceParent._val);
+						input.setAttribute("visible", true);
+						if (replaceField.text == "_____"){
+						//if (replaceParent._val.text == "_____"){
+							input.setAttribute("text", "");
+						} else if (replaceField.text == "[UserID]"){
+						//} else if (replaceParent._val.text == "[UserInput]"){
+							input.setAttribute("text", "");
+						} else if (replaceField.text == "[UserInput]"){
+						//} else if (replaceParent._val.text == "[UserInput]"){
+							input.setAttribute("text", "");
+						} else {
+							input.setAttribute("text", replaceField.text);
+							//input.setAttribute("text", replaceParent._val.text);
+						}
+						var stringLength = replaceField.text.length;
+						//var stringLength = replaceParent._val.text.length;
+						input.setSelection(stringLength);
+					} else if (thisValue == 2) { // user ID.
+							replaceField.setText("[UserID]");
+							if (replaceField.name == '_val'){
+				    		parent.attachtarget.parent.datapath.setNodeAttribute("value", "[UserID]");
+				    	} else {
+				    		parent.attachtarget.parent.datapath.setNodeAttribute("value2", "[UserID]");
+				    	}
+					} else if (thisValue == 3) { // user input.
+							replaceField.setText("[UserInput]");
+							//replaceParent._val.setText("[UserInput]");
+							//parent.attachtarget.parent.datapath.setNodeAttribute("value", "[UserInput]");
+							if (replaceField.name == '_val'){
+				    		parent.attachtarget.parent.datapath.setNodeAttribute("value", "[UserInput]");
+				    	} else {
+				    		parent.attachtarget.parent.datapath.setNodeAttribute("value2", "[UserInput]");
+				    	}
+					} else if (thisValue == 4) { // calendar.
+						if (parent.parent._qb_calendarControl == null){
+							var cal = new qb_calendar();
+							cal.setMonthToShow(2, 2006);
+							parent.parent._qb_calendarControl = cal;
+						} else {
+							var cal = parent.parent._qb_calendarControl;
+						}
+						cal.setAttribute("trackReplacement", replaceField);
+						//cal.setAttribute("trackReplacement", replaceParent._val);
+						cal.setAttribute("x", replaceField.x + 10);
+						//cal.setAttribute("x", replaceParent._val.x + 10);
+						cal.setAttribute("y", replaceParent.y + 25);
+						cal.setAttribute("visible", true);
+					} else if (thisValue == 5) { // boolean list.
+						if (parent.parent._qb_booleanControl == null){
+							var bool = new qb_boolean_list();
+							parent.parent._qb_booleanControl = bool;
+						} else {
+							var bool = parent.parent._qb_booleanControl;
+						}
+						//bool.setAttribute("trackReplacement", replaceParent._val);
+						bool.setAttribute("trackReplacement", replaceField);
+						bool.setAttribute("visible", true);
+						//bool.setAttribute("x", replaceParent._val.x + 11);
+						bool.setAttribute("x", replaceField.x + 11);
+						bool.setAttribute("y", replaceParent.y + 27);
+						bool.setAttribute("visible", true);
+					}
+					parent.setVisible(false);
+				</method>
+			</textlistitem>
+		</floatinglist>
+  </class>
+  
+  <!-- The value input field. -->
+  <class name="qb_inputtext" extends="inputtext" bgcolor="yellow" width="100">
+  	<attribute name="trackReplacement"/>
+  	<method event="onkeydown" args="k">
+        var enterKey = 13;
+        if (k==13) {
+          this.transferValue();
+        }
+    </method>
+    <method event="onblur">
+      this.transferValue();
+    </method>
+    <method name="transferValue">
+    	var newValue = this.getText();
+    	if (this.trackReplacement.name == '_val'){
+    		this.trackReplacement.parent.datapath.setNodeAttribute("value", newValue);
+    	} else {
+    		this.trackReplacement.parent.datapath.setNodeAttribute("value2", newValue);
+    	}
+    	if (newValue == ""){
+    		newValue = "_____";
+    	}
+	    this.trackReplacement.setText(newValue);
+	    	
+      this.setAttribute("visible", false);
+      this.trackReplacement.setAttribute("visible", true);
+      
+    </method>
+  </class>
+  
+  <!-- The date picker -->
+  <class name="qb_calendar" extends="datepicker"
+              earliestdate="new Date(1900, 9, 5)" 
+              latestdate="new Date(2010, 1, 5)"
+              startAsIcon="false"
+              visible="false">
+    <attribute name="trackReplacement"/>
+  	<method event="onselecteddate">
+  		<![CDATA[
+	      if( this.selecteddate != null) {
+	      	var day = this.selecteddate.getDate();
+	      	var month = this.selecteddate.getMonth() + 1;
+	      	var year = this.selecteddate.getFullYear();
+	      	var displayDate = day + "/" + month + "/" + year
+	        this.setAttribute("visible", false);
+	        this.trackReplacement.setText(displayDate);
+	        if (this.trackReplacement.name == '_val'){
+		    		this.trackReplacement.parent.datapath.setNodeAttribute("value", displayDate);
+		    	} else {
+		    		this.trackReplacement.parent.datapath.setNodeAttribute("value2", displayDate);
+		    	}
+	        //this.trackReplacement.parent.datapath.setNodeAttribute("value", displayDate);
+	      }
+	    ]]>
+    </method>
+  </class>
+  
+  <!-- The boolean selection. -->
+  <class name="qb_boolean_list" extends="combobox" visible="false" editable="false">
+	  <attribute name="trackgroup" type="string" value="track_qb_boolean_list"/>
+  	<attribute name="trackReplacement"/>
+  	<method event="oninit">
+      LzTrack.register(this, this.trackgroup);
+    </method>
+    <method event="onmousetrackout">
+      this.setAttribute("visible", false);
+    </method>
+    <method event="onvisible">
+    	if (this.getAttribute("visible") == true){
+   		  LzTrack.activate('track_qb_boolean_list');
+    	} else {
+    		LzTrack.deactivate('track_qb_boolean_list');
+    	}
+    </method>
+  	<textlistitem datapath="qb_comps:/root/boolean" text="$path{'@name'}" value="$path{'@value'}">
+  		<method event="onclick">
+  			this.parent.trackReplacement.setText(this.getAttribute("text"));
+        this.parent.setAttribute("visible", false);
+        if (this.trackReplacement.name == '_val'){
+	    		this.parent.trackReplacement.parent.datapath.setNodeAttribute("value", this.getAttribute("text"));
+	    	} else {
+	    		this.parent.trackReplacement.parent.datapath.setNodeAttribute("value2", this.getAttribute("text"));
+	    	}
+        //this.parent.trackReplacement.parent.datapath.setNodeAttribute("value", this.getAttribute("text"));
+  		</method>
+  	</textlistitem>
+  </class>
+</library>

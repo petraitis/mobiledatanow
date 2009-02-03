@@ -1,0 +1,38 @@
+replaceField.x: 357 
+web Service loaded: true 
+-- function: KeywordSearchRequest 
+  param 0) name: KeywordSearchRequest length:  20 type: «QName#136| QName {http://soap.amazon.com}KeywordRequest» 
+$$$$$$$$$ 
+
+
+«LzDatapointer#137| 
+
+<qb_query>
+<root>
+<node id=\"-1\" row=\"1\" type=\"query\" valueOrCondition=\"COMPLEX\" used=\"true\" indent=\"0\" parent=\"KeywordSearchRequest\" number=\"1\" field=\"KeywordSearchRequest.keyword\" compID=\"1\" comparison=\"is equal to\" value=\"services\" connection=\"and\" valu...» 
+
+
+
+WARNING: laszlo/webServices.lzx:378: reference to undefined property 'name' 
+  update param [object Object]) value: «undefined» 
+WARNING: laszlo/webServices.lzx:380: call to undefined method 'getMethods' 
+-- param: «undefined» 
+  update param [object Object]) value: «undefined» 
+-- param: «undefined» 
+  update param [object Object]) value: «undefined» 
+-- param: «undefined» 
+  update param [object Object]) value: «undefined» 
+-- param: «undefined» 
+  update param [object Object]) value: «undefined» 
+
+<root>
+<node id="-1" row="1" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="1" field="KeywordSearchRequest.keyword" compID="1" comparison="is equal to" value="services" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="2" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="2" field="KeywordSearchRequest.page" compID="1" comparison="is equal to" value="1" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="3" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="3" field="KeywordSearchRequest.mode" compID="1" comparison="is equal to" value="book" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="4" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="4" field="KeywordSearchRequest.tag" compID="1" comparison="is equal to" value="webservices-20" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="5" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="5" field="KeywordSearchRequest.type" compID="1" comparison="is equal to" value="lite" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="6" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="6" field="KeywordSearchRequest.devtag" compID="1" comparison="is equal to" value="your-dev-tag" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="7" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="7" field="KeywordSearchRequest.sort" compID="1" comparison="is equal to" value="_____" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="8" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="8" field="KeywordSearchRequest.variations" compID="1" comparison="is equal to" value="_____" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+<node id="-1" row="9" type="query" valueOrCondition="COMPLEX" used="true" indent="0" parent="KeywordSearchRequest" number="9" field="KeywordSearchRequest.locale" compID="1" comparison="is equal to" value="_____" connection="and" value2="_____" grouping="all" valueUserInput="" value2UserInput="" />
+</root>

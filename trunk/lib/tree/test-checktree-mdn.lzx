@@ -1,0 +1,60 @@
+<canvas debug="true">
+
+    <include href="checktree/library.lzx" />
+    <include href="temp/treeview-mdn.lzx" />
+
+    <dataset name="tablesTree">
+        <db>
+            <node name="Customer" type="table">
+                <node name="CustomerID" type="field" />
+                <node name="ContactTitle" type="field" />
+                <node name="ContactName" type="field" />
+                <node name="CompanyName" type="field" />
+                <node name="Address" type="field" />
+                <node name="City" type="field" />
+                <node name="PostalCode" type="field" />
+                <node name="Region" type="field" />
+                <node name="Country" type="field" />
+                <node name="Phone" type="field" />
+                <node name="Fax" type="field" />
+            </node>
+            <node name="Products" type="table" />
+            <node name="Categories" type="table" />
+            <node name="Category Sales for 1995" type="table" />
+            <node name="Current Product List" type="table" />
+            <node name="Customers and Suppliers by City" type="table" />
+        </db>
+    </dataset>
+    
+    <dataset name="dbTablesTree" src="http://localhost:8088/dashwell/data?action=db-tables-tree" request="true" />
+
+   <window x="20" y="20" width="400" height="200"
+           resizable="true" bgcolor="0xc0c0c0" >
+     <view >
+            <simplelayout axis="y" spacing="5"/>
+                <view height="5"/>
+             <view >
+                 <simplelayout axis="x" spacing="10"/>
+                 
+                 <view width="5"/>
+                 
+                 <view width="180" bgcolor="0xffffff" height="${parent.height}" clip="true">
+                     <checktree id="main" datapath="tablesTree:/db"
+                                  nodepath="node" nodeclass="checktreenode" selectable="true">
+                        <method event="onselect">
+                        	Debug.write("Current selection: " + this.getSelection());
+                        </method>
+                     </checktree>
+                     <vscrollbar scrollmax="${main.height+parent.horizScroller.height}" />
+                     <hscrollbar name="horizScroller" />
+                 </view>
+                 
+                 <testTreeView id="mainDB" width="180" height="110" clip="true"/>
+                 
+                 <view width="5"/>
+               </view>
+     </view>
+   </window>
+</canvas>
+
+

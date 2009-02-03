@@ -1,0 +1,420 @@
+<canvas debug="true">
+    <include href="dragtree/library.lzx"/>
+
+
+    <dragtreefloater id="floater"
+                     _dragtreeref="$once{main}" />
+    <dragtreefloater id="floater2"
+                     _dragtreeref="$once{main2}" />
+
+    <dataset name="dsFlat">
+        <root>
+            <node name="Fruits" _dragtarget="true"
+                  __OPTTREE_META_open="true">
+                <node name="Apples" _draggable="true">
+                    <node name="Granny Smith" price="0.89" _draggable="true" />
+                    <node name="Fuji" price="1.29" _draggable="true" />
+                    <node name="Golden Delicious" price="0.89" _draggable="true" />
+                </node>
+                <node name="Peppers" price="1.39" _draggable="true" />
+                <node name="Oranges" price="1.39" _draggable="true" />
+                <node name="Pears" price="0.59" _draggable="true" />
+            </node>
+            <node name="Vegetables" _dragtarget="true">
+                <node name="Carrots" price="0.25" />
+                <node name="Potatoes">
+                    <node name="Jersey Potatoes" price="0.99" />
+                    <node name="Idaho Potatoes" price="0.69" />
+                    <node name="King Edward Potatoes" price="1.29" />
+                </node>
+            </node>
+            <node name="Shopping List" _dragtarget="true">
+                <node name="Loo Paper" price="0.99" />
+            </node>
+            <node name="Zeta" _dragtarget="true">
+            </node>
+        </root>
+    </dataset>
+
+    <dataset name="dsFlat2">
+        <root>
+            <node name="Fruits" _dragtarget="true"
+                  __OPTTREE_META_open="true">
+                <node name="Apples" _draggable="true">
+                    <node name="Granny Smith" price="0.89" _draggable="true" />
+                    <node name="Fuji" price="1.29" _draggable="true" />
+                    <node name="Golden Delicious" price="0.89" _draggable="true" />
+                </node>
+                <node name="Peppers" price="1.39" _draggable="true" />
+                <node name="Oranges" price="1.39" _draggable="true" />
+                <node name="Pears" price="0.59" _draggable="true" />
+            </node>
+            <node name="Vegetables" _dragtarget="true">
+                <node name="Carrots" price="0.25" />
+                <node name="Potatoes">
+                    <node name="Jersey Potatoes" price="0.99" />
+                    <node name="Idaho Potatoes" price="0.69" />
+                    <node name="King Edward Potatoes" price="1.29" />
+                </node>
+            </node>
+            <node name="Shopping List" _dragtarget="true">
+                <node name="Loo Paper" price="0.99" />
+            </node>
+            <node name="Zeta" _dragtarget="true">
+            </node>
+        </root>
+    </dataset>
+    
+    <window title="dragtree:main"
+            x="20" y="20" height="320" width="220" resizable="true">
+      <view width="200" height="200" clip="true">
+        <dragtree id="main" datapath="dsFlat:/root"
+                nodepath="node" nodeclass="dragtreenode"
+                floaterref="$once{floater}"
+                multiselect="true"
+                width="100%">
+            <method name="updateHierarchy" args="p">
+                //update the model
+            </method>
+        </dragtree>
+        <scrollbar />
+      </view>
+    </window>
+
+    
+    
+      <window title="dragtree:main2"
+            x="286" y="20" height="320" width="220" resizable="true">
+      <view width="200" height="200" clip="true">
+        <dragtree id="main2" datapath="dsFlat2:/root"
+                nodepath="node" nodeclass="dragtreenode"
+                floaterref="$once{floater2}"
+                multiselect="true"
+                width="100%">
+            <method name="updateHierarchy" args="p">
+                //update the model
+            </method>
+        </dragtree>
+        <scrollbar />
+      </view>
+    </window>
+
+    <!-- ========================= Test Harness ========================= -->
+    <window x="555" y="20" width="240" title="window1">
+        <simplelayout axis="y" spacing="10" />
+
+        <method event="ondragfail" reference="main">
+        <![CDATA[
+            Debug.write(">> DRAG FAILED (ondragfail event sent)");
+        ]]>
+        </method>
+        <text width="100%" multiline="true">
+            Drag Peppers from Fruits to Vegetables and back again.
+        </text>
+
+        <datapointer name="copyFrom_dp" />
+        <datapointer name="copyTo_dp" />
+
+        <method event="ondragdrop" reference="main" 
+                args="resp">
+            <![CDATA[
+            Debug.write("ondragdrop event sent by dragtree with arguments: ",
+                        resp);
+
+            
+            var dragees = resp.draggedNodes;
+            var fromNode = resp.from;
+            if (resp.type == "internal") {
+                // Dragging a node from one place in the tree to another
+                // node
+                var toNode = resp.to.datapath.p;
+                switch (toNode.getAttr("name")) {
+                    case "Fruits":
+                        Debug.write( ">> COPYING TO FRUITS");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            copyFrom_dp.deleteNode();
+                        }
+                    break;
+                    case "Vegetables":
+                        Debug.write( ">> COPYING TO VEGETABLES");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            copyFrom_dp.deleteNode();
+                        }
+                    break;
+                    case "Shopping List":
+                        Debug.write( ">> ADDING TO SHOPPING LIST");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                        }
+                    break;
+                    case "Zeta":
+                        Debug.write( ">> ADDING TO ZETA");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            main.setY(-2000);
+                            main.setY(0);
+                        }
+                    break;
+                }
+            } else if (resp.type=="external") {
+                // Dragging a node from a tree to an outside drop
+                // target
+                switch (resp.to) {
+                    case externalDropTargetExample:
+                        Debug.write(">> DROP ON FIRST EXTERNAL DROP TARGET");
+                    break;
+
+                    case externalDropTargetExampleTwo:
+                        Debug.write(">> DROP ON OTHER EXTERNAL DROP TARGET");
+                    break
+                }
+            }
+            ]]>
+        </method>
+
+	
+        <text width="100%" multiline="true">
+            Drag Oranges to Shopping List a few times.
+        </text>
+
+        <text width="100%" multiline="true">
+            <b>getSelection()</b>: Return a list of currently-selected 
+            LzDataElements. Click button below:
+        </text>
+
+        <button align="center">getSelection()
+            <method event="onclick">
+                var sel = main.getSelection();
+                Debug.write(sel);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>getOpenLeaves()</b>: Return a list of currently-open 
+            LzDataElements. Click button below:
+        </text>
+
+        <button align="center">getOpenLeaves()
+            <method event="onclick">
+                var sel = main.getOpenLeaves();
+                Debug.write(sel);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>getLeafForNode()</b>: Return reference to a view (leaf) based
+            on an LzDataElement. Make sure you open Fruits first, so
+            you can see the view be highlighted in red.
+            Click button below:
+        </text>
+
+        <button align="center">getLeafForNode()
+            <datapointer name="apples_dp"
+                         xpath="dsFlat:/root/node[1]/node[1]" />
+            <method event="onclick">
+                var leaf = main.getLeafForNode(this.apples_dp.p);
+                Debug.write("The leaf is ", leaf);
+                leaf.setBGColor(0xff0000);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>onselect</b>: Sent when a user selects a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="onselect" reference="main" args="n">
+            Debug.write("onselect event sent: ", n);
+        </method>
+
+        <text width="100%" multiline="true">
+            <b>onexpand</b>: Sent when a user opens a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="onexpand" reference="main" args="n">
+            Debug.write("onexpand event sent: ", n);
+        </method>
+
+        <text width="100%" multiline="true">
+            <b>oncontract</b>: Sent when a user closes a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="oncontract" reference="main" args="n">
+            Debug.write("oncontract event sent: ", n);
+        </method>
+
+    </window>
+
+    
+    <window x="830" y="20" width="240" title="window2">
+        <simplelayout axis="y" spacing="10" />
+
+        <method event="ondragfail" reference="main2">
+        <![CDATA[
+            Debug.write(">> DRAG FAILED (ondragfail event sent)");
+        ]]>
+        </method>
+        <text width="100%" multiline="true">
+            Drag Peppers from Fruits to Vegetables and back again.
+        </text>
+
+        <datapointer name="copyFrom_dp" />
+        <datapointer name="copyTo_dp" />
+
+        <method event="ondragdrop" reference="main2" 
+                args="resp">
+            <![CDATA[
+            Debug.write("ondragdrop event sent by dragtree with arguments: ",
+                        resp);
+
+            
+            var dragees = resp.draggedNodes;
+            var fromNode = resp.from;
+            if (resp.type == "internal") {
+                // Dragging a node from one place in the tree to another
+                // node
+                var toNode = resp.to.datapath.p;
+                switch (toNode.getAttr("name")) {
+                    case "Fruits":
+                        Debug.write( ">> COPYING TO FRUITS");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            copyFrom_dp.deleteNode();
+                        }
+                    break;
+                    case "Vegetables":
+                        Debug.write( ">> COPYING TO VEGETABLES");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            copyFrom_dp.deleteNode();
+                        }
+                    break;
+                    case "Shopping List":
+                        Debug.write( ">> ADDING TO SHOPPING LIST");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                        }
+                    break;
+                    case "Zeta":
+                        Debug.write( ">> ADDING TO ZETA");
+                        for (var i in dragees) {
+                            copyFrom_dp.setPointer(dragees[i]);
+                            copyTo_dp.setPointer(toNode);
+                            copyTo_dp.addNodeFromPointer(copyFrom_dp);
+                            main2.setY(-2000);
+                            main2.setY(0);
+                        }
+                    break;
+                }
+            } else if (resp.type=="external") {
+                // Dragging a node from a tree to an outside drop
+                // target
+                switch (resp.to) {
+                    case externalDropTargetExample:
+                        Debug.write(">> DROP ON FIRST EXTERNAL DROP TARGET");
+                    break;
+
+                    case externalDropTargetExampleTwo:
+                        Debug.write(">> DROP ON OTHER EXTERNAL DROP TARGET");
+                    break
+                }
+            }
+            ]]>
+        </method>
+
+	
+        <text width="100%" multiline="true">
+            Drag Oranges to Shopping List a few times.
+        </text>
+
+        <text width="100%" multiline="true">
+            <b>getSelection()</b>: Return a list of currently-selected 
+            LzDataElements. Click button below:
+        </text>
+
+        <button align="center">getSelection()
+            <method event="onclick">
+                var sel = main2.getSelection();
+                Debug.write(sel);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>getOpenLeaves()</b>: Return a list of currently-open 
+            LzDataElements. Click button below:
+        </text>
+
+        <button align="center">getOpenLeaves()
+            <method event="onclick">
+                var sel = main2.getOpenLeaves();
+                Debug.write(sel);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>getLeafForNode()</b>: Return reference to a view (leaf) based
+            on an LzDataElement. Make sure you open Fruits first, so
+            you can see the view be highlighted in red.
+            Click button below:
+        </text>
+
+        <button align="center">getLeafForNode()
+            <datapointer name="apples_dp"
+                         xpath="dsFlat:/root/node[1]/node[1]" />
+            <method event="onclick">
+                var leaf = main2.getLeafForNode(this.apples_dp.p);
+                Debug.write("The leaf is ", leaf);
+                leaf.setBGColor(0xff0000);
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            <b>onselect</b>: Sent when a user selects a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="onselect" reference="main2" args="n">
+            Debug.write("onselect event sent: ", n);
+        </method>
+
+        <text width="100%" multiline="true">
+            <b>onexpand</b>: Sent when a user opens a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="onexpand" reference="main2" args="n">
+            Debug.write("onexpand event sent: ", n);
+        </method>
+
+        <text width="100%" multiline="true">
+            <b>oncontract</b>: Sent when a user closes a node. 
+            Passes LzDataElement as argument.
+        </text>
+        
+        <method event="oncontract" reference="main2" args="n">
+            Debug.write("oncontract event sent: ", n);
+        </method>
+
+    </window>
+
+
+   
+</canvas>

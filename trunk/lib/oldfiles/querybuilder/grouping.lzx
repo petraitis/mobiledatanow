@@ -1,0 +1,20 @@
+<library>
+	<class name="grouping" extends="listitem">
+		<simplelayout axis="x" spacing="2"/>
+		
+		<method event="onclick">
+	    qb_controller.listVisibility();
+	  </method>
+		
+		<text datapath="qb_comps:/root/group-explain/@first" resize="true" selectable="false"/>
+		<text name="condition2" text="all" fgcolor="blue" resize="true" selectable="true">
+			<method event="onclick">
+				qb_controller.listVisibility();
+				qb_grouping_list.setAttribute("isGlobal", true);
+				qb_grouping_list.setAttachTarget(this);
+    		qb_grouping_list.setVisible(true);
+			</method>
+		</text>
+		<text datapath="qb_comps:/root/group-explain/@second" resize="true" selectable="false"/>
+  </class>
+</library>

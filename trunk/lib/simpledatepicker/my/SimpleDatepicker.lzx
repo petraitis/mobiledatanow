@@ -1,0 +1,194 @@
+<library>
+
+	<!--
+		Instruction
+		===========
+
+		SimpleDatepicker is a very primitive calendar.  To use it, just make a new instance like this:
+
+		<SimpleDatepicker id="myCal" x="100" y="50">
+			<method event="onselecteddate" args="dd">
+				Debug.write(dd)
+				this.close()
+			</method>
+		</SimpleDatepicker>
+
+		SimpleDatepicker have the following public methods / events / attribute
+
+		open(yyyy, mm, dd) :: show the calendar
+		close()            :: close
+		onselecteddate     :: event; trigger when date was selected
+		autoclose          :: attribute, boolean, default is true; tell SimpleDatepicker to auto close when
+		                      mouse click outside the control
+
+	-->
+
+
+
+	<script><![CDATA[
+		var __DAYSINMONTH  = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+		function a0(v)
+		{
+			return v > 9 ? v : "0" + v
+		}
+		function isLeap(yr)
+		{
+			return yr % 400 == 0 || (yr % 4 == 0 && yr % 100 != 0);
+		}
+	]]></script>
+
+
+
+	<class name="caltext" extends="text" width="18">
+		<method event="onclick">
+		if (this.getText())
+			this.parent.parent.parent.__onselecteddate(this.getText())
+		</method>
+	</class>
+
+
+
+	<class name="SimpleDatepicker" extends="windowpanel" layout="axis: y; spacing: 2" visible="false" title=" " closeable="true">
+		<attribute name="autoclose" value="${true}" />
+		<attribute name="onselecteddate" value="null" />
+		<view name="head" layout="axis: x; spacing: 2" align="center">
+			<text onclick="classroot.paint(classroot.yyyy, classroot.mm-1)" fgcolor="blue">&lt;&lt;</text>
+			<view name="vw" width="94" ><text name="yyyymm" align="center" resize="true"/></view>
+			<text onclick="classroot.paint(classroot.yyyy, classroot.mm+1)" fgcolor="blue">&gt;&gt;</text>
+		</view>
+		<view name="body" layout="axis: y; spacing: 2" align="center">
+			<view name="w1" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+			<view name="w2" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+			<view name="w3" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+			<view name="w4" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+			<view name="w5" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+			<view name="w6" layout="axis: x; spacing: 2">
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+				<caltext />
+			</view>
+		</view>
+		<!-- methods -->
+		<method event="oninit">
+			this.delg = new LzDelegate(this, "doMouseDown");
+			this._txt = null
+		</method>
+		<method name="open" args="yyyy, mm, dd">
+			this.yyyy  = this._yyyy = 0 + yyyy
+			this.mm    = this._mm   = 0 + mm - 1
+			this._dd   = dd
+			paint(yyyy, this.mm)
+			this.setVisible(true)
+
+			if (autoclose)
+				this.delg.register(LzGlobalMouse, "onmousedown")
+		</method>
+		<method name="__onselecteddate" args="dd">
+			if (this.onselecteddate != null)
+				this.onselecteddate.sendEvent(new Date(this.yyyy, this.mm, dd))
+		</method>
+		<method name="paint" args="yyyy, mm"><![CDATA[
+			// today is...
+			var today = new Date()
+			this.td = today.getDate()
+			this.ty = today.getFullYear()
+			this.tm = today.getMonth()
+
+			// adjust the year / month
+			var x = typeof yyyy == "undefined" ? new Date(ty, tm, 1) : new Date(yyyy, mm, 1)
+			var e = x.getDay(); // 0 -> Sun, 6 -> Sat
+			this.yyyy = x.getFullYear()
+			this.mm   = x.getMonth()
+
+			// number of day in month
+			var dim  = __DAYSINMONTH[this.mm] + (this.mm==1 ? isLeap(this.yyyy) : 0);
+
+			// set header
+			this.head.vw.yyyymm.setText(this.yyyy + "/" + a0(this.mm + 1));
+			this._txt && this._txt.setAttribute("bgcolor",  0xFFFFFF);
+
+			// clear cell
+			for (var i=0; i<e; i++)
+				this.body.subnodes[0].subnodes[i].setText("")
+
+			// fill in the actual data
+			for (var d=42-e+1; d-->1; )
+			{
+				var i = d + e
+				var txt = this.body.subnodes[Math.ceil(i / 7) - 1].subnodes[(i - 1) % 7]
+
+				// write date
+				txt.setText(d <= dim ? a0(d) : "");
+				// paint different color for today
+				txt.setAttribute("fgcolor", this.yyyy == ty && this.mm == tm && d == td ? 0xFF0000 : 0x000000);
+
+				// paint different the preset date (the date you specify in the open method)
+				if (this.yyyy == this._yyyy && this.mm == this._mm && d == this._dd)
+				{
+					this._txt = txt
+					txt.setAttribute("bgcolor", 0xBBBBBB);
+				}
+			}
+
+			// toggle the 6th week
+			this.body.w6.setVisible(dim + e > 35)
+		]]></method>
+		<method name="close">
+			this.setVisible(false)
+			this.delg.unregisterAll();
+		</method>
+    <method name="doMouseDown" reference="LzGlobalMouse"><![CDATA[
+    	var x = this.getMouse("x")
+    	var y = this.getMouse("y")
+
+      if (x < 0 || x > this.width || y < 0 || y > this.height)
+  	   	this.close()
+    ]]></method>
+	</class>
+
+</library>

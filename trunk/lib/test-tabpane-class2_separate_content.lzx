@@ -1,0 +1,97 @@
+<canvas bgcolor="#EAEAEA" width="100%" height="100%" debug="true">
+<!--Xiaowen edited 
+  Make sure to declare extends attribute, if the class is extending from some component!
+-->
+
+	<class name="ProjectIDConstants" />
+	<ProjectIDConstants id="projectIDConstants"/>
+
+
+
+    <class name="tab1" extends="tabpane"/>
+    <class name="dynamicTabContent" x="5" y="5">
+	    <attribute name="currProjectId"/>
+	    <simplelayout spacing="5"/>
+		 <button>stuff
+	    	<method event="onclick">
+	    		Debug.write("currProjectId", dynamicTabContent.currProjectId);
+	    	</method>			 
+		 </button>
+		 <radiogroup>
+		     <radiobutton>test</radiobutton>
+		     <radiobutton>other</radiobutton>		     
+	     </radiogroup>
+	</class>
+<!--Xiaowen edited -->       
+ 		
+	<class name="tab3content">
+		<view>
+		    <tabs x="5" height="150" width="300">
+		        <tabpane>stuff
+		            <simplelayout spacing="5"/>
+		            <button>stuff</button>
+		            <radiogroup>
+		                <radiobutton>test</radiobutton>
+		                <radiobutton>other</radiobutton>
+		            </radiogroup>
+		        </tabpane>
+		        
+		        <tabpane>more
+		            <button>more</button>
+		        </tabpane>
+		    </tabs>			
+		</view>
+	</class>
+
+   <view x="20" y="20" width="${canvas.width/2}" height="${canvas.height/2}"> 
+    <simplelayout spacing="10"/>
+
+    <tabs id="t1" x="5" _contentWidth="${immediateparent.width}" _contentHeight="${immediateparent.height}">
+      
+		<tab1/>
+        
+        <tabpane id="p2" selected="true" >Pane 2
+            <view width="${parent.width-20}" height="${parent.height-40}" bgcolor="yellow">
+            	<text text="this view constrained to parent tabpane"/>
+            	
+	            <simplelayout spacing="5"/>
+	            <button>faster</button>
+	            <radiogroup>
+	                <radiobutton>Curt</radiobutton>
+	                <radiobutton>Prefer fairly wordy</radiobutton>
+	                <radiobutton>I really prefer lots of extra words and fluff in my selections</radiobutton>
+	            </radiogroup>
+            </view>
+        </tabpane>
+        
+        <tabpane id="p3" text="Pane 3" inset_left="10" inset_top="10" inset_bottom="10" inset_right="10">
+			<tab3content/>
+        </tabpane>
+        
+    </tabs>
+        <button>
+    	add one more tab1
+	    <method event="oninit">
+	        projectIDConstants = 0;
+	        Debug.write("currProjectId in button initial", projectIDConstants);
+	    </method> 
+    	<method event="onclick">
+    		/*
+    		 * 1.We have to assign background once again.(in class defintion or instance level)
+    		 * 2. To dynamically instatiate, you need to replace the orignal tab.lzx and basetab.lzx to fix the openlaszlo bug 
+    		*/
+    		var i=new tab1(t1,{bgcolor:'0xffffff',text:'newTab'});
+    		var i2=new dynamicTabContent(i);
+    		projectIDConstants++;
+    		Debug.write("currProjectId in button clicked", projectIDConstants);
+    		
+    		//This has no any effect
+    		i2.currProjectId = projectIDConstants;
+    		
+    		//I have to use this to set currProjectId, but this is result at every new tab has same currProjectId
+    		dynamicTabContent.currProjectId = projectIDConstants;
+    	</method>
+    </button>
+  </view>
+</canvas>
+

@@ -1,0 +1,90 @@
+<canvas debug="true" width="650" height="530" >
+
+<debug x="35" y="35" width="650" height="400" />
+<dataset name="ds_searchResults"></dataset>
+
+<security>
+<allow>
+<pattern>^RPC\.Search</pattern>
+</allow>
+</security>
+
+<javarpc name="Search" scope="session" autoload="false"
+classname="RPC.Search">
+
+<method event="onerror" args="err">
+Debug.write("----------");
+Debug.write("onerror:", err)
+</method>
+
+<method event="onload">
+Debug.write("----------");
+Debug.write(this.proxy);
+</method>
+
+<remotecall funcname="doSearch">
+<method event="ondata" args="res">
+<![CDATA[
+Debug.write("----------");
+Debug.write("method:", this.name);
+Debug.write("return type:", typeof(res));
+Debug.write("return value:", res);
+
+xmlResponse = "";
+maxChunks = res;
+currChunk = 0;
+canvas.Search.getChunk.invoke([currChunk]);
+]]>
+</method>
+</remotecall>
+<remotecall funcname="getChunk">
+<method event="ondata" args="res">
+<![CDATA[
+Debug.write("----------");
+Debug.write("method:", this.name);
+Debug.write("return type:", typeof(res));
+Debug.write("return value:", res);
+
+xmlResponse += res;
+currChunk++;
+
+if (currChunk < maxChunks)
+{
+canvas.Search.getChunk.invoke([currChunk]);
+}
+else
+{
+dsPntr = ds_searchResults.getPointer();
+if (dsPntr.p.hasChildNodes())
+{
+do
+{
+dsPntr.p.removeChild(dsPntr.p.getFirstChild());
+} while (dsPntr.p.hasChildNodes());
+}
+element = LzDataNode.stringToLzData(xmlResponse);
+Debug.inspect(element);
+dsPntr.p.appendChild(element);
+Debug.write('DS childNodes:', ds_searchResults.childNodes);
+theGrid.init();
+}
+]]>
+</method>
+</remotecall>
+</javarpc>
+<button x="10" y="10" text="search">
+<method event="onclick">
+Debug.write('invoking search...');
+canvas.Search.load();
+canvas.Search.doSearch.invoke([query.getText()]);
+</method>
+</button>
+
+<edittext x="75" y="10" id="query" text="dog"/>
+
+<grid x="50" y="50" width="400" height="250" id="theGrid" datapath="ds_searchResults:/eBay/Search/*">
+<gridtext editable="false" datapath="Name/text()">Item Name</gridtext>
+<gridtext editable="false" datapath="Price/text()">Price</gridtext>
+</grid>
+
+</canvas>

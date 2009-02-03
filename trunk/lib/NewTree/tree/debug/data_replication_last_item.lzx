@@ -1,0 +1,87 @@
+<canvas debug="true">
+    
+    <window x="200" width="250">
+        <simplelayout axis="y" spacing="10" />
+        <text width="100%" multiline="true">
+            The following is an example of the last node in the
+            replication manager failing to send an ondata event. The
+            data should change the background color to gray. Notice
+            how the lower view retains the blue color after clicking the
+            button twice.
+        </text>
+         
+        <button> broken toggle
+            <method event="onclick">
+                <![CDATA[
+                if ( canvas.fulllist.length == canvas.partlist.length ){
+                    var newlist = [];
+                    for ( var i = 0; i < 5; i++ ){
+                        newlist[ i ] = canvas.fulllist[ i ];
+                    }
+                    canvas.partlist = newlist;
+                } else {
+                    for ( var i = 0; i < canvas.fulllist.length; i++ ){
+                        canvas.partlist[ i ] = canvas.fulllist[ i ];
+                        canvas.partlist[ i ].setAttr( "color", 0xeaeaea );
+                    }
+                }
+                holder.reppar.repman.datapath.setNodes( canvas.partlist );
+                ]]>
+            </method>
+        </button>
+
+        <text width="100%" multiline="true">
+            In the workaround, the parent views y-position is changed
+            twice.
+        </text>
+
+        <button> workaround toggle
+            <method event="onclick">
+                <![CDATA[
+                if ( canvas.fulllist.length == canvas.partlist.length ){
+                    var newlist = [];
+                    for ( var i = 0; i < 5; i++ ){
+                        newlist[ i ] = canvas.fulllist[ i ];
+                    }
+                    canvas.partlist = newlist;
+                } else {
+                    for ( var i = 0; i < canvas.fulllist.length; i++ ){
+                        canvas.partlist[ i ] = canvas.fulllist[ i ];
+                        canvas.partlist[ i ].setAttr( "color", 0xeaeaea );
+                    }
+                }
+                holder.reppar.repman.datapath.setNodes( canvas.partlist );
+                holder.reppar.setY( -200 );
+                holder.reppar.setY( 0 );
+                ]]>
+            </method>
+        </button>
+    </window>
+    <method event="oninit">
+        <![CDATA[
+        this.fulllist = new Array( 10 );
+        for ( var i = 0; i < 10 ; i++ ){
+            this.fulllist[ i ] = new LzDataElement( "foo" , 
+                                                    { color : i * 100 } );
+        }
+
+        this.partlist = this.fulllist.concat();
+        holder.reppar.repman.datapath.setNodes( this.partlist );
+
+        ]]>
+    </method>
+
+    <view width="100" height="200" clip="true" id="holder">
+
+        <view name="reppar">
+            <view name="repman" height="15" width="100">
+                <datapath replication="lazy"/>
+
+                <attribute name="dcolor"
+                           value="$path{ '@color' }"/>
+                <attribute name="bgcolor"
+                           value="${ Number( dcolor ) }"/>
+            </view>
+        </view>
+    </view>
+</canvas>

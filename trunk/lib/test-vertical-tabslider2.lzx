@@ -1,0 +1,108 @@
+<canvas title="Net Software Group">
+<debug y="300"/>
+<font name="serifFont">
+<face src="timmonsr.ttf"/>
+<!--
+I found that you need to embed a font otherwise you cant see the text.
+-->
+<face src="timmonsb.ttf" style="bold"/>
+</font>
+<!--
+Added a bit of background shanding and center text or right justify
+Here is the simple way to rotate your image. Just use rotation="-90" inside a view
+-->
+<view font="serifFont"
+		rotation="-90"
+		height="300" width="170"
+		x="175" y="180"
+		bgcolor="#CBC2A9"
+		name="vText">
+	<text font="serifFont" fontsize="18" align="center">
+	Administators Screen
+	</text>
+</view>
+<!--
+Simple use of rotation="-90" in a view that contains a tabslider
+-->
+<view rotation="-90"
+	font="serifFont"
+	height="30" width="350"
+	x="200" y="170"
+	name="vTabSlider">
+<!--
+Place the tabslider within the view
+-->
+<tabslider width="150" height="270">
+<tabelement text="Groups" fontsize="16" selected="true">
+	<!--
+	Found I had to use width="5" in each tabelement below to tell the view to start 5 pixels down from inside the top of the tabelement
+	-->
+	
+	<view align="right" width="0" font="serifFont" fontsize="14" rotation="90">
+		<tabslider width="185" height="130">
+		
+			<tabelement text="Head Office" fontsize="13" selected="true">
+				<radiogroup>
+					<radiobutton text="David Smith" font="serifFont" />
+				</radiogroup>
+			</tabelement>
+			
+			<tabelement text="Reps" fontsize="13" selected="true">
+				<radiogroup>
+				<radiobutton text="Dave " font="serifFont" />
+				<radiobutton text="Doug Panchyshyn" font="serifFont" />
+				</radiogroup>
+			</tabelement>
+		 
+			<tabelement text="Managers" fontsize="13" selected="true">
+				<radiogroup>
+				<radiobutton text="Dave " font="serifFont" />
+				</radiogroup>
+			</tabelement>
+			
+			<tabelement text="Administrators" fontsize="13" selected="true">
+				<radiogroup>
+				<radiobutton text="Dave " font="serifFont" />
+				</radiogroup>
+			</tabelement>
+		
+		</tabslider>
+	</view>
+</tabelement>
+
+<tabelement text="Screens" fontsize="16" >
+	<view width="5" font="serifFont" fontsize="14" align="right" rotation="90">
+		<simplelayout axis="y" spacing="10"/>
+		<checkbox text="Index"/>
+		<checkbox text="Search"/>
+		<checkbox text="Categories"/>
+		<checkbox text="Users"/>
+		<checkbox text="Send Bullitins"/>
+	</view>
+</tabelement>
+<!--  
+<tabelement text="Categories" fontsize="16" >
+<view width="5" font="serifFont" fontsize="14" align="right" rotation="90">
+<simplelayout axis="y" spacing="10"/>
+<checkbox text="Index"/>
+<checkbox text="Search"/>
+<checkbox text="Categories"/>
+<checkbox text="Users"/>
+<checkbox text="Send Bullitins"/>
+</view>
+</tabelement>
+
+<tabelement text="Sub-Categories" fontsize="16" >
+<view width="5" font="serifFont" fontsize="14" align="right" rotation="90">
+<simplelayout axis="y" spacing="10"/>
+<checkbox text="Index"/>
+<checkbox text="Search"/>
+<checkbox text="Categories"/>
+<checkbox text="Users"/>
+<checkbox text="Send Bullitins"/>
+</view>
+</tabelement>
+-->
+</tabslider>
+</view>
+</canvas>

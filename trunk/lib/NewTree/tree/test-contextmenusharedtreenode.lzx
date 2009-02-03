@@ -1,0 +1,149 @@
+<canvas debug="true">
+    <include href="opttree/library.lzx"/>
+    <include href="debug/prettyprinter.lzx" />
+    <include href="dummydata.lzx" />
+
+    <!-- TODO: Add multi/single selection example here. -->
+
+
+    <prettyprinter name="pp" xpath="dsContextMenu:/" />
+
+    <window title="Cooking List"
+            x="20" y="20" width="200" height="300" resizable="true">
+       <view width="100%" height="100%" clip="true">
+        <opttree id="main" datapath="dsContextMenu:/root"
+                nodepath="node" nodeclass="sharedtreenode"
+                showtreelines="false"
+                width="${immediateparent.width-15}">
+        </opttree>
+        <scrollbar />
+      </view>
+    </window>
+
+
+
+    <!-- Test Harness -->
+    <window x="240" y="20">
+        <simplelayout axis="y" spacing="10" />
+        <handler name="oncontextselect" args="o" reference="main">
+            Debug.write("oncontextselect", o.datanode, o.caption);
+            Debug.write(o.caption + "ing " + o.datanode.getAttr("name"));
+            switch (o.datanode.getAttr("name")) {
+                case "Coriander":
+                    // Disable the current caption, since it's done now.
+                    var dp = new LzDatapointer();
+                    dp.setAttribute("p", o.datanode);
+                    dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+                    dp.setNodeAttribute("enabled", "false");
+                break;
+                case "Parsley":
+                    // Disable the current caption, since it's done now.
+                    var dp = new LzDatapointer();
+                    dp.setAttribute("p", o.datanode);
+                    dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+                    dp.setNodeAttribute("enabled", "false");
+                break;
+                case "Thyme":
+                    // Disable the current caption, since it's done now.
+                    var dp = new LzDatapointer();
+                    dp.setAttribute("p", o.datanode);
+                    dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+                    dp.setNodeAttribute("enabled", "false");
+                break;
+                case "Carrots":
+                    if (o.caption=="Peel") {
+                        // Disable the peel, since it's done now.
+                        var dp = new LzDatapointer();
+                        dp.setAttribute("p", o.datanode);
+                        dp.setXPath("_rcoptions/_option[@name='"+o.caption+"']");
+                        dp.setNodeAttribute("enabled", "false");
+                    } else if (o.caption=="Chop") {
+                        // Once chopped, carrots can be boiled or roasted
+                        var dp = new LzDatapointer();
+                        dp.setAttribute("p", o.datanode);
+                        dp.setXPath("_rcoptions/_option[@name='Boil']");
+                        dp.setNodeAttribute("enabled", "true");
+                        dp.setAttribute("p", o.datanode);
+                        dp.setXPath("_rcoptions/_option[@name='Roast']");
+                        dp.setNodeAttribute("enabled", "true");
+                        dp.setAttribute("p", o.datanode);
+                        dp.setXPath("_rcoptions/_option[@name='Chop']");
+                        dp.setNodeAttribute("enabled", "false");
+                    }
+                break;
+                case "Potatoes":
+                    if (o.caption=="Wash") {
+                        // Disable wash option, enable all others
+                        var dp = new LzDatapointer();
+                        dp.setAttribute("p", o.datanode);
+                        dp.selectChild();
+                        dp.selectChild();
+                        dp.p.setAttr("enabled", "false");
+                        dp.selectNext();
+                        do {
+                            dp.p.setAttr("enabled", "true");
+                        } while(dp.selectNext())
+                    } else if (o.caption=="Peel") {
+                        // Once peeled, remove the peel option altogether.
+                        var dp = new LzDatapointer();
+                        dp.setAttribute("p", o.datanode);
+                        dp.setXPath("_rcoptions/_option[@name='Peel']");
+                        dp.setNodeAttribute("visible", "false");
+                    }
+                break;
+
+            }
+        </handler>
+
+
+        <handler name="onselect" reference="main" args="sel">
+        <![CDATA[
+            Debug.write( ">> ONSELECT SENT. NODE SELECTED: ", sel, " CURRENT SELECTION: ", main.getSelection() );
+        ]]>
+        </handler>
+
+        <button>Write out dataset
+            <handler name="onclick">
+                pp.prettyPrint();
+            </handler>
+        </button>
+
+        <button>Get Selection
+            <handler name="onclick">
+                Debug.write("CURRENT SELECTION: ", main.getSelection());
+            </handler>
+        </button>
+
+        <button>Clear Selection
+            <handler name="onclick">
+                main.clearSelection();
+                Debug.write("CLEARING SELECTION");
+            </handler>
+        </button>
+
+        <button>Make selectable
+            <handler name="onclick">
+                main.setAttribute("selectable", true);
+            </handler>
+        </button>
+
+        <button>Make not selectable
+            <handler name="onclick">
+                main.setAttribute("selectable", false);
+            </handler>
+        </button>
+
+        <button>Make multi-selectable
+            <handler name="onclick">
+                main.setAttribute("multiselect", true);
+            </handler>
+        </button>
+
+        <button>Make not multi-selectable
+            <handler name="onclick">
+                main.setAttribute("multiselect", false);
+            </handler>
+        </button>
+         
+    </window>
+</canvas>

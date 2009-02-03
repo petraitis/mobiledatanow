@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<canvas width="500" height="500" debug="true">
+	<dataset name="gui">
+		<gui-labels>
+			<lbl-mirror-database label="Mirror Database"/>
+		</gui-labels>
+	</dataset>
+	
+	<view x="20" y="20" width="${immediateparent.width}" height="${immediateparent.height}">
+		<simplelayout axis="y" spacing="2"/>
+		<checkbox name="chkFirst" text="Label set via text"/>
+		<checkbox name="chkSecond" datapath="gui:/gui-labels/lbl-mirror-database" text="$path{'@label'}"/>
+	</view>
+</canvas>

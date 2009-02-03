@@ -1,0 +1,8 @@
+<library>
+   <class name="testTreeView" bgcolor="0xffffff" extends="view">
+     <checktree datapath="dbTablesTree:/db"
+                  nodepath="node" nodeclass="checktreenode">
+     </checktree>
+     <scrollbar />
+   </class>
+</library>

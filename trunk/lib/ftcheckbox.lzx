@@ -1,0 +1,60 @@
+<library>
+
+    <!--
+    SL:01/11/2007 implementation of the first approach
+             1. Custom Checkbox: bind the checkbox to one dataset to replicate the instance, 
+            use "ondata" handler and use datapointer to pick up the data for the Value
+    -->
+
+    <class name="ftcheckbox" extends="checkbox" datapath="">
+        <handler name="ondata">
+        <![CDATA[
+            if(this.data == "undefined")
+                return;
+                
+
+
+            //process the label
+            var xpathLbl =  this.data.getAttr("labelXpath");
+            var xpathVal =  this.data.getAttr("valueXpath");
+            //Debug.write(this.data,this.datapath,xpathLbl,xpathVal);
+
+            var lbl = parseXpath(xpathLbl);
+            var val = parseXpath(xpathVal);
+
+            val = (val =="true") ? true : false; //checkbox value is either true or false
+
+            Debug.write(lbl,val);
+
+            this.setAttribute("value",val);
+            this.setAttribute("text",lbl);
+
+        ]]>
+        </handler>
+        
+        <method name="parseXpath" args="xpath">
+        <![CDATA[
+            var result = "";
+            if(xpath != null || xpath != "") {
+
+
+                if(xpath.indexOf(":") < 0){
+                    //if this is relative to this local data, execute it
+                    result = this.datapath.xpathQuery(xpath);
+                } else {
+                    //xpath is refering to the other dataset, use datapointer to retrieve it
+                    var arrPath = xpath.split("@");
+
+                    var dp = new LzDatapointer();
+                    dp.setXPath(arrPath[0]);
+                    result = dp.getNodeAttribute(arrPath[1]);
+                }
+            }
+            
+            Debug.write("parseXpath", xpath, result);
+            return result;
+        ]]>
+        </method>
+    </class>
+
+</library>

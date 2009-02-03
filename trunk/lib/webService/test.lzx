@@ -1,0 +1,90 @@
+<canvas debug="true" height="530">
+	<debug x="15" y="15" width="415" height="400" />
+	<soap name="persistence" wsdl="http://192.168.0.15:8004/glue/manager.wsdl">
+	
+		<attribute name="handlerDel" value="null" type="expression" />
+
+		<method event="onload">
+			Debug.write('Persistence soap service loaded');
+			Debug.write('Compare proxy stubs with WSDL SOAP operations');
+			Debug.write('Persistence wsdl at ' + this.wsdl);
+			Debug.write('proxy:');
+			Debug.inspect(this.proxy);
+			Debug.write('Proto = ');
+			Debug.inspect(persistence.proto);
+			Debug.write(persistence.proto);
+			Debug.write('PseudoAddress proto:');
+			Debug.inspect(persistence.proto.PseudoAddress);
+		</method>
+		
+		<method event="onerror" args="error">
+			debug.write('error: ', error);
+		</method>
+		
+		<method event="onunload">
+			Debug.write('Persistence soap service unloaded');
+			Debug.write('proxy is: ', this.proxy);
+		</method>
+
+		<remotecall name="testGet" funcname="getTest">
+			<method event="ondata" args="value">
+				debug.write('result is [' + value + ']');
+			</method>
+		</remotecall>
+		
+		<remotecall name="echo" funcname="echo">
+			<param value="${originalText.text}" />
+			<method event="ondata" args="value">
+				debug.write('echo result is [' + value + ']');
+			</method>
+		</remotecall>
+		
+		<remotecall name="addAddress" funcname="addAddress">
+		</remotecall>
+		
+		<method name="invokeAddAddress" >
+			var addressParam = new this.proto.PseudoAddress();
+			addressParam.country = "South Africa";
+			addressParam.line1 = "This is line 1 from Laszlo";
+			addressParam.line2 = "This is line 2 from Laszlo";
+			addressParam.line3 = "This is line 3 from Laszlo";
+			addressParam.postalcode = "1234";
+			
+			if (this.handlerDel == null)
+			{
+				this.handlerDel = new LzDelegate(this, 'handler');
+			}
+			
+			Debug.write('Created Proxy: Invoking Add Address ');
+			this.proxy.addAddress([addressParam], this.handlerDel);
+		</method>
+
+		<method name="handler" args="response">
+			debug.write('Got response:', response);
+		</method>
+	</soap>
+	
+	<simplelayout spacing="10" />
+	<button x="10" y="10" text="Get Message">
+		<method event="onclick">
+			debug.write('Invoking get message');
+			canvas.persistence.testGet.invoke();
+		</method>
+	</button>
+	
+	<text x="10" y="40">Enter message:</text><edittext id="originalText" text="this is a test" />
+	<button x="10" y="60" text="Echo me" >
+		<method event="onclick">
+			debug.write('Invoking echo message');
+			canvas.persistence.echo.invoke();
+		</method>
+	</button>
+
+	<button x="10" y="90" text="Add Address" >
+		<method event="onclick">
+			debug.write('Invoking add address message');
+			canvas.persistence.invokeAddAddress();
+		</method>
+	</button>
+
+</canvas>
