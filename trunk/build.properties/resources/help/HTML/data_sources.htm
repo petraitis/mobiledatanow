@@ -1,0 +1,112 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- saved from url=(0029)http://www.helpandmanual.com/ -->
+<head><script type="text/javascript" src="helpman_topicinit.js"></script>
+<!-- Redirect browser to frame page if page is not in the content frame. -->
+<script type="text/javascript">
+<!--
+if(top.frames.length==0) { top.location.href="index.html?data_sources.htm"; }
+else { parent.quicksync('a10'); }
+//-->
+</script>
+<script type="text/javascript" src="highlight.js"></script>
+   <title>Data Sources</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <style>
+          a { color:#27496f; }
+   </style>
+</head>
+<body style="margin: 0px 220px 0px 20px; background: #FFFFFF;" onload="highlight();">
+<div id="hmpopupDiv" style="visibility:hidden; position:absolute; z-index:1000; "></div>
+<br><br>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="white">
+  <tr valign="middle">
+    <td align="left">
+      <p class="p_Heading1"><span class="f_Heading1">Data Sources</span></p>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a style="font-weight:bold; color:#27496f" href="introduction.htm">Top </a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="settings.htm">&laquo; Previous</a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="users__groups.htm">Next &raquo;</a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Connect to a database</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>To connect to a database, enter the details of the database connection in the <span style="font-weight: bold;">New Connection</span> screen.</p>
+<p>&nbsp;</p>
+<p>For this example we'll use the Microsoft Northwind database. Please see <a href="creating_an_odbc_system_data_s.htm">Creating an ODBC System Data Source Name (DSN)</a> to connect to the Northwind database.</p>
+<p>&nbsp;</p>
+<p>The connection fields should be completed as follows:</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">Name:</span> <span style="font-family: 'Courier New';">northwind</span></p>
+<p><span style="font-weight: bold;">Driver:</span> <span style="font-family: 'Courier New';">JDBC:ODBC Bridge</span></p>
+<p><span style="font-weight: bold;">URL:</span> <span style="font-family: 'Courier New';">jdbc:odbc:northwind</span></p>
+<p>Username and Password can be left blank for the Northwind database.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">Note:</span> If you were to use a different database type, the url is formatted differently for each driver, eg:</p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">MySQL </span></p>
+<p><span style="font-weight: bold;">Driver: </span><span style="font-family: 'Courier New';">org.gjt.mm.mysql.Driver (already supplied in driver settings)</span></p>
+<p><span style="font-weight: bold;">URL Format:</span> <span style="font-family: 'Courier New';">jdbc:mysql://[host]:[port]/[database]</span></p>
+<p><span style="font-weight: bold;">eg:</span><span style="font-family: 'Courier New';"> jdbc:mysql://192.168.1.189:3306/business</span></p>
+<p>&nbsp;</p>
+<p>After entering the database connection details, click the <span style="font-weight: bold;">Save </span>button.</p>
+<p>&nbsp;</p>
+<p><img src="data sources - add database.png" width="800" height="593" border="0" alt="Data Sources - Add Database"></p>
+<p>&nbsp;</p>
+<p>After saving the connection, the database tree shows the database name in the tree. In the main work area a list of tables and fields in that database is shown. These details are only to show the database details and are not able to be edited.</p>
+<p>&nbsp;</p>
+<p><img src="data sources - connection.png" width="800" height="595" border="0" alt="Data Sources - Connection"></p>
+<p>&nbsp;</p>
+<p>Expand the tree by clicking on the + expander</p>
+<p>&nbsp;</p>
+<p>This now shows <span style="font-weight: bold;">Connection</span> and <span style="font-weight: bold;">Views</span>. Click on the tree expander next to <span style="font-weight: bold;">Views.</span></p>
+<p>&nbsp;</p>
+<p>Click on <span style="font-weight: bold;">Add View </span></p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Creating a View</span></p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Views</span> are a subset of a database. When a database has many tables and fields, it's helpful to create a View so you only deal with a small part of the total data. </p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p>Lets create a View of the data which contains details about customers</p>
+<p>&nbsp;</p>
+<p>Enter the <span style="font-weight: bold;">View Name</span> as 'Customers' and write a short description.</p>
+<p>&nbsp;</p>
+<p>Tick the tick boxes for each table or field to include in this view, in this case we'll tick the <span style="font-weight: bold;">Customers</span> table, although we could only tick the fields we want to use.</p>
+<p>&nbsp;</p>
+<p><img src="data sources - add view.png" width="800" height="596" border="0" alt="Data Sources - Add View"></p>
+<p>&nbsp;</p>
+<p>The <span style="font-weight: bold;">Field View</span> shows details of each field. You can enter a description of each field if you choose and change the <span style="font-weight: bold;">display name</span> of the field to something more user friendly if the field name might not be easily understood by end users.</p>
+<p>&nbsp;</p>
+<p>Click <span style="font-weight: bold;">Save View</span> to save the view.</p>
+<p>&nbsp;</p>
+<p>Add other Views for different data if you want.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

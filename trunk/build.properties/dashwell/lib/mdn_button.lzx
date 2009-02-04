@@ -1,0 +1,25 @@
+<library>
+	<!--SL:08/28/2006 OLD: include href="incubator/roundrectbutton.lzx"/-->
+	<include href="gui/firetrustroundrectbutton.lzx"/>
+
+	<class name="mdn_button" extends="firetrustroundrectbutton">
+		<attribute name="radius" type="number"/>
+
+		<method event="onradius">
+      //this.changeRadius(this.getAttribute("radius"));
+    </method>
+    
+    <method event="oninit">
+			this.setAttribute("radius", 3);
+			this.setAttribute("height", 22)
+		</method>
+		
+		<method event="onkeydown" args="k">
+      var enterKey = 13;
+      var spaceKey = 32;
+      if (k == 13 || k == 32) {
+          this.onclick.sendEvent();
+      }
+    </method>
+  </class>
+</library>

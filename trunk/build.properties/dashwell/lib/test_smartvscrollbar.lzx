@@ -1,0 +1,122 @@
+<canvas debug="true">
+    <include href="tree/opttree/library.lzx"/>
+    <include href="smartvscrollbar/smartvscrollbar.lzx"/>
+
+    <dataset name="dsFlat">
+        <root>
+            <node name="Fruits" _dragtarget="true"
+                  __OPTTREE_META_open="true">
+                <node name="Apples" _draggable="true">
+                    <node name="Granny Smith" price="0.89" _draggable="true" _fontcolor="green" _font="Verdana" _fontsize="10" _fontstyle="plain"/>
+                    <node name="Fuji" price="1.29" _draggable="true" _fontcolor="red" _font="Arial" _fontsize="12" _fontstyle="italic"/>
+                    <node name="Golden Delicious" price="0.89" _draggable="true" _fontcolor="yellow" _fontsize="14" _fontstyle="bold"/>
+                </node>
+                <node name="Peppers" price="1.39" _draggable="true" />
+                <node name="Oranges" price="1.39" _draggable="true" />
+                <node name="Pears" price="0.59" _draggable="true"  />
+            </node>
+            <node name="Vegetables" _dragtarget="true">
+                <node name="Carrots" price="0.25" />
+                <node name="Potatoes">
+                    <node name="Jersey Potatoes" price="0.99" />
+                    <node name="Idaho Potatoes" price="0.69" />
+                    <node name="King Edward Potatoes" price="1.29" />
+                </node>
+            </node>
+            <node name="Shopping List" _dragtarget="true">
+                <node name="Loo Paper" price="0.99" />
+            </node>
+            <node name="Zeta" _dragtarget="true">
+            </node>
+        </root>
+    </dataset>
+
+    <dataset name="ds">
+        <root>
+            <node name="Apples" _draggable="true"/>
+
+            <node name="Granny Smith" price="0.89" _draggable="true" _fontcolor="green" _font="Verdana" _fontsize="10" _fontstyle="plain"/>
+            <node name="Fuji" price="1.29" _draggable="true" _fontcolor="red" _font="Arial" _fontsize="12" _fontstyle="italic"/>
+            <node name="Golden Delicious" price="0.89" _draggable="true" _fontcolor="yellow" _fontsize="14" _fontstyle="bold"/>
+
+            <node name="Peppers" price="1.39" _draggable="true" />
+            <node name="Oranges" price="1.39" _draggable="true" />
+            <node name="Pears" price="0.59" _draggable="true"  />
+            <node name="Vegetables" _dragtarget="true"/>
+            <node name="Carrots" price="0.25" />
+            <node name="Potatoes"/>
+            <node name="Jersey Potatoes" price="0.99" />
+            <node name="Idaho Potatoes" price="0.69" />
+            <node name="King Edward Potatoes" price="1.29" />
+
+        </root>
+    </dataset>
+
+
+    <simplelayout />
+
+    <view name="outer" height="50" clip="true" bgcolor="yellow">
+        <view name="inner" datapath="ds:/root"
+              width="200" >
+            <simplelayout />
+            <text name="t" datapath="node[1-2]/@name" />
+        </view>
+        <!--
+        <vscrollbar id="vs1"
+                    visible="${((parent.inner.t.clones[0].height * parent.inner.t.clones.length) > parent.height) ? true:false }" />
+        -->
+        <smartvscollbar id="sv1" repmanager="t" />
+    </view>
+    <text text="${outer.inner.t.clones.length}" />
+    <view height="10" />
+
+    <view name="outer2" height="50" clip="true"  bgcolor="yellow">
+        <view name="inner2" datapath="ds:/root"
+              width="200" >
+            <simplelayout />
+            <text name="t" datapath="node[1-3]/@name" />
+        </view>
+        <smartvscollbar id="sv2" repmanager="t" />
+    </view>
+    <text text="${outer2.inner2.t.clones.length}" />
+    <view height="10" />
+
+
+    <view name="outer2a" height="50" clip="true" bgcolor="yellow" >
+        <view name="inner2a" datapath="ds:/root"
+              width="200" >
+            <simplelayout />
+            <text name="t" datapath="node[1-4]/@name" onclick="Debug.write(this)" />
+        </view>
+        <smartvscollbar repmanager="t" />
+    </view>
+    <text text="${outer2a.inner2a.t.clones.length}" />
+    <view height="10" />
+
+
+    <view name="outer3" height="50" clip="true"  bgcolor="yellow">
+        <view name="inner3" datapath="ds:/root"
+              width="200" >
+            <simplelayout />
+            <text name="t" datapath="node/@name" />
+        </view>
+        <smartvscollbar repmanager="t" />
+    </view>
+    <text text="${outer3.inner3.t.clones.length}" />
+    <view height="10" />
+
+    <window title="dragtree" x="250"
+            height="245" width="220" resizable="true">
+      <view width="200" height="200" clip="true">
+        <opttree id="main" datapath="dsFlat:/root"
+                nodepath="node" nodeclass="sharedtreenode"                 
+                multiselect="true"
+                width="100%">
+            <method name="updateHierarchy" args="p">
+                //update the model
+            </method>
+        </opttree>
+        <smartvscollbar id="treesb" repmanager="nodeinst" />
+      </view>
+    </window>
+</canvas>

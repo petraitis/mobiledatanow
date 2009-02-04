@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<canvas debug="true">
+<include href="fileupload.lzx"/>
+
+	<fileUpload name="myFileUpload">
+		<method name="onComplete" args="fr"><![CDATA[
+			canvas.progressBar.setValue(100);
+			canvas.upload.setAttribute('enabled', false);
+		]]>
+		</method>
+
+		<method name="onProgress" args="fr, bytesLoaded, bytesTotal"><![CDATA[
+			canvas.progressBar.setValue(bytesLoaded * 100 / bytesTotal);
+		]]>
+		</method>
+
+		<method name="onSelect" args="fr"><![CDATA[
+			canvas.txtFile.setText(getName());
+			canvas.upload.setAttribute('enabled', true);
+		]]>
+		</method>
+	</fileUpload>
+	
+	<edittext x="10" y="10" width="200" name="txtFile" enabled="false"/>
+
+	<button x="210" y="11" text="Browse...">
+		<method event="onclick"><![CDATA[
+			myFileUpload.browse();
+			canvas.progressBar.setValue(0);
+		]]>
+		</method>
+	</button>
+
+	<button name="upload" x="290" y="11" text="Upload" enabled="false">
+		<method event="onclick"><![CDATA[
+			myFileUpload.upload('http:file'); // TODO Needs to be passed in as an external parameter.
+		]]>
+		</method>
+	</button>
+
+	<view name="progressBar" x="356" y="11" width="50" height="24" bgcolor="#666666">
+		<view x="1" y="1" width="48" height="22" bgcolor="#FFFFFF"/>
+		<view name="status" x="1" y="1" height="22" bgcolor="#BBBBFF"/>
+		<text name="percent" x="5" y="3" fontstyle="bold" fgcolor="#6666FF"/>
+
+		<method name="setValue" args="value"><![CDATA[
+			status.setAttribute('width', value * 48 / 100);
+			percent.setText(Math.round(value) + '%');
+		]]>
+		</method>
+	</view>
+</canvas>

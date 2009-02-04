@@ -1,0 +1,107 @@
+<canvas bgcolor="#EAEAEA" width="100%" height="100%" debug="true">
+<!--Xiaowen edited 
+  Make sure to declare extends attribute, if the class is extending from some component!
+-->
+
+	<class name="ProjectIDConstants" />
+	<ProjectIDConstants id="projectIDConstants"/>
+
+
+    <!--
+    Wen: Merge two class to one, since the content dissaper issue doesn't occur in OL3.4
+    -->
+    <class name="tab1" extends="tabpane">
+	    <attribute name="currProjectId"/>
+	    <simplelayout spacing="5"/>
+		 <button>stuff
+	    	<method event="onclick">
+	    		
+	    		//HERE DOES NOT WORK!!!!!!!!!!!!!!!!!!!!
+	    		
+	    		Debug.write("currProjectId", classroot.currProjectId);
+	    	</method>			 
+		 </button>
+		 <radiogroup>
+		     <radiobutton>test</radiobutton>
+		     <radiobutton>other</radiobutton>		     
+	     </radiogroup>
+    </class>
+    
+<!--Xiaowen edited -->       
+ 		
+	<class name="tab3content">
+		<view>
+		    <tabs x="5" height="150" width="300">
+		        <tabpane>stuff
+		            <simplelayout spacing="5"/>
+		            <button>stuff</button>
+		            <radiogroup>
+		                <radiobutton>test</radiobutton>
+		                <radiobutton>other</radiobutton>
+		            </radiogroup>
+		        </tabpane>
+		        
+		        <tabpane>more
+		            <button>more</button>
+		        </tabpane>
+		    </tabs>			
+		</view>
+	</class>
+
+   <view x="20" y="20" width="${canvas.width/2}" height="${canvas.height/2}"> 
+    <simplelayout spacing="10"/>
+
+    <tabs id="t1" x="5" _contentWidth="${immediateparent.width}" _contentHeight="${immediateparent.height}">
+    	<!-- an array which refer to all new tabpanes-->
+        <attribute name="newtappaneArray" value="new Array()"/>
+        <!-- for counting projectID
+             wen: might be better that define this constant to belong to tab t1
+        -->
+        <attribute name="projectIDConstants" value="0"/>
+		<tab1/>
+        
+        <tabpane id="p2" selected="true" >Pane 2
+            <view width="${parent.width-20}" height="${parent.height-40}" bgcolor="yellow">
+            	<text text="this view constrained to parent tabpane"/>
+            	
+	            <simplelayout spacing="5"/>
+	            <button>faster</button>
+	            <radiogroup>
+	                <radiobutton>Curt</radiobutton>
+	                <radiobutton>Prefer fairly wordy</radiobutton>
+	                <radiobutton>I really prefer lots of extra words and fluff in my selections</radiobutton>
+	            </radiogroup>
+            </view>
+        </tabpane>
+        
+        <tabpane id="p3" text="Pane 3" inset_left="10" inset_top="10" inset_bottom="10" inset_right="10">
+			<tab3content/>
+        </tabpane>
+        
+    </tabs>
+    <button>
+    	add one more tab1
+	    <method event="oninit">
+	    	//Avoid using global variables~(projectIDConstants)
+	        //projectIDConstants = 0;
+	        //Debug.write("currProjectId in button initial", projectIDConstants);
+	    </method> 
+    	<method event="onclick">
+    		var i=new tab1(t1,{bgcolor:'0xffffff',text:'newTab',currProjectId:t1.projectIDConstants++});
+    		// save this instance to the array
+    		t1.newtappaneArray[t1.newtappaneArray.length]=i;
+    		
+    	</method>
+    </button>
+    <button>list all new tabspane's information
+        <handler name="onclick">
+        	for(i in t1.newtappaneArray){
+        		Debug.write("tabpane number:",i," --->currProjectId:",t1.newtappaneArray[i].currProjectId);
+        	}
+        </handler>
+    	
+    </button>
+  </view>
+</canvas>
+
+

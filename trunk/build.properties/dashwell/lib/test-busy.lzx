@@ -1,0 +1,74 @@
+<canvas debug="true">
+    <include href="busybanner.lzx"/>
+    <busybanner name="bb1" x="100" y="5"/>
+    <button text="start replicate" 
+            x="200">
+        <handler name="onclick">
+           canvas.bb1.open();
+           this.fireDelegate = new LzDelegate( this, "inittext" );
+           LzTimer.addTimer( this.fireDelegate, 100 );
+        </handler>
+        <method name="inittext">
+           texts.completeInstantiation();
+        </method>
+    </button>
+    <dataset name="tabnames" src="testdata.lzx"/>
+     
+    <view name="texts" initstage="defer">
+        <simplelayout axis="y" spacing="2" />
+        <text initstage="defer">
+            <handler name="ondata"/>
+            <datapath xpath="tabnames:/titles/title/@name">
+                <handler name="onclones">
+                	Debug.write("++++++++++++++++++++++++++++++++++");
+                    var lastClone = clones[clones.length - 1];
+                    if (!this['del']) {
+                        this.del = new LzDelegate(this,"replicationDone");
+                        this.del.register(lastClone, "ontext");
+                    }
+                </handler>
+                <method name="replicationDone">
+                    Debug.write("Replication Done!");
+                    canvas.bb1.close();
+                </method>
+            </datapath>
+        </text>       
+    </view>
+
+</canvas>
+
+<!--
+    <busybanner id="bb1" x="100" y="5"/>
+    <button text="start replicate" 
+            x="200">
+        <handler name="onclick">
+           bb1.open();
+           this.fireDelegate = new LzDelegate( this, "inittext" );
+           LzTimer.addTimer( this.fireDelegate, 100 );
+        </handler>
+        <method name="inittext">
+           texts.completeInstantiation();
+        </method>
+    </button>
+     
+    <view id="texts" initstage="defer">
+        <simplelayout axis="y" spacing="2" />
+        <text initstage="defer">
+            <handler name="ondata"/>
+            <datapath xpath="dbMsg:/root/query/@name">
+                <handler name="onclones">
+                	Debug.write("heaaaaaaaar====================");
+                    var lastClone = clones[clones.length - 1];
+                    if (!this['del']) {
+                        this.del = new LzDelegate(this,"replicationDone");
+                        this.del.register(lastClone, "ontext");
+                    }
+                </handler>
+                <method name="replicationDone">
+                    Debug.write("Replication Done!");
+                    bb1.close();
+                </method>
+            </datapath>
+        </text>       
+    </view>
+-->

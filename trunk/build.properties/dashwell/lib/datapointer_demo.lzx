@@ -1,0 +1,39 @@
+<canvas debug="true">
+    <dataset name="test">
+         <node1 field="Customer">
+                <subnode field="Age" />
+                <subnode field="First Name" />
+                <subnode field="Last Name" />
+                <subnode field="Middle Name" />
+        </node1>
+        <node2 field="Order">
+                <subnode field="hi" field2="Order Number" />
+                <subnode field="Order Item" />
+        </node2>
+        <node3 field="Address">
+                <subnode field="House Number" />
+                <subnode field="Street" />
+                <subnode field="Suburb" />
+                <subnode field="Zip" />
+                <subnode field="Postal" />
+                <subnode field="City" />
+                <subnode field="Country" />
+        </node3>
+        <node4 field="Invoice Number"/>
+    </dataset>
+
+    <datapointer name="dp" xpath="test:/" ondata="processData()">
+        <method name="processData">
+            Debug.write("the name of the dataset: ", this.getNodeName());
+            this.selectChild();
+            Debug.write("first node's name: ", this.getNodeName());
+            Debug.write("the value of the attribute 'field': ", this.getNodeAttribute("field"));
+            //select the next sibling
+            this.selectNext();
+            this.selectChild();
+            Debug.write("the second node's name: ", this.getNodeName());
+            Debug.write("the value of the attribute 'field': ", this.getNodeAttribute("field2"));
+        </method>
+    </datapointer>
+</canvas>
+

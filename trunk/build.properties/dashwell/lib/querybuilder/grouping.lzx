@@ -1,0 +1,28 @@
+<library>
+	<class name="grouping" extends="listitem">
+		<simplelayout axis="x" spacing="2"/>
+		<attribute name="groupingDatapath"/>
+		<method event="ongroupingDatapath">
+			//datapath="qb_query_builder:/root/comps/group-explain/@first"
+			this.txtFirst.setAttribute("datapath", this.groupingDatapath + "root/comps/group-explain/@first");
+			//datapath="qb_query_builder:/root/comps/group-explain/@second"
+			this.txtSecond.setAttribute("datapath", this.groupingDatapath + "root/comps/group-explain/@second");
+		</method>
+		
+		<method event="onclick">
+	    	parent._qb_controller.listVisibility();
+	  	</method>
+		
+		<text name="txtFirst"  resize="true" selectable="false"/><!-- datapath="qb_query_builder:/root/comps/group-explain/@first" -->
+		<text name="condition2" text="all" fgcolor="blue" resize="true" selectable="true">
+			<method event="onclick">
+				classroot.parent._qb_grouping_list.completeInstantiation();
+				classroot.parent._qb_controller.listVisibility();
+				classroot.parent._qb_grouping_list.setAttribute("isGlobal", true);
+				classroot.parent._qb_grouping_list.setAttachTarget(this);
+    			classroot.parent._qb_grouping_list.setVisible(true);
+			</method>
+		</text>
+		<text name="txtSecond"  resize="true" selectable="false"/><!-- datapath="qb_query_builder:/root/comps/group-explain/@second" -->
+  </class>
+</library>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<!-- wsl.fw help map file -->
+
+<map version="1.0">
+    <mapID target="fw.contents"                            url="index.html" />
+    <mapID target="fw.gui.SelectPanel"                     url="SelectPanel.html" />
+    <mapID target="fw.gui.MaintenancePanels"               url="MaintenancePanel.html" />
+    <mapID target="fw.gui.MaintenancePanel"                url="MaintenancePanel.html#Maintenance" />
+    <mapID target="fw.gui.OKCancelPanel"                   url="MaintenancePanel.html#OKCancel" />
+    <mapID target="fw.gui.OKPanel"                         url="MaintenancePanel.html#OK" />
+    <mapID target="fw.gui.WslWizardPanel"                  url="WizardPanel.html" />
+    <mapID target="fw.gui.ListMaintenancePanel"            url="MaintenancePanel.html#List" />
+    <mapID target="fw.security.gui.UserTabPane"            url="UserGroupMaintenance.html#UserMaint" />
+    <mapID target="fw.security.gui.GroupTabPane"           url="UserGroupMaintenance.html#GroupMaint" />
+    <mapID target="fw.security.gui.ChangePasswordPanel"    url="ChangePasswordPanel.html" />
+    <mapID target="fw.security.gui.FeaturePropertiesPanel" url="UserGroupMaintenance.html#Feature" />
+    <mapID target="fw.security.gui.LoginPanel"             url="LoginPanel.html" />
+    <mapID target="fw.security.gui.UserPropertiesPanel"    url="UserGroupMaintenance.html#User" />
+    <mapID target="fw.security.gui.GroupPropertiesPanel"   url="UserGroupMaintenance.html#Group" />
+</map>

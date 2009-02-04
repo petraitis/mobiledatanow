@@ -1,0 +1,168 @@
+<canvas debug="true" height="800" width="1000">
+	<include href="../ftgrid.lzx" />
+    <debug x="280" width="470" height="370" />
+    <dataset name="googleDset" />
+    <dataset name="db_query_result"/>
+    <datapointer name="dp"/>
+    
+	<script><![CDATA[
+	
+		/*
+		 * export the text of datapath:/item[i]/target to returned array
+		*/
+		function exportText(datapointer, datapath){
+			var savearray = new Array();
+			datapointer.setAttribute('xpath',datapath);
+			var nodecount=datapointer.getNodeCount();
+			datapointer.selectChild();
+			for(var i=0;i<nodecount;i++){
+			    savearray[i] = getChildText(datapointer);
+			    datapointer.selectNext();
+			}
+			datapointer.selectParent();
+			return savearray;
+		}
+		
+		/*
+		 * get text from child node which name = childtagname
+		*/
+		function getChildText(datapointer){
+		    datapointer.selectChild();
+		    //while(1){
+		    //    if(datapointer.getNodeName()==childtagname) break;
+		        datapointer.selectNext();
+		    //}
+		    var nodetext = datapointer.getNodeText();
+		    datapointer.selectParent();
+		    return nodetext;
+		}
+		
+		/*
+	     * get numbers of tag which name = tagname
+		*/
+		function getTagNum(datapointer, datapath, tagname){
+			var tagcount=0;
+			datapointer.setAttribute('xpath',datapath);
+			var nodecount=datapointer.getNodeCount();
+			datapointer.selectChild();
+			for(var i=0;i<nodecount;i++){
+			    if(datapointer.getNodeName()==tagname){
+			        tagcount++;
+			    }
+			    datapointer.selectNext();
+			}
+			return tagcount;
+		}
+
+		function getTagNum(datapointer, datapath){
+			var tagcount=0;
+			datapointer.setAttribute('xpath',datapath);
+			var nodecount=datapointer.getNodeCount();
+			Debug.write("nodecount", nodecount);
+			
+			datapointer.selectChild();
+			for(var i=0;i<nodecount;i++){
+			    tagcount++;
+			    datapointer.selectNext();
+			}
+			return tagcount;
+		}
+		]]>
+	</script>	
+
+    <soap name="google" wsdl="http://api.google.com/GoogleSearch.wsdl"
+          secure="true" secureport="8443">
+
+        <method event="onload">
+            Debug.write('google soap service stub loaded');
+        </method>
+
+        <method event="onerror" args="error">
+            Debug.write('error:', error);
+        </method>
+
+        <remotecall name="search" funcname="doGoogleSearch" 
+                    dataobject="googleDset">
+
+            <param value="'2TKUw4ZQFHJ84ByemZK0EXV0Lj+7xGOx'" />
+            <param value="'sweet'" />
+            <param value="1" />
+            <param value="10" />
+            <param value="true" />
+            <param value="''" />
+            <param value="true" />
+            <param value="''" />
+            <param value="''" />
+            <param value="''" />
+
+            <method event="ondata" args="value">
+            <![CDATA[    
+					this.n = new LzDataElement('dataset', {name: 'db_query_result'});
+					this.metadata = new LzDataElement('metadata');
+                    db_query_result.appendChild(this.metadata);
+
+                    //get the number of tag <item> within googleDset:/resultElements
+                    var itemcount = getTagNum(dp,"googleDset:/");
+					//var itemcount=dp.getNodeCount();
+					//Debug.write("nodecount", nodecount);                    
+                    Debug.write("itemcount", itemcount);
+            		
+            		for (var i=0; i<itemcount;i++){
+            			this.metadata.appendChild(new LzDataElement('column', {name:"column", display:"  Title" + i + "  ", editable:"false", resizable:"true"}));
+            		
+            		}
+            		//this.metadata.appendChild(new LzDataElement('column', {name:"snippet", display:"      Snippet      ", editable:"false", resizable:"true"}));
+            		//this.metadata.appendChild(new LzDataElement('column', {name:"URL", display:"      URL      ", editable:"false", resizable:"true"}));
+            		
+            		this.resultset = new LzDataElement('resultset');
+                    db_query_result.appendChild(this.resultset);
+					
+
+                    
+                    //inject the text of googleDset:/resultElements/item[i]/title to array title, so do snippet and url.
+                    var title = exportText(dp,"googleDset:/");
+                    //var snippet = exportText(dp,"googleDset:/");
+                    //var url = exportText(dp,"googleDset:/");
+                    
+                    //append new dataElement based on each arrays
+                    for(var i=0;i<itemcount;i++){
+                        var rowtag = new LzDataElement('row');
+                        this.resultset.appendChild(rowtag);
+                        var titletag = new LzDataElement('column', {value: title[i]});
+                        //var snippettag = new LzDataElement('snippet', {value: snippet[i]});
+                        //var urltag = new LzDataElement('URL', {value: url[i]});
+                        rowtag.appendChild(titletag);
+                        rowtag.appendChild(snippettag);
+                        rowtag.appendChild(urltag);
+                    }
+                    
+                    //start initialize gridview
+					gridview.completeInstantiation();
+
+			]]>							                
+            </method>
+
+        </remotecall>
+    </soap>
+
+    <view layout="spacing: 5" >
+        <button text="search" onclick="google.search.invoke()" />
+        <view bgcolor="yellow">
+            <simplelayout axis="y" spacing="10"/>
+            <view id="gridview" layout="axis: y" initstage="defer">
+			    <text text="Grid" />
+			    <ftdynamicgrid datapath="db_query_result:/"
+			                   contentdatapath="resultset/row"
+			                   metadatapath="metadata/column"
+			                   height="425" rowheight="30"
+			                   >
+			    </ftdynamicgrid> 
+		    </view>           
+        </view>
+    </view>
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2001-2004 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+</canvas>
+

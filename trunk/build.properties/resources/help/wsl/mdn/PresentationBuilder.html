@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Presentation Builder
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<a name="PresBuilder"><font size="+4">Presentation Builder</font></a>
+<p>
+The Presentation Builder allows you to build the menus and information that is
+presented to the mobile users of Mobile Data Now.
+Select <i>Presentation Builder</i> from the <i>Maintain</i> menu or click the
+Presentation Builder button of MDN Administrator. The following screen will
+be displayed:
+<p>
+<img src="images/PresentationBuilder.gif">
+<p>
+
+The Presentation Builder screen displays the presentation items in a tree. Each
+type of item in the tree has a different icon. Double click an item in the
+tree to expand or collapse the item.
+<p>
+There are three top level elements in the tree:<br>
+<a href="#LoginSettings">Login Settings</a> controls the initial text displayed
+to a WAP user when they log in MDN.<br>
+<a href="#GroupMenus">Group Menus</a> contains the menus for each
+<a href="UserGroup.html">group</a>.<br>
+<a href="#TemplateMenus">Template Menus</a> contains menus and submenus that do
+not belong to a group but can be used as a template for a group's menu by
+copying them into the group's menu and then modifying to suit.
+<p>
+The Presentation builder has the following buttons:<br>
+<a href="#AddMenu">Add Menu</a><br>
+<a href="#AddText">Add Text</a><br>
+<a href="#AddNew">Add New</a><br>
+<a href="#AddQuery">Add Query</a><br>
+<a href="#Delete">Delete</a><br>
+<a href="#CopyPaste">Copy</a><br>
+<a href="#CopyPaste">Paste</a><br>
+<a href="#Move">Move Up</a><br>
+<a href="#Move">Move Down</a><br>
+<a href="#Properties">Properties</a>
+<p>
+You use these buttons and the screens they display to <a href="#Build">build</a>
+menus for each group of WAP users.
+
+
+<p><br><a name="LoginSettings"><font size="+3">Login Settings</font></a>
+<p>
+Login Settings specify what MDN does when the a mobile user first logs in. To
+modify Login Settings select the Login Settings icon in the Presentation Builder
+and click the <b>Properties</b> button. The following screen will be displayed:
+<p>
+<img src="images/LoginSettings.gif">
+<p>
+If the <b>Use Splashscreen</b> checkbox is checked then Mobile Data Now will
+present a <i>Welcome</i> splashscreen to a user logging in.
+It will have the title specified by <b>Splashscreen Title</b> and a welcome
+message specified by <b>Splashscreen Text</b>.
+<p>
+<b>Login Screen Title</b> specifies the title of the Login page and
+<b>Login Screen Text</b> specifies the text for that screen.<br>
+<b>Username Prompt</b> specifies the prompt that will preceded the User Name
+field on the login screen.
+<p>
+If the <b>Require Password</b> box is checked then MDN will require a password
+to be entered by the mobile user. <b>Password Prompt</b> specifies the prompt
+that will precede the Password field.
+<p>
+<b>Logout Title</b> and <b>Logout Text</b> specify the title and text shown on
+the Logout screen that is displayed after a user has logged out.
+
+<p><br><a name="GroupMenus"><font size="+3">Group Menus</font></a>
+<p>
+Once a User has logged in to MDN they are presented with the Menus of the
+<a href="UserGroup.html">Groups</a> to which they belong.
+<br>
+The Group Menus icon in the Presentation Builder tree contains an icon for each
+User Group beneath it. Each of these contains the hierarchical menu structure
+that is available to users of that group. If a User belongs to more than
+Group then all of these Group menus are displayed on login. See
+<a href="#Build">Building Menus</a> below for instructions on building menus.
+
+<p><br><a name="TemplateMenus"><font size="+3">Template Menus</font></a>
+<p>
+Template Menus are menus the do not belong to a group but can be used as a
+template for a group's menu by <a href="#CopyPaste">copying</a> them into the
+group's menu and then modifying to suit. Template menus are built in the same way
+as normal group menus.<br>
+See <a href="#Build">Building Menus</a> below for instructions on building menus.
+
+<p><br><a name="Build"><font size="+3">Building Menus</font></a>
+<p>
+This section describes how to build <a href="#GroupMenus">Group</a> and
+<a href="#TemplateMenus">Template</a> menus.<br>
+To add an item to a menu, simply select the parent menu
+element in the tree and click one of the <b>Add ...</b> buttons.
+
+<p><br><a name="AddText"><font size="+2"><b>Add Text</b></font></a>
+<p>
+The <b>Add Text</b> button allows you to add Text, a URL, or a Phone Number to a
+menu. Clicking this button will display the following screen:
+<p>
+<img src="images/AddText.gif">
+<p>
+<b>Name</b> specifies the name of the menu item as it is to appear on the menu.
+<br>
+<b>Description</b> is a textual description of the item for your reference.
+<br>
+By selecting the <b>Phone Number</b> radio button you are able to then enter a
+Phone Number in the field below.
+If the mobile user then selects this item then that Phone Number will be dialled
+on the mobile device.
+<br>
+By selecting the <b>URL</b> radio button you are able to then enter a URL in the
+field below. If the mobile user then selects this item then the mobile device
+will browse to that URL.
+
+<p><br><a name="AddMenu"><font size="+2"><b>Add Menu</b></font></a>
+<p>
+The <b>Add Menu</b> button allows you to add a new submenu. Clicking this button
+will display the following screen:
+<p>
+<img src="images/AddMenu.gif">
+<p>
+<b>Name</b> specifies the name of the menu item as it appears on the menu.
+<br>
+<b>Description</b> is a textual description of the item for your reference.
+
+<p><br><a name="AddNew"><font size="+2"><b>Add New</b></font></a>
+<p>
+The <b>Add New</b> button allows you to add a new record to a view. Clicking
+this button will display the following screen:
+<p>
+<img src="images/AddNew.gif">
+<p>
+<b>Name</b> specifies the name of the menu item as it appears on the menu.
+<br>
+<b>Description</b> is a textual description of the item for your reference.
+<br>
+<b>Data Store</b> allows you to select the Data Store to add a record to.
+<br>
+<b>Data View</b> allows you to select the View that the new record will be
+inserted into.
+
+<p><br><a name="AddQuery"><font size="+2"><b>Add Query</b></font></a>
+<p>
+The <b>Add Query</b> button allows you to add a new
+<a href="ViewQuery.html#Query">query</a> to the menu. This action will allow the
+mobile user to execute the indicated query and view the results.<br>
+Clicking <b>Add Query</b> button will display the following screen:
+<p>
+<img src="images/AddQuery.gif">
+<p>
+<b>Name</b> specifies the name of the menu item as it appears on the menu.
+<br>
+<b>Description</b> is a textual description of the item for your reference.
+<br>
+<b>Data Store</b> allows you to select the Data Store that the query belongs to.
+<br>
+<b>Data View</b> allows you to select the View that the query belongs to.
+<br>
+<b>Query</b> allows you to select the query you wish to add to the menu.
+
+<p><br><font size="+2"><b>Drill-down Queries</b></font>
+<p>
+You are able to add a Query as a sub-item of another query. This creates a
+drill-down query with the following behaviour:
+<br>
+A user creates a drill-down query where the parent query is All Product
+Categories and the sub-query is All Products. Note that there must be a
+relationships the appropriate tables (i.e. Product and Product Category) in the
+<a href="DataStores.html#Relationships">Data Store Relationships</a>.
+<br>
+1. The user executes the parent query (i.e. Product Categories).
+<br>
+2. The results of that query are displayed (i.e. All Product Categories).
+<br>
+3. The user selects one of the Product Categories.
+<br>
+4. The sub-query (All Products) is executed for that particular Product Category.
+<br>
+5. A list of Products belonging to that Product Category are displayed.
+<br>
+6. The user clicks on a Product.
+<br>
+7. The properties of that record are displayed as usual.
+<p>
+You are able to nest drill-down queries to any level that is desired.
+
+<p><br><a name="Move"><font size="+2"><b>Move Up and Move Down</b></font></a>
+<p>
+You are able to change the order of child menu items within their parent menu
+item. Simply select the item and click either the <b>Move Up</b> or
+<b>Move Down</b> button.
+
+<p><br><a name="CopyPaste"><font size="+2"><b>Copy and Paste</b></font></a>
+<p>
+You are able to copy menu items or entire sub-menus and paste them onto another
+menu item anywhere in the Presentation Builder tree. Simply select the menu item
+or sub-menu you wish to copy and press the <b>Copy</b> button.
+Then select the target parent menu item that you wish to paste the sub-menu to
+and press the <b>Paste</b> button.
+<br>
+The menu that you have selected and all of its child elements will be copied and
+pasted to the selected location. This creates a separate <i>copy</i> of the menu
+items. Any changes in the source menu item will not affect the copy and
+vice-versa.
+
+<p><br><a name="Properties"><font size="+2"><b>Properties</b></font></a>
+<p>
+If a menu item or <a href="#LoginSettings">Login Settings</a> is selected
+pressing the <b>Properties</b> button will display the appropriate properties
+screen to edit that item.
+
+<p><br><a name="Delete"><font size="+2"><b>Delete</b></font></a>
+<p>
+If a menu item is selected pressing the <b>Delete</b> button will remove
+that item and any sub-items.
+
+
+</BODY>
+</HTML>
+

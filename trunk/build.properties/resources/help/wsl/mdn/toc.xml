@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+
+<tocitem text="Mobile Data Now Administrator" target="mdn.admin.contents">
+    <tocitem text="How To"                target="mdn.doc.howTo">                           </tocitem>
+    <tocitem text="Data Stores"           target="mdn.admin.MaintainDataSourcesPanel">      </tocitem>
+    <tocitem text="Views and Queries"     target="mdn.admin.MaintainDataViewsPanel">        </tocitem>
+    <tocitem text="Users and Groups"      target="mdn.admin.DataViewPermissionsTabPane">    </tocitem>
+    <tocitem text="Presentation Builder"  target="mdn.guiconfig.PresentationBuilderPanel">  </tocitem>
+    <tocitem text="Data Transfers"        target="mdn.admin.MaintainDataTransfersPanel">    </tocitem>
+    <tocitem text="Schedule"              target="mdn.admin.MaintainTransferSchedulePanel"> </tocitem>
+    <tocitem text="Mirror Data Stores"    target="mdn.admin.JdbcPropPanel">                 </tocitem>
+    <tocitem text="JDBC Drivers"          target="mdn.admin.JdbcDriverPropPanel">           </tocitem>
+</tocitem>
+<tocitem text="Definitions and Terminology" target="mdn.doc.definitions"> </tocitem>
+<tocitem text="Mobile Data Now Licensing"   target="mdn.licence.MdnLicenceManager"> </tocitem>
+<tocitem text="Licence Agreement"           target="mdn.doc.eula"> </tocitem>
+
+</toc>
+

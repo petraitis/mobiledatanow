@@ -1,0 +1,40 @@
+<HTML>
+<BODY>
+<h1>SimpleImporter</H1>
+<b>Simple</b> and <b>fast</b> importer for XML configuration or import files.
+<br>
+It is based on SAX and can be considered an extension to it. This means it is
+callback oriented and does not build an internal data structure like the DOM.
+While SAX is simple, fast, and memory friendly it might be a bit too 
+rudimentary for most tasks. <code>SimpleImporter</code> adds more high level
+means for importing XML while preserving the SAX's benefits. These are the 
+main extensions to the SAX:<br>
+<ol>
+<li><em>Every callback includes a full path to the XML element</em>: In many 
+cases this will make maintaining local stacks for keeping track of element
+histories obsolete.
+<li><em>Leading character data can be included into start element callback</em>: 
+In many cases import files do not or only rarely contain mixed content. If so
+it is convenient to have the the full content of an element at hand with a 
+single callback.
+<li><em>More than one listener can be registered</em>: Some XML files contain
+different types of data that may be interesting to different listeners. E.g.
+data to import from a server may contain error messages along with the real
+content data. It may be convenient to
+processes these blocks of data seperately.
+</ol>
+<br>
+Even though the DOM in combination with XPath can not to be beaten in the 
+area of convenience, I consider it a good compromise between convenience,
+simplicity and speed. 
+<br>
+<br>
+<code>SimpleImporter</code> is meant as a replacement for non-XML oriented 
+tools like <code>digester</code> from the apache pepole and similar ones.
+So, if you are satisfied with these tools, stick to them, forget about 
+<code>SimpleImporter</code>. But if you are familiar with XML and prefer 
+simple and explicite tools, try <code>SimpleImporter</code>.
+<br>
+
+</BODY>
+</HTML>

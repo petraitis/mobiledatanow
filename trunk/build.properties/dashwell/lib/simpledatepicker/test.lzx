@@ -1,0 +1,16 @@
+<canvas width="100%" height="100%" debug="true" >
+
+	<include href="my/SimpleDatepicker.lzx"/>
+	<debug x="5" y="250" />
+
+	<SimpleDatepicker id="cal" x="100" y="80">
+		<method event="onselecteddate" args="d">
+			Debug.write(d)
+			this.close()
+		</method>
+	</SimpleDatepicker>
+
+	<button x="8" y="8"  onclick="cal.open()">open calendar</button>
+	<button x="8" y="38" onclick="cal.open(2006, 6, 23)">open calendar with specific date</button>
+
+</canvas>

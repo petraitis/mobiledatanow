@@ -1,0 +1,79 @@
+<library>
+    <class name="checktree" extends="opttree"
+           selectable="false">
+        <attribute name="oncheck" value="null" />
+        <method event="oncheck" />
+
+        <attribute name="oncheckselect" value="null" />
+        <method event="oncheckselect" />
+
+        <attribute name="oncheckdeselect" value="null" />
+        <method event="oncheckdeselect" />
+
+        <attribute name="_checkednodes" value="$once{new Array()}" />
+
+        <!-- TODO: When (in 3.2) we have the new events syntax, we'll
+                   be able to send an argument with a delegate-
+                   triggered event, so we won't have to use three
+                   recursivedrillers here -->
+        <recursivedriller name="drillDownClear_dp" />
+        <recursivedriller name="drillDownCheck_dp" />
+        <recursivedriller name="drillDownGet_dp" />
+
+        <method name="handleCheck" args="checkedView">
+            this.oncheck.sendEvent(checkedView.datapath.p);
+            var checkedXMLAttribute =checkedView.datapath.p.getAttr("_checked");
+            if (checkedXMLAttribute=="true") {
+                this.oncheckselect.sendEvent(checkedView.datapath.p);
+            } else if (checkedXMLAttribute=="false") {
+                this.oncheckdeselect.sendEvent(checkedView.datapath.p);
+            }
+
+            
+            if (checkedView.datapath.p.childNodes) {
+                if (checkedXMLAttribute=="true") {
+                    drillDownCheck_dp.setStart(checkedView.datapath.p.childNodes[0]);
+                    drillDownCheck_dp.drillDown(null);
+                }  else {
+                    drillDownClear_dp.setStart(checkedView.datapath.p.childNodes[0]);
+                    drillDownClear_dp.drillDown(null);
+                }
+            }
+        </method>
+
+        <method name="clearAll">
+            drillDownClear_dp.setStart(this.datapath.p);
+            drillDownClear_dp.drillDown(null);
+        </method>
+
+        <method name="checkAll">
+            drillDownCheck_dp.setStart(this.datapath.p);
+            drillDownCheck_dp.drillDown(null);
+        </method>
+
+        <method name="getAllCheckedNodes">
+            this._checkednodes = new Array();
+            drillDownGet_dp.setStart(this.datapath.p);
+            drillDownGet_dp.drillDown(null);
+            return this._checkednodes;
+        </method>
+
+        <method name="_clearerParseHandler" event="onnode" args="n"
+                reference="drillDownClear_dp">
+            n.setAttr("_checked","false");
+        </method>
+
+        <method name="_checkerParseHandler" event="onnode" args="n"
+                reference="drillDownCheck_dp">
+            n.setAttr("_checked","true");
+        </method>
+
+        <method name="_getParseHandler" event="onnode" args="n"
+                reference="drillDownGet_dp">
+            if (n.getAttr("_checked")=="true") {
+                this._checkednodes.push(n);
+            }
+        </method>
+
+    </class>
+</library>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--JBuilder XML Project-->
+<project>
+  <property category="debug.0" name="SmartStepRedefineClasses" value="0"/>
+  <property category="debug.0" name="SmartStepSkipStaticInitializers" value="0"/>
+  <property category="debug.0" name="SmartStepSkipSynthetics" value="0"/>
+  <property category="sys" name="AuthorLabel" value="@author"/>
+  <property category="sys" name="BackupPath" value="../../../../build/bak"/>
+  <property category="sys" name="CheckStable" value="1"/>
+  <property category="sys" name="Company" value=""/>
+  <property category="sys" name="CompanyLabel" value="Company:"/>
+  <property category="sys" name="Copyright" value="Copyright (c) 2002"/>
+  <property category="sys" name="CopyrightLabel" value="Copyright:"/>
+  <property category="sys" name="DefaultPath" value="../../../"/>
+  <property category="sys" name="Description" value=""/>
+  <property category="sys" name="DescriptionLabel" value="Description:"/>
+  <property category="sys" name="DocPath" value=""/>
+  <property category="sys" name="ExcludeClassEnabled" value="0"/>
+  <property category="sys" name="IncludeTestPath" value="1"/>
+  <property category="sys" name="JDK" value="java 1.3.1-b24"/>
+  <property category="sys" name="LastTag" value="0"/>
+  <property category="sys" name="Libraries" value="fw-support-lib"/>
+  <property category="sys" name="MakeStable" value="0"/>
+  <property category="sys" name="OutPath" value="../../../../build/classes"/>
+  <property category="sys" name="SourcePath" value="../../../"/>
+  <property category="sys" name="TestPath" value="../../../"/>
+  <property category="sys" name="Title" value=""/>
+  <property category="sys" name="TitleLabel" value="Title:"/>
+  <property category="sys" name="Version" value="1.0"/>
+  <property category="sys" name="VersionLabel" value="@version"/>
+  <property category="sys" name="WorkingDirectory" value="."/>
+  <file path="ActionDobj.java"/>
+  <file path="ActionQuery.java"/>
+  <file path="AddressList.java"/>
+  <file path="Appointment.java"/>
+  <file path="AppointmentDobj.java"/>
+  <file path="Contact.java"/>
+  <file path="ContactDobj.java"/>
+  <file path="CriteriaAction.java"/>
+  <file path="DominoApptFolderItr.java"/>
+  <file path="DominoContactFolderItr.java"/>
+  <file path="DominoFolderItr.java"/>
+  <file path="DominoMailFolderItr.java"/>
+  <file path="DominoMsgServer.java"/>
+  <file path="DominoPropPanel.java"/>
+  <file path="DominoTaskDobj.java"/>
+  <file path="DominoTaskFolderItr.java"/>
+  <file path="DominoUserSession.java"/>
+  <file path="Folder.java"/>
+  <file path="FolderDobj.java"/>
+  <file path="GenericItemDobj.java"/>
+  <file path="ImapFolderItr.java"/>
+  <file path="ImapSmtpMsgServer.java"/>
+  <file path="ImapSmtpPropPanel.java"/>
+  <file path="ImapSmtpSession.java"/>
+  <file path="ImapSubfolderItr.java"/>
+  <file path="InfoStore.java"/>
+  <file path="InfoStoreDobj.java"/>
+  <file path="ItemDobj.java"/>
+  <file path="MailMessage.java"/>
+  <file path="MailMessageDobj.java"/>
+  <file path="MaintainMsgServersPanel.java"/>
+  <file path="Message.java"/>
+  <file path="MessageDobj.java"/>
+  <file path="MessageServer.java"/>
+  <file path="MessageServerException.java"/>
+  <file path="MessageServerParam.java"/>
+  <file path="MessageServerProfile.java"/>
+  <file path="MsExAddrItr.java"/>
+  <file path="MsExApptItr.java"/>
+  <file path="MsExAttachment.java"/>
+  <file path="MSExchangeInterface.java">
+    <property category="generated" name="JavaSoft.javah.0" value="wsl_fw_msgserver_MSExchangeInterface.h"/>
+    <property category="idl" name="GenerateJNI" value="true"/>
+  </file>
+  <file path="MsExchangeMsgServer.java"/>
+  <file path="MsExchangeSession.java"/>
+  <file path="MsExContactItr.java"/>
+  <file path="MsExContactSubfolderItr.java"/>
+  <file path="MsExItr.java"/>
+  <file path="MsExMailMessage.java"/>
+  <file path="MsExMessageItr.java"/>
+  <file path="MsExSubfolderItr.java"/>
+  <file path="MsExUnreadMailItr.java"/>
+  <file path="MsgServerProfilePropPanel.java"/>
+  <file path="MsgServerPropPanel.java"/>
+  <file path="MsgServerQuery.java"/>
+  <file path="NullMessageServer.java"/>
+  <file path="SessionMailMsgDobj.java"/>
+  <file path="SessionManager.java"/>
+  <file path="Task.java"/>
+  <file path="TaskDobj.java"/>
+  <file path="UserSession.java"/>
+</project>

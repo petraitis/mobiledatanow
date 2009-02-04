@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Data Transfers
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Data Transfers</font>
+
+<p>
+The Data Transfers screen is used to configure a transfer of data from a
+mirror<b>ed </b><a href="DataStores.html">Data Store</a> (one that has the
+<i>Mirrored data Store?</i> box checked). The data is transferred to mirror
+tables in a <a href="Mirror.html#Mirror">Mirror Data Store</a>.
+<p>
+Performing a data transfer updates the mirror with the current data from your
+source database. This operation can be performed automatically by
+<a href="Schedule.html">scheduling</a> a data transfer for automatic execution.
+<p>
+Note that the destination tables in the mirror database are emptied as the first
+stage of the transfer, so after a transfer the mirror will contain exactly the
+same data as the source data store.
+
+<p><br>
+<img src="images/DataTransfer.gif">
+<p>
+<br>
+The tree in the data transfers screen displays all the data transfers that have
+been defined. Expanding a data transfer in the tree will show all the entities
+(tables) that the transfer will cause to be transferred from the data store
+to the mirror.
+
+<p>
+The <b>Transfer Wizard</b> button displays the
+<a href="#Wizard">Transfer Wizard</a> which guides you through the steps
+required to create a Data Transfer. The wizard may be used to create a new Data
+Transfer or modify an existing one.
+
+<p>
+The <b>Schedule</b> button displays a
+<a href="Schedule.html#SchedulingProperties">Schedule Properties</a> screen that
+you can use to schedule the currently selected data transfer for automatic
+execution.
+
+<p>
+If a Data Transfer is selected pressing the <b>Remove</b> button will completely
+remove that data transfer. If an entity (table) within a data transfer is
+selected then pressing the <b>Remove</b> button will remove just that entity
+from its parent data transfer.
+
+<p>
+If a Data Transfer is selected pressing the <b>Properties</b> button will
+display the <a href="#Wizard">Transfer Wizard</a> for that data transfer.
+
+<p>
+If a Data Transfer is selected pressing the <b>Execute</b> button will execute
+the data transfer. The tables specified by the data transfer will be copied from
+the data store (source database) to the mirror. A <i>Data Transfer Progress</i>
+screen will be displayed showing how many records have been copied. The progress
+screen will close automatically when the transfer is complete.
+
+<p><br><p><a name="Wizard"><font size="+3">Data Transfer Wizard</font></a>
+<p>
+The Data Transfer <a href="../fw/Wizardpanel.html">Wizard</a> guides you through
+the steps required to create a Data Transfer. The wizard may be used to create a
+new Data Transfer or modify an existing one.
+<p>
+The Data Transfer wizard has the following wizard panels:<br>
+<a href="#Splash">Select Create or Update</a><br>
+<a href="#DataTansferProperties">Data Transfer Properties</a><br>
+<a href="#DataTansferEntities">Data Transfer Entities</a>
+
+<p><br><a name="Splash"><font size="+2">Select Create or Update</font></a>
+<p>
+<img src="images/dtSplash.gif">
+<p>
+The Select Create or Update wizard panel displays information on how to use the
+Data Transfer Wizard and allows you to select whether to create a new Data
+Transfer or modify the currently selected Data Transfer.
+
+<p><br><a name="DataTansferProperties"><font size="+2">Data Transfer Properties</font></a>
+<p>
+<img src="images/dtProperties.gif">
+<p>
+The Data Transfer Properties wizard panel specifies the name of the transfer and
+which Data Store is to be transferred.
+<p>
+<b>Name</b> is the name of the transfer, choose a name that describes what
+is to be transferred.
+<p>
+<b>Description</b> is any additional text to describe the transfer.
+<p>
+The <b>Mirrored Data Store</b> combo box is used to select which Data Store will be
+transferred. Select the desired Data Store in the combo box. Only
+<a href="DataStores.html">Data Stores</a> that have the <i>Mirrored Data Store?</i>
+box checked will be shown in the combo box as a Data Store must be mirrored to
+be able to be transferred.
+
+<p><br><a name="DataTansferEntities"><font size="+2">Data Transfer Entities</font></a>
+<p>
+<img src="images/dtEntities.gif">
+<p>
+The Data Transfer Entities wizard panel allows you to select which entities in the
+mirrored data store are to be transferred. Select one or more entities (tables)
+in the <b>Available Entities</b> list or the <b>Selected Entities</b> list and
+press the <b>&gt;&gt;</b> or <b>&lt;&lt;</b> button to add or remove the
+entity from the list.
+</BODY>
+
+</HTML>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<group-explain first="Please update" second="of the following fields" />
+	<group value="1" name="all" />
+	
+	<action value="1" name="Add Condition (after current)" />
+	<action value="2" name="Add Bracket (after current)" />
+	<action value="3" name="Delete Current Row" />
+	<action value="4" name="Enable/Disable Row" />
+	
+	<comp value="1" name="is equal to" />
+	
+	<value value="1" name="Value" />
+	<value value="2" name="User ID" />
+	<value value="3" name="User Input" />
+	<value value="4" name="Calendar" />
+	<value value="5" name="Boolean" />
+	
+	<boolean value="1" name="true" />
+	<boolean value="2" name="false" />
+	
+	<newRequest value="true" />
+</root>
+

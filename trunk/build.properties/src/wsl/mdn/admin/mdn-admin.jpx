@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--JBuilder XML Project-->
+<project>
+  <property category="debug.0" name="SmartStepRedefineClasses" value="0"/>
+  <property category="debug.0" name="SmartStepSkipStaticInitializers" value="0"/>
+  <property category="debug.0" name="SmartStepSkipSynthetics" value="0"/>
+  <property category="sys" name="AuthorLabel" value="@author"/>
+  <property category="sys" name="BackupPath" value="../../../../build/bak"/>
+  <property category="sys" name="CheckStable" value="1"/>
+  <property category="sys" name="Company" value=""/>
+  <property category="sys" name="CompanyLabel" value="Company:"/>
+  <property category="sys" name="Copyright" value="Copyright (c) 2002"/>
+  <property category="sys" name="CopyrightLabel" value="Copyright:"/>
+  <property category="sys" name="DefaultPath" value="../../../"/>
+  <property category="sys" name="Description" value=""/>
+  <property category="sys" name="DescriptionLabel" value="Description:"/>
+  <property category="sys" name="DocPath" value=""/>
+  <property category="sys" name="ExcludeClassEnabled" value="0"/>
+  <property category="sys" name="IncludeTestPath" value="1"/>
+  <property category="sys" name="JDK" value="java 1.3.1-b24"/>
+  <property category="sys" name="LastTag" value="0"/>
+  <property category="sys" name="Libraries" value="mdn-support-lib;fw-dev"/>
+  <property category="sys" name="MakeStable" value="0"/>
+  <property category="sys" name="OutPath" value="../../../../build/classes"/>
+  <property category="sys" name="SourcePath" value="../../../"/>
+  <property category="sys" name="TestPath" value="../../../"/>
+  <property category="sys" name="Title" value=""/>
+  <property category="sys" name="TitleLabel" value="Title:"/>
+  <property category="sys" name="Version" value="1.0"/>
+  <property category="sys" name="VersionLabel" value="@version"/>
+  <property category="sys" name="WorkingDirectory" value="."/>
+  <file path="CriteriaPanel.java"/>
+  <file path="DataStoreImportWizard.java"/>
+  <file path="DataStoreWizardKeyHelpPanel.java"/>
+  <file path="DataStoreWizardSplashPanel.java"/>
+  <file path="DataTransferPropPanel.java"/>
+  <file path="DataTransferWizard.java"/>
+  <file path="DataViewFieldPropPanel.java"/>
+  <file path="DataViewPermissionsTabPane.java"/>
+  <file path="DataViewPropPanel.java"/>
+  <file path="DataViewWizard.java"/>
+  <file path="DataViewWizardSplashPanel.java"/>
+  <file path="DayCalendarPanel.java"/>
+  <file path="DirectSQLPanel.java"/>
+  <file path="EntityPropPanel.java"/>
+  <file path="ExecDataTableModel.java"/>
+  <file path="ExecuteDataViewsPanel.java"/>
+  <file path="FieldPropPanel.java"/>
+  <file path="GroupByPanel.java"/>
+  <file path="GroupDataViewPropPanel.java"/>
+  <file path="HorizontalCriteriaPanel.java"/>
+  <file path="ImportTablesPanel.java"/>
+  <file path="JdbcDriverPropPanel.java"/>
+  <file path="JdbcPropPanel.java"/>
+  <file path="MaintainDataSourcesPanel.java"/>
+  <file path="MaintainDataTransfersPanel.java"/>
+  <file path="MaintainDataViewsPanel.java"/>
+  <file path="MaintainTransferSchedulePanel.java"/>
+  <file path="MapViewFieldsPanel.java"/>
+  <file path="MdnAdminApp.java"/>
+  <file path="MdnAdminFrame.java"/>
+  <file path="MdnAdminGuiManager.java"/>
+  <file path="MdnAdminHelpManager.java"/>
+  <file path="MdnHelpAboutPanel.java"/>
+  <file path="MdnUserGroupMaintenancePanel.java"/>
+  <file path="MirrorListPanel.java"/>
+  <file path="MonthCalendarTabPane.java"/>
+  <file path="QueryPanel.java"/>
+  <file path="QueryPropPanel.java"/>
+  <file path="QueryWizardPanel.java"/>
+  <file path="QueryWizardSplashPanel.java"/>
+  <file path="RelationshipsPanel.java"/>
+  <file path="SchedTableModel.java"/>
+  <file path="SchedulingPropPanel.java"/>
+  <file path="SchedulingsTabPane.java"/>
+  <file path="SortsPanel.java"/>
+  <file path="TransferEntitiesPanel.java"/>
+  <file path="TransferFilterPanel.java"/>
+  <file path="TransferWizardSplashPanel.java"/>
+</project>

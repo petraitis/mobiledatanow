@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Schedule
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Schedule</font>
+<p>
+The schedule screens are used to schedule <a href"DataTransfers.html">Data Transfers</a>
+for automatic execution. The MDN Server will periodically check for scheduled
+data transfers and execute them at the defined times.
+<p>
+Three Schedule views and a properties screen are
+provided:<br>
+<a href="#Month">Month Calendar</a><br>
+<a href="#Transfers">Scheduled Transfers</a><br>
+<a href="#Day">Day View</a><br>
+<a href="#SchedulingProperties">Scheduling Properties</a>
+<p>
+Click on the desired tab to switch between the  <i>Month Calendar</i> and
+<i>Scheduled Transfers</i> views, both of which have a <b>Data Transfers</b>
+combo box at the bottom of the screen that may be used to select which data
+transfer(s) are shown. Select a Data Transfer in the combo to show all
+schedulings for that data transfer, or select <b>&lt;&lt;All&gt;&gt;</b> to
+show all schedulings for all Data Transfers.
+
+<p><br><font size="+2"><a name="Month">Month Calendar</a></font>
+<p>
+<img src="images/ScheduleMonth.gif">
+<p>
+The Month Calendar view shows a calendar of the current month. Click on the
+<i>Month Calendar</i> tab to display the month calendar. All scheduled
+data transfers matching the selection criteria in the <b>Data Transfers</b>
+combo box are shown on the calendar.
+<p>
+If a scheduling has a <i>repeat</i> it may be shown in more than one
+day on the calendar to represent all the days when the scheduled data transfer
+will be executed.
+<p>
+You can select a day on the calendar by clicking on it. The selected day is
+highlighted and that day's date is shown in the top right hand corner of the
+calendar.
+<p>
+At the top left of the calendar are <b>month</b> and <b>year</b> fields that show
+what month and year the calendar is displaying. Clicking on these fields will
+allow you to change which month and year the calendar displays.
+<p>
+Pressing the <b>Schedule</b> button will create a new scheduling entry and
+display  the <a href="#SchedulingProperties">Scheduling Properties</a> screen to
+enter the scheduling details. The new scheduling will have its date set to the
+day currently selected in the calendar.
+<p>
+Pressing the <b>View Day</b> button will display the <a href="#Day">Day View</a>
+screen for the currently selected day.
+
+<p><br><font size="+2"><a name="Transfers">Scheduled Transfers</a></font>
+<p>
+<img src="images/ScheduleTransfers.gif">
+
+<p>
+The Scheduled Transfers view shows the details of the individual schedulings,
+including which Data Transfer will be executed, when the execution will occur,
+how often it will repeat and when the scheduling will end. Only schedulings that
+match the criteria in the <b>Data Transfers</b> combo box will be displayed in
+the list.
+<p>
+To delete a scheduling, including all repeats, select it in the list and press
+the <b>Delete</b> button.
+<p>
+Selecting a scheduling and pressing the <b>Properties</b> button will display
+the <a href="#SchedulingProperties">Scheduling Properties</a> to edit the
+scheduling.
+
+<p><br><font size="+2"><a name="Day">Day View</a></font>
+<p>
+<img src="images/ScheduleDay.gif">
+<p>
+The Day View screen shows all the schedulings, including repeats, for a single
+day. It has a list of half hour time slots in which any schedulings will be
+displayed. You can scroll up an down the time slots by clicking on the up and
+down arrows. There are also up and down arrows to change the day month and year
+shown by the Day View.
+<p>
+Selecting a time slot, by clicking on the time in the left column, and then
+pressing the <b>Schedule</b> button will create a new scheduling entry and
+display  the <a href="#SchedulingProperties">Scheduling Properties</a> screen to
+enter the scheduling details. The new scheduling will have its date and time set
+to the day and time currently selected in the day view.
+
+<p><br><a name="SchedulingProperties"><font size="+2">Scheduling Properties</font></a>
+<p>
+<img src="images/ScheduleProp.gif">
+<p>
+The Scheduling Properties screen is used to enter or edit all the attributes of
+a scheduling. A single scheduling may be shown in more than one day of the
+<a href="#Month">Month Calendar</a> view or more than one time slot in the
+<a href="#Day">Day View</a> if it has a repeat. Each scheduling is a single
+entry in the <a href="Transfers">Scheduled Transfers</a> view.
+<p>
+Use the <b>Data Transfer</b> combo box to select which
+<a href="DataTransfers.html">Data Transfer</a> this scheduling will execute.
+<p>
+<b>Start Date</b> is the date the data transfer will be executed, or first
+executed if this scheduling is a repeat. Pressing the down arrow button to the
+right of the start date field will display a small calendar to allow you to
+select a date.
+<p>
+<b>Start Time</b> is the time the data transfer will be executed, using a 24
+hour clock.
+<p>
+The fields in the <b>Repeat</b> grouping are used to specify repeats for this
+scheduling. If a scheduling has a repeat it will be periodically executed until
+its end date/time. Select one of the <b>None</b>, <b>Month</b>, <b>Week</b>,
+<b>Day</b> or <b>Hour</b> radio buttons in conjunction with the <b>Every</b> field
+to choose how often this scheduling will be repeated.
+<p>
+If the <b>End Date</b> field is left empty then the repeat will continue
+indefinitely, otherwise it will stop as specified by the <b>End Date</b> and
+<b>End Time</b> fields.
+
+
+
+</BODY>
+
+</HTML>
+

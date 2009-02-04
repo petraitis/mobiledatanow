@@ -1,0 +1,88 @@
+<canvas debug="true" height="800" width="1000">
+    <debug x="280" width="470" height="370" />
+
+    <dataset name="amazonDset1" />
+    <dataset name="amazonDset2" />
+    <datapointer name="dp" />
+    <dataset name="ksr">
+	    <root>
+			<node field="KeywordSearchRequest.keyword" value="services"/>
+			<node field="KeywordSearchRequest.page" value="1" />
+			<node field="KeywordSearchRequest.mode" value="book"/>
+			<node field="KeywordSearchRequest.tag" value="webservices-20" />
+			<node field="KeywordSearchRequest.type" value="lite" />
+			<node field="KeywordSearchRequest.devtag" value="12FRM39DPGD6QZRMTEG2" />
+			<node field="KeywordSearchRequest.format" value="xml" />
+			<node field="KeywordSearchRequest.version" value="1.0" />
+		</root>
+    </dataset>
+
+    <soap name="amazon" wsdl="http://soap.amazon.com/schemas3/AmazonWebServices.wsdl"
+          secure="true" secureport="8443">
+
+        <attribute name="myobject" value="null" type="expression" />
+
+        <method event="onload">
+            Debug.write('amazon soap service stub loaded');
+            
+        </method>
+
+        <!-- if error isn't handled by remotecall, the error is propogated up to
+             soap -->
+        <method event="onerror" args="error">
+            Debug.write('error:', error);
+        </method>
+
+        <remotecall name="myKSR1" funcname="KeywordSearchRequest"
+                    dataobject="amazonDset1">
+
+            <param value="${canvas.amazon.myobject}" />
+
+            <method event="ondata" args="value">
+                Debug.write('one:', value);
+            </method>
+
+        </remotecall>
+        
+        <method name="handler" args="data">
+	        Debug.write('user-defined handler:', data);
+	    </method>
+    </soap>
+
+    <view layout="spacing: 5" >
+        <view name="btnset" layout="spacing: 5">
+            <button text="create instance of KeywordRequest based on dataset">
+                <handler name="onclick"><![CDATA[
+                    var objectname = 'KeywordRequest';
+                    amazon.setAttribute('myobject', new global['amazon'].['proto'].[objectname]());
+                    dp.setAttribute("xpath","ksr:/root");
+                    var count = dp.getNodeCount();
+                    dp.selectChild();
+                    for(var i=0;i<count;i++){
+                        var attribute = dp.getNodeAttribute('field').split('.');
+                        global[ 'amazon' ][ 'myobject'][attribute[1]] = dp.getNodeAttribute('value');
+                        dp.selectNext();
+                    }
+                     Debug.write("amazon.myobject has been set:");
+                     Debug.write(amazon.myobject);
+                     amazon.myKSR1.invoke();
+                    ]]>
+                </handler>
+            </button>
+        </view>
+
+        <view bgcolor="teal" layout="axis: y" >
+            
+            <view>
+                <datapath xpath="amazonDset1:/Details/Details" pooling="true" />
+                
+                <text datapath="ProductName/text()" resize="true"/>
+            </view>
+        </view>
+    </view>
+</canvas>
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2001-2004 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+

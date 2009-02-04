@@ -1,0 +1,271 @@
+/** $Id: WEUtil.java,v 1.4 2003/01/07 22:43:45 tecris Exp $
+ *
+ * Static helper and utility functions for WML and apache ECS.
+ * Note that all URLs should be encoded and escaped, all other text, especially
+ * dynamic text, should be escaped.
+ *
+ */
+package wsl.fw.wml;
+
+import wsl.fw.util.Util;
+import wsl.fw.servlet.ServletBase;
+import org.apache.ecs.wml.*;
+import javax.servlet.http.HttpServletResponse;
+
+public class WEUtil
+{
+	//--------------------------------------------------------------------------
+	/**
+	 * Private constructor to stop instantiation.
+	 */
+	private
+	WEUtil ()
+	{
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Disable caching of the selected wml deck.
+	 * @param head, the head element that is to contain the disable cache meta
+	 *   elements. If null a new Head is created.
+	 * @param response, the HttpServletResponse that will have the http headers
+	 *   set to disable caching. Not null.
+	 * @return the Head with the metas set, will be header if it was non-null.
+	 */
+	public static Head
+	disableCaching (
+	 Head header,
+	 HttpServletResponse response)
+	{
+		Util.argCheckNull (response);
+
+		if (header == null)
+			header = new Head ();
+
+		// set meta tags to disable caching
+		Meta meta = new Meta ();
+		meta.addAttribute ("forua","true");
+		meta.setCache ("0");
+		header.addElement (meta);
+
+		// set http headers to disable caching
+		ServletBase.disableCacheHeader (response);
+
+		return header;
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Make a string containing the href tp the servlet, for use in get or post.
+	 * Performs escaping.
+	 * @param response, the HttpServletResponse for this servlet call, used for
+	 *    encodeURL so that sessons will still work even if cookies are not
+	 *    supported by the browser.
+	 * @param url, the base url to build from.
+	 */
+	public static String
+	makeHref (
+	 HttpServletResponse response,
+	 String url)
+	{
+		return makeHref (response, url, null);
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Make a string for use in GET hrefs specifying an action.
+	 * Performs escaping.
+	 * @param response, the HttpServletResponse for this servlet call, used for
+	 *    encodeURL so that sessons will still work even if cookies are not
+	 *    supported by the browser.
+	 * @param url, the base url to build from.
+	 * @param action, the action value to set for ServletBase.RP_ACTION,
+	 *   if null no action is specified.
+	 */
+	public static String
+	makeHref (
+	 HttpServletResponse response,
+	 String url,
+	 String action)
+	{
+		return makeHref (response, url, action, null);
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Make a string for use in GET hrefs specifying an action.
+	 * Performs escaping.
+	 * @param response, the HttpServletResponse for this servlet call, used for
+	 *    encodeURL so that sessons will still work even if cookies are not
+	 *    supported by the browser.
+	 * @param url, the base url to build from.
+	 * @param action, the action value to set for ServletBase.RP_ACTION,
+	 *   if null no action is specified.
+	 * @param subAction, the subaction value to set for
+	 *   ServletBase.RP_SUB_ACTION, if null no subaction is specified.
+	 *   Ignored if action is null.
+	 */
+	public static String
+	makeHref (
+	 HttpServletResponse response,
+	 String url,
+	 String action,
+	 String subAction)
+	{
+		// basic href is the HREF const
+		StringBuffer href = new StringBuffer ();
+		href.append (url);
+		// if there is an action specified add it in HTTP GET format
+		if (action != null)
+		{
+			href.append ('?');
+			href.append (ServletBase.RP_ACTION);
+			href.append ('=');
+			href.append (action);
+			// if there is a subaction add it
+			if (subAction != null)
+			{
+				href.append ('&');
+				href.append (ServletBase.RP_SUB_ACTION);
+				href.append ('=');
+				href.append (subAction);
+			}
+		}
+
+		// finally encode the URL with the session info so we can support
+		// sessions even if cookies are not available. Also escape wml chars.
+		return response.encodeURL (esc (href.toString ()));
+	}
+
+	/**
+	 * Add a parameter to an HRef
+	 * @param href
+	 * @param varName
+	 * @param value
+	 * @return String the new href
+	 */
+	public static String
+	addParam (
+	 String href,
+	 String varName,
+	 String value)
+	{
+		// validate
+		Util.argCheckEmpty (href);
+		Util.argCheckEmpty (varName);
+		Util.argCheckEmpty (value);
+
+		// add var
+		return href + esc ("&" + varName + "=" + value);
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Escape WML special character in a string so they display properly and no
+	 * not cause a WML compile error. All natural text (not in jsp, i.e.
+	 * domain functions and values included with <%=%> tags) must be wrapped in
+	 * this function to ensure correct escaping. Text generated by WML and
+	 * WMLDelegate classes should are already be escaped.
+	 * @param str, the string to escape. If null an empty string is returned.
+	 * @return the escaped string.
+	 * Note, do not use if filtering has been enabled on the ECS classes
+	 * using setWmlFilter as this will lead to double escaping.
+	 */
+	public static String
+	esc (
+	 String str)
+	{
+		if (Util.isEmpty (str))
+			return "";
+
+		StringBuffer out = new StringBuffer ();
+		int size = str.length ();
+		char ch;
+
+		// iterate over chars in string checking for those that need escaping
+		for (int i = 0; i < size; i++)
+		{
+			ch = str.charAt (i);
+			switch (ch)
+			{
+			case '<'  : out.append ("&lt;");   break;
+			case '>'  : out.append ("&gt;");   break;
+			case '\'' : out.append ("&apos;"); break;
+			case '"'  : out.append ("&quot;"); break;
+			case '&'  : out.append ("&amp;");  break;
+			case '$'  : out.append ("$$");     break;
+			default   : out.append (ch);       break;
+			}
+		}
+
+		return out.toString ();
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * @return varName wrapped in $() to make it a valid wml variable reference.
+	 */
+	public static String
+	makeVar (
+	 String varName)
+	{
+		return "$(" + varName + ")";
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Makes a P containing an A with the specified href and display text.
+	 */
+	public static P
+	makeHrefP (
+	 String href,
+	 String text)
+	{
+		P p = new P ();
+		A a = new A (href);
+		a.addElement (text);
+		p.addElement (a);
+		return p;
+	}
+
+	//--------------------------------------------------------------------------
+	/**
+	 * Makes an A (href) to a wtai phone call setup.
+	 * @param phoneNumber, the phone number to call.
+	 * @param text, the text to display in the link.
+	 */
+	public static A
+	makePhoneLink (
+	 String rawPhone,
+	 String text)
+	{
+		Util.argCheckEmpty (rawPhone);
+
+		String phoneNumber = "";
+		String Numbers = "0123456789";
+		char PLUS = '+';
+                boolean addChar = false;
+
+		for (int i = 0; i < rawPhone.length (); i++)
+		{
+			char rawChar = rawPhone.charAt (i);
+                        addChar = false;
+                        /**
+                         *  allow numbers to have a "+"
+                         *  character at the beginning of the number
+                         *  ie +6496368014
+                         */
+                        if (i==0 && rawChar==PLUS)
+                          addChar = true;
+			if (Numbers.indexOf (rawChar) >= 0)
+                          addChar = true;
+                        if (addChar)
+                          phoneNumber += rawChar;
+		}
+
+		A a = new A ("wtai://wp/mc;" + phoneNumber);
+		a.addElement (text);
+
+		return a;
+	}
+}

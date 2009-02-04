@@ -1,0 +1,89 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- saved from url=(0029)http://www.helpandmanual.com/ -->
+<head><script type="text/javascript" src="helpman_topicinit.js"></script>
+<!-- Redirect browser to frame page if page is not in the content frame. -->
+<script type="text/javascript">
+<!--
+if(top.frames.length==0) { top.location.href="index.html?mdn_server_settings.htm"; }
+else { parent.quicksync('a13'); }
+//-->
+</script>
+<script type="text/javascript" src="highlight.js"></script>
+   <title>Running MDN Services</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <style>
+          a { color:#27496f; }
+   </style>
+</head>
+<body style="margin: 0px 220px 0px 20px; background: #FFFFFF;" onload="highlight();">
+<div id="hmpopupDiv" style="visibility:hidden; position:absolute; z-index:1000; "></div>
+<br><br>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="white">
+  <tr valign="middle">
+    <td align="left">
+      <p class="p_Heading1"><span class="f_Heading1">Running MDN Services</span></p>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a style="font-weight:bold; color:#27496f" href="introduction.htm">Top </a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="end_user_access.htm">&laquo; Previous</a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="deployment.htm">Next &raquo;</a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p>MobileDataNow runs services in the background to enable messaging functions to work and need to be started once you've finished configuring MobileDataNow. See <a href="http://www.mobiledatanow.com/product/technical-info" target="_blank" class="weblink">technical info</a> for more details.</p>
+<p>&nbsp;</p>
+<p>These services are:</p>
+<p>&nbsp;</p>
+<p>1. MDN Server &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(Common point of access for all data - needs to run all the time)</p>
+<p>2. Tomcat Server &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(Used for the web browser administrator interface)</p>
+<p>3. MDN Mail Service &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(For email messaging)</p>
+<p>4. MDN IM Service &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(For instant messaging)</p>
+<p>5. GSM Modem Service &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(For SMS messaging with a GSM Modem)</p>
+<p>6. SMPP Service &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(For SMS messaging with an SMPP connection)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>You can start and stop these individually via<span style="font-weight: bold;"> Start&gt;&gt;Run&gt;&gt;MobileDataNow&gt;&gt;Services</span></p>
+<p>&nbsp;</p>
+<p><img src="services - menu.png" width="690" height="354" border="0" alt="services - menu"></p>
+<p><span class="f_ImageCaption">&nbsp;</span></p>
+<p>If you hold on to the CTRL key while selecting each service, the console window will appear so you can see the activity of each window. </p>
+<p>In the example below, we've successfully connected to the email account 'contacts1'</p>
+<p>&nbsp;</p>
+<p><img src="console.png" width="669" height="338" border="0" alt="console"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Alternatively, you can access access these services via the Windows Start button, <span style="font-weight: bold;">Start</span>&gt;&gt;<span style="font-weight: bold;">Run</span> and type <span style="font-weight: bold;">services.msc </span>then click<span style="font-weight: bold;"> Enter</span></p>
+<p><span style="font-weight: bold;">&nbsp;</span></p>
+<p>After typing <span style="font-weight: bold;">services.msc</span>, the services window appears. Navigate to the MDN Services like below.</p>
+<p>&nbsp;</p>
+<p><img src="run-services.png" width="659" height="452" border="0" alt="run-services"></p>
+<p>&nbsp;</p>
+<p>If for any reason the services stop running (outages or dropped connections for example) they can be restarted through either of these methods. </p>
+<p>&nbsp;</p>
+<p>You can view the running status of each server inside the MobileDataNow screen. Just click the <span style="font-weight: bold;">Event Log</span> button at the top left of the window. Here you can move between each server to see the status of each. The event log is updated every 10 seconds. </p>
+<p>&nbsp;</p>
+<p><img src="eventlog.png" width="800" height="226" border="0" alt="eventlog"></p>
+<p>&nbsp;</p>
+<p>Also, each time a new base email address is added or any changes are made to the base messaging settings, the appropriate service will need to be started/restarted to pick up the new settings. </p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">eg.</span> Change IM base settings = restart <span style="font-weight: bold;">MDN IM server</span></p>
+<p>Add a new base email address = restart<span style="font-weight: bold;"> MDN Mail Service</span></p>
+<p>&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

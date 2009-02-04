@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- saved from url=(0029)http://www.helpandmanual.com/ -->
+<head><script type="text/javascript" src="helpman_topicinit.js"></script>
+<!-- Redirect browser to frame page if page is not in the content frame. -->
+<script type="text/javascript">
+<!--
+if(top.frames.length==0) { top.location.href="index.html?creating_an_odbc_system_data_s.htm"; }
+else { parent.quicksync('a4'); }
+//-->
+</script>
+<script type="text/javascript" src="highlight.js"></script>
+   <title>Creating an ODBC System Data Source Name (DSN)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <style>
+          a { color:#27496f; }
+   </style>
+</head>
+<body style="margin: 0px 220px 0px 20px; background: #FFFFFF;" onload="highlight();">
+<div id="hmpopupDiv" style="visibility:hidden; position:absolute; z-index:1000; "></div>
+<br><br>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="white">
+  <tr valign="middle">
+    <td align="left">
+      <p class="p_Heading1"><span class="f_Heading1">Creating an ODBC System Data Source Name (DSN)</span></p>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a style="font-weight:bold; color:#27496f" href="introduction.htm">Top </a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="chapter_2.htm">&laquo; Previous</a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="my_installations_screen.htm">Next &raquo;</a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p>MobileDataNow comes supplied with the Microsoft Northwind sample database so we can use it for this demo. First we're going to first setup a connection to this database so it's available to be used on your computer, and we provide this connectivity through an ODBC driver. </p>
+<p>&nbsp;</p>
+<p>The Data Source Name (or DSN) provides this connectivity to the database through an ODBC driver. The DSN contains the database name, directory, database driver, User ID, password and other information. </p>
+<p>&nbsp;</p>
+<p>Once you create a DSN for a particular database, you can use the DSN in MobileDataNow or any other application to call information from the database. </p>
+<p>&nbsp;</p>
+<p>There are three types of DSNs:</p>
+<p>(1) System DSN -- can be used by anyone who has access to the machine. DSN info is stored in the registry.</p>
+<p>(2) User DSN -- created for a specific user. Also stored in the registry.</p>
+<p>(3) File DSN -- DSN info is stored in a text file with .DSN extension.</p>
+<p>&nbsp;</p>
+<p>We'll be creating a System DSN.</p>
+<p>&nbsp;</p>
+<p>The following example illustrates connection to a sample Microsoft Access database called 'northwind.mdb'. We've included the northwind.mdb database for your testing. </p>
+<p>&nbsp;</p>
+<p>To run the <span style="font-weight: bold;">ODBC Data Source Administrator</span>, click <span style="font-weight: bold;">Start</span>, then <span style="font-weight: bold;">Run</span> and type <span style="font-weight: bold;">odbcad32.exe</span>, then press <span style="font-weight: bold;">Enter</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #000000;">Alternatively select </span><span style="font-weight: bold; color: #000000;">Start/Settings/Control Panel/Administrative Tools/Data Sources (ODBC)</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">Select the </span><span style="font-weight: bold; color: #000000;">System DSN</span><span style="color: #000000;"> tab then click </span><span style="font-weight: bold; color: #000000;">Add</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><img src="odbc-system dsn.png" width="461" height="384" border="0" alt="ODBC-System DSN"></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">Highlight </span><span style="font-weight: bold; color: #000000;">MS Access Driver (*.mdb)</span><span style="color: #000000;"> </span><span style="color: #000000;">–</span><span style="color: #000000;"> note must be version 4.x or later</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><img src="odbc-ms access.png" width="468" height="352" border="0" alt="ODBC-MS Access"></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">In the </span><span style="font-weight: bold; color: #000000;">Data Source Name</span><span style="color: #000000;"> field enter a simple name for the database eg. </span><span style="color: #000000;">“</span><span style="color: #000000;">Northwind</span><span style="color: #000000;">”</span><span style="color: #000000;"> and click on the </span><span style="font-weight: bold; color: #000000;">Select</span><span style="color: #000000;"> button.</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><img src="odbc-northwind.png" width="471" height="319" border="0" alt="ODBC-northwind"></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">Use the </span><span style="font-weight: bold; color: #000000;">Directories</span><span style="color: #000000;"> window to highlight the directory containing the database e.g. C:\mdn then in the </span><span style="font-weight: bold; color: #000000;">Database Name</span><span style="color: #000000;"> window highlight the actual database eg </span><span style="font-weight: bold; color: #000000;">northwind.mdb</span><span style="color: #000000;"> </span><span style="color: #000000;">then click OK and then OK again.</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><span style="color: #000000;">The Northwind database included with MobileDataNow is located at </span><span style="font-weight: bold; color: #000000;">C:\Program Files\MobileDataNow</span><span style="color: #000000;"> directory</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><img src="odbc-select northwind.png" width="402" height="250" border="0" alt="ODBC-select northwind"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="color: #000000;">The System DSN window should now show the new ODBC system data source you created called </span><span style="font-weight: bold; color: #000000;">Northwind</span><span style="color: #000000;">.</span></p>
+<p><span style="color: #000000;">Click </span><span style="font-weight: bold; color: #000000;">OK</span><span style="color: #000000;">.</span></p>
+<p><span style="color: #000000;">&nbsp;</span></p>
+<p><img src="odbc-system dsn-finished.png" width="461" height="384" border="0" alt="ODBC-System DSN-finished"></p>
+
+</td></tr></table>
+
+</body>
+</html>

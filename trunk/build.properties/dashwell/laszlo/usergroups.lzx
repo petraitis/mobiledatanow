@@ -1,0 +1,1401 @@
+<library>
+    <!-- The UserView class. -->
+    <class name="userView" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+            height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+            
+        <attribute name="currDB"/>
+        <attribute name="user"/>
+        <attribute name="maintab"/>
+        
+        <method name="setEditErrorText" args="error">
+            errorView.txtEditUserErrorN.setAttribute('text', '');
+            errorView.txtEditUserErrorN.setText(''); 
+        </method>
+        <method name="clearDataFromNewGroupPage">
+        	errorView.txtEditUserErrorN.setAttribute('text', '');
+			usernameTxt.setText('');
+          	passwordTxt.setText('');
+    	</method>
+
+	<simplelayout axis="y" spacing="0"/>
+    <method name="clearData">
+       	mainTabs.userInfoTab.setAttribute('selected', true);
+        errorView.txtEditUserErrorN.setText("");
+	    mainTabs.customUserTab.assignView.customFieldsN.clearSelection();
+	    mainTabs.customUserTab.assignView.customParameterN.setText("");        
+   	</method>
+	  <tabs width="638" height="445" name="mainTabs" tabspacing="1" bgcolor="0x4386cc">
+         <attribute name="tabclass" value="tabWhiteTab" type="string" />
+         <method event="oninit">
+			<![CDATA[
+             	//Pushes the first tab in
+				this.subviews[0].layouts[0].setAttribute("inset", 15);
+			]]>
+		</method>
+         <tabpane datapath="gui:/gui-labels/tab-user/@label" name="userInfoTab" selected="true">
+		        <method event="onconstruct">
+		        	Debug.write("################## THE TAB YO");
+		        </method>
+		        <view name="parentView" width="${immediateparent.width}" height="${immediateparent.height}"> <!--  datapath="displayUserInfo:/root" -->
+		            <view name="pView" width="300" height="${immediateparent.height - 80}" x="30" y="20" >
+		                <simplelayout axis="y" spacing="3"/>
+			            <view name="view1">
+			                <simplelayout axis="x"/>
+			                <text datapath="gui:/gui-labels/lbl-first-name/@label" width="180" fgcolor="0x454545" />
+			                <edittext name="firstNameEditTxtN" datapath="displayUserInfo:/root/node/@firstName" width="250">
+								<method event="ondata">
+									<![CDATA[
+					            		//Group Combobox
+		            					var p = displayUserInfo.getPointer();
+					            		p.selectChild(2);
+										var userGroupId = p.getNodeAttribute('uGroupId');
+						    		    classroot.mainTabs.userInfoTab.parentView.pView.view6.groupCbx.selectItem(userGroupId);
+						    		    //
+	
+						    		    //License Type combo
+		            					var p2 = displayUserInfo.getPointer();
+					            		var ok = p2.selectChild(2);
+										var privilege = "";
+					            		while (ok){
+					            			var nodename = p2.getNodeName();
+					            			if (nodename == "node"){
+							            		licenseType = p2.getNodeAttribute('licenseType');																	            				
+					            			}
+					            			ok = p2.selectNext();
+					            		}
+										// licensee classroot.mainTabs.userInfoTab.parentView.pView.viewLicenseType.licenseTypeSelectorN.selectItem(licenseType);			    		    
+			            				//						 
+			            				
+			            				// privilege combo
+		            					var p3 = displayUserInfo.getPointer();
+					            		var ok = p3.selectChild(2);
+										var privilege = "";
+					            		while (ok){
+					            			var nodename = p3.getNodeName();
+					            			if (nodename == "node"){
+							            		privilege = p3.getNodeAttribute('privilege');																	            				
+					            			}
+					            			ok = p3.selectNext();
+					            		}
+						    		        classroot.mainTabs.userInfoTab.parentView.pView.view5.privilegeSelectorN.selectItem(privilege);			            				
+						    		   //     
+	            					]]>					    		    					    		    
+						        </method>			                
+			                </edittext>
+			            	<hinttip tipid="USERSGROUPS-users-first-name" />
+			            </view>
+			            <view name="view2">
+			                <simplelayout axis="x"/>
+			                <text datapath="gui:/gui-labels/lbl-last-name/@label" width="180" fgcolor="0x454545" />
+			                <edittext name="lastNameEditTxtN" datapath="displayUserInfo:/root/node/@lastName" width="250" />
+							<hinttip tipid="USERSGROUPS-users-last-name" />			            
+			            </view>
+			            <view height="10" />
+			            <!-- licensee <view name="viewLicenseType">
+			            	<simplelayout axis="x"/>			            
+			                <text datapath="gui:/gui-labels/lbl-license-type/@label" width="180" fgcolor="0x454545" />
+			                <datacombobox name="licenseTypeSelectorN" width="250" editable="false" bgcolor="${canvas.bgcolor}"  x="180" shownitems="8"
+								itemdatapath="displayUserInfo:/root/node/licenseType" textdatapath='@name' valuedatapath='@name' selectfirst="false">
+			                </datacombobox>			                
+			            </view> -->
+			            <view height="10" />
+			            <view name="view5">
+			            	<simplelayout axis="x"/>
+			                <text datapath="gui:/gui-labels/lbl-privilege/@label" width="180" fgcolor="0x454545" />
+			                <hinttip tipid="USERSGROUPS-users-privilege" />	
+			                <datacombobox name="privilegeSelectorN" width="250" editable="false" bgcolor="${canvas.bgcolor}"  shownitems="8" x="180"
+								itemdatapath="displayUserInfo:/root/node/privilege" textdatapath='@description' valuedatapath='@name' selectfirst="false">
+								<method event="onselect">
+				                     var selectedItem = this.getValue();//classroot.mainTabs.userInfoTab.parentView.pView.view5.privilegeSelectorN.getSelection().getValue();
+				                     if(selectedItem == 'ADMIN'){
+				                     	classroot.mainTabs.userInfoTab.parentView.pView.view3.usernameEditTxtN.setAttribute('enabled', true);
+           								classroot.mainTabs.userInfoTab.parentView.pView.view4.newPasswordEditTxt.setAttribute('enabled', true);
+           								classroot.mainTabs.userInfoTab.parentView.pView.confirmView.newConfirmPasswordEditTxt.setAttribute('enabled', true);
+           								var userName = classroot.mainTabs.userInfoTab.parentView.pView.view3.backupUsername.getText();
+           								classroot.mainTabs.userInfoTab.parentView.pView.view3.usernameEditTxtN.setAttribute('text', userName);
+				                     }else{
+				                     	classroot.mainTabs.userInfoTab.parentView.pView.view3.usernameEditTxtN.setAttribute('enabled', false);
+           								classroot.mainTabs.userInfoTab.parentView.pView.view4.newPasswordEditTxt.setAttribute('enabled', false);
+           								classroot.mainTabs.userInfoTab.parentView.pView.confirmView.newConfirmPasswordEditTxt.setAttribute('enabled', false);
+				                     	classroot.mainTabs.userInfoTab.parentView.pView.view3.usernameEditTxtN.setAttribute('text', '');
+           								classroot.mainTabs.userInfoTab.parentView.pView.view4.newPasswordEditTxt.setAttribute('text', '');
+           								classroot.mainTabs.userInfoTab.parentView.pView.confirmView.newConfirmPasswordEditTxt.setAttribute('text', '');
+				                     }
+								</method>
+			                </datacombobox>
+			            </view>
+		                <view name="view3">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-username/@label" width="180" fgcolor="0x454545" />
+		                    <edittext name="usernameEditTxtN" datapath="displayUserInfo:/root/node/@name" width="250" />
+		                    <text name="userIdTxtN" datapath="displayUserInfo:/root/node/@userID" width="250" visible="false"/>
+		                    <text name="backupUsername" datapath="displayUserInfo:/root/node/@name" width="250" visible="false"/>
+		                	<hinttip tipid="USERSGROUPS-users-username" />
+		                </view>
+		                <view name="view4">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-new-password/@label" width="180" fgcolor="0x454545" />
+		                    <edittext width="250" name="newPasswordEditTxt" password="true" />
+		                    <hinttip tipid="USERSGROUPS-users-new-password" />
+		                </view>
+		                <view name="confirmView">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-confirm-password/@label" width="180" fgcolor="0x454545" />
+		                    <edittext width="250" name="newConfirmPasswordEditTxt" password="true" />
+		                </view>
+		                <view height="10" />
+		                <view name="view6">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-group-cbx/@label" width="180" fgcolor="0x454545" />
+		                    <hinttip tipid="USERSGROUPS-users-groups" />
+						   <datacombobox name="groupCbx" width="250" editable="false" shownitems="8" bgcolor="${canvas.bgcolor}"
+						      itemdatapath="displayUserInfo:/root/node/group" textdatapath='@name' valuedatapath='@group-id' selectfirst="false">      
+						   </datacombobox>					            					                   
+		                </view>
+			            <view name="view7">
+			                <simplelayout axis="x"/>
+			                <text datapath="gui:/gui-labels/lbl-notes/@label" width="180" fgcolor="0x454545" />
+			                <edittext name="notesEditTxtN" datapath="displayUserInfo:/root/node/@notes" width="250" multiline="true" height="70"/>
+			            	<hinttip tipid="USERSGROUPS-users-notes" />
+			            </view>
+		                <view height="10"/>
+		            </view>
+		        </view>
+                </tabpane>
+				<tabpane datapath="gui:/gui-labels/tab-msg-info/@label" name="msgInfoTab" >
+					<method event="onselect" reference="this.tab">
+          				var p = displayUserInfo.getPointer();
+	            		var ok = p.selectChild(2);
+	            		while (ok){
+	            			var nodename = p.getNodeName();
+	            			if (nodename == "node"){
+			            		var imsize = p.getNodeAttribute('im-size');
+			            		if(imsize == '0'){
+			            			classroot.mainTabs.msgInfoTab.backView.noIMMsgView.setAttribute("visible", true);
+			            		}else{
+				            		classroot.mainTabs.msgInfoTab.backView.noIMMsgView.setAttribute("visible", false);
+			            		}		
+	            			}
+	            			ok = p.selectNext();
+	            		}
+					</method>
+					<view name="backView" width="300" height="${immediateparent.height - 80}" x="30" y="20" >
+						<simplelayout axis="y" spacing="0" />
+		                <view name="view1">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-email/@label" width="100" fgcolor="0x454545" />
+		                    <edittext name="emailEditTxtN" width="200" datapath="displayUserInfo:/root/node/@email"/>
+		                	<hinttip tipid="USERSGROUPS-users-email_address" />
+		                </view>
+		                <view height="2" />
+		                <view name="view2">
+		                    <simplelayout axis="x"/>
+		                    <text datapath="gui:/gui-labels/lbl-mobile/@label" width="100" fgcolor="0x454545" />
+		                    <edittext name="mobileEditTxtN" width="200" datapath="displayUserInfo:/root/node/@mobile"/>
+		                    <text datapath="gui:/gui-labels/lbl-mobile-format/@label" width="280" fgcolor="0x454545" />
+		                	<hinttip tipid="USERSGROUPS-users-mobile" />
+		                </view>
+						<view>
+							<simplelayout axis="y" spacing="2"/>
+							<text text="" height="5"/>
+							<text datapath="gui:/gui-labels/lbl-im-title/@label" width="900" fontstyle="bold" fgcolor="0x454545" />
+						</view>
+						<view height="6" />
+						<view name="noIMMsgView">
+							<simplelayout axis="y" spacing="0"/>
+							<text datapath="gui:/gui-labels/lbl-no-im-title/@label"  width="400" fontstyle="bold" fgcolor="gray"/>
+							<view>
+								<mdn_button datapath="gui:/gui-labels/btn-add-im/@label" y="5">
+									<method event="onclick">
+										settingBox.setAttribute("goToSpecialView", true);
+										settingBox.open();
+										controller.displayEmptyIMConnection();
+									</method>
+								</mdn_button>
+							</view>
+						</view>
+						
+						<view name="imConnView">
+							<simplelayout axis="y" spacing="2"/>
+							<view name="aimView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/aim/@IM-Type" width="100"/>
+								<edittext name="aimContactTxt" datapath="displayUserInfo:/root/node/aim/@IM-Contact-Name" width="200"/>
+							</view>
+							<view name="yahooView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/yahoo/@IM-Type" width="100"/>
+								<edittext name="yahooContactTxt" datapath="displayUserInfo:/root/node/yahoo/@IM-Contact-Name" width="200"/>
+							</view>
+							<view name="googleView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/google/@IM-Type" width="100"/>
+								<edittext name="googleContactTxt" datapath="displayUserInfo:/root/node/google/@IM-Contact-Name" width="200"/>
+							</view>
+							<view name="msnView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/msn/@IM-Type" width="100"/>
+								<edittext name="msnContactTxt" datapath="displayUserInfo:/root/node/msn/@IM-Contact-Name" width="200"/>
+							</view>
+							<view name="icqView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/icq/@IM-Type" width="100"/>
+								<edittext name="icqContactTxt" datapath="displayUserInfo:/root/node/icq/@IM-Contact-Name" width="200"/>
+							</view>
+							<view name="jabberView">
+								<simplelayout axis="x"/>
+								<text datapath="displayUserInfo:/root/node/jabber/@IM-Type" width="100"/>
+								<edittext name="jabberContactTxt" datapath="displayUserInfo:/root/node/jabber/@IM-Contact-Name" width="200"/>
+							</view>
+						</view>
+						
+  						<view height="5" />
+					</view> 
+				</tabpane>
+				<tabpane datapath="gui:/gui-labels/tab-user-custom-info/@label" name="customUserTab" >
+                     <method event="onselect"  reference="this.tab">
+                    	if (this.tab.selected) {
+				            var p = displayUserInfo.getPointer();
+				            p.selectChild(2);
+				            var custom = p.p.getAttr('userCustomName');
+
+				            if(custom != undefined){
+					            classroot.mainTabs.customUserTab.emptyView.setVisible(false);
+					            classroot.mainTabs.customUserTab.gridView.setVisible(true);					            
+				            }else{
+					            classroot.mainTabs.customUserTab.emptyView.setVisible(true);
+					            classroot.mainTabs.customUserTab.gridView.setVisible(false);					            				            
+				            }
+						}
+						</method>  				
+						<simplelayout axis="y" spacing="3"/>
+						<view name="assignView">
+							<simplelayout axis="x" spacing="5" />
+							<text datapath="gui:/gui-labels/lbl-custom-value/@label" width="180" fgcolor="0x454545" />
+			                <datacombobox name="customFieldsN" width="150" editable="false" bgcolor="${canvas.bgcolor}"  x="180" shownitems="8"
+								itemdatapath="displayUserInfo:/root/node/custom" textdatapath='@customName' valuedatapath='@customId' selectfirst="false">
+			                </datacombobox>			                		                     
+							<edittext name="customParameterN" width="150" />
+							<mdn_button datapath="gui:/gui-labels/btn-save/@label" >
+								<method event="onclick">
+						            var userId = classroot.mainTabs.userInfoTab.parentView.pView.view3.userIdTxtN.getText();
+	                                var customId = classroot.mainTabs.customUserTab.assignView.customFieldsN.getValue();
+	                                var customParam = classroot.mainTabs.customUserTab.assignView.customParameterN.getText();
+	                                
+					    	        var params = new LzParam();
+									params.addValue('user-id', userId);    	        
+					        	    params.addValue('action', 'defineExistingCustom', true);
+	                				params.addValue('customId', customId);
+						            params.addValue('customParam', customParam);
+						            params.addValue('projectId', classroot.maintab.currProjectId);
+						            
+					    	        defineCustom.setQueryString(params);
+	        	    				defineCustom.doRequest();
+								</method>
+							</mdn_button>
+							<text datapath="displayUserInfo:/root/userCustom/@userCustomName" visible="false" fgcolor="0x454545">
+			                    <method event="ondata">
+							        var p = displayUserInfo.getPointer();
+							        p.selectChild(2);
+							        var custom = p.p.getAttr('userCustomName');
+			
+							        if(custom != undefined){
+								         classroot.mainTabs.customUserTab.emptyView.setVisible(false);
+								    	 classroot.mainTabs.customUserTab.gridView.setVisible(true);					            
+							        }else{
+								         classroot.mainTabs.customUserTab.emptyView.setVisible(true);
+								         classroot.mainTabs.customUserTab.gridView.setVisible(false);					            				            
+							        }
+								</method>  			
+							</text>	
+						</view>
+						<view name="gridView">
+							<simplelayout axis="x"/>
+							<view>
+								<simplelayout axis="y" spacing="2"/>
+								<text datapath="gui:/gui-labels/lbl-user-custom-1/@label" width="180" fgcolor="0x454545" />
+								<text datapath="gui:/gui-labels/lbl-user-custom-2/@label" width="180" fgcolor="0x454545" />								
+							</view>
+		    				<ftdynamicgrid height="300" datapath="displayUserInfo:/root" >
+							    <ftgridcolumn width="150">Name
+							    	<text datapath="@userCustomName" />
+							    </ftgridcolumn>
+							    <ftgridcolumn width="150"> Value
+							    	<text datapath="@userCustomParam" />							    
+							    </ftgridcolumn>
+							</ftdynamicgrid>
+						</view>  
+						<view name="emptyView">
+							<simpleboundslayout axis="x"/>
+							<text width="180" text="" />
+							<text text="No custom query value has been assigned to this user yet" x="100" fgcolor="0x454545" />
+						</view>	
+				</tabpane>						
+				<tabpane datapath="gui:/gui-labels/tab-msg-log/@label" name="msgLogTab">
+                     <method event="onselect" reference="this.tab">
+                    	if (this.tab.selected) {
+							var userId = classroot.mainTabs.userInfoTab.parentView.pView.view3.userIdTxtN.getText();
+							
+			    	        var params = new LzParam();
+			        	    params.addValue('action', 'messageLogs', true);
+							params.addValue('userId', userId);    	        			        	    
+			    	        msgLog.setQueryString(params);
+       	    				msgLog.doRequest();
+						}
+					</method> 
+					<view name="backView" width="300" height="${immediateparent.height - 80}" x="30" y="30">
+						<simplelayout axis="y"/>
+						<view name="noMsgView" visible="false" x="5">
+							<text datapath="gui:/gui-labels/txt-no-msg-log/@label" width="${immediateparent.width + 300}"  fontstyle="bold" fgcolor="0x454545" />
+						</view>
+						<view name="msgLogView" visible="true" x="5">
+							<simplelayout axis="x"/>
+		    				<ftgrid height="300" datapath="msgLog:/root" >
+							    <ftgridcolumn  width="200">Text
+							    	<text datapath="@text" />
+							    </ftgridcolumn >
+							    <ftgridcolumn  width="150"> Type
+							    	<text datapath="@type" />							    
+							    </ftgridcolumn >
+							    <ftgridcolumn  width="200"> Date
+							    	<text datapath="@date" />							    
+							    </ftgridcolumn >
+							</ftgrid>
+						</view>	
+<!-- 					<view name = "clearBtnView">
+						<mdn_button datapath="gui:/gui-labels/btn-clear/@label" >
+							<method event="onclick">
+								var userId = classroot.mainTabs.userInfoTab.parentView.pView.view3.userIdTxtN.getText();
+	
+				    	        var params = new LzParam();
+				        	    params.addValue('action', 'clearMessageLogs', true);
+								params.addValue('userId', userId);    	        			        	    
+				    	        clearMsgLog.setQueryString(params);
+	       	    				clearMsgLog.doRequest();
+	       	    				
+				    	        var params2 = new LzParam();
+				        	    params2.addValue('action', 'messageLogs', true);
+								params2.addValue('userId', userId);    	        			        	    
+				    	        msgLog.setQueryString(params2);
+	       	    				msgLog.doRequest();
+							</method>
+						</mdn_button>
+					</view>	-->
+				 </view>	
+				</tabpane>
+           </tabs>
+            <view name="errorView">
+                <simplelayout axis="x"/>
+                <text text="" width="180"/>
+                <text name="txtEditUserErrorN" text="" fgcolor="red" fontstyle="bold" resize="true" />
+            </view>
+           
+           <view x="0" visible="true">
+              <simplelayout axis="x" spacing="2"/>
+               <mdn_button datapath="gui:/gui-labels/btn-save/@label" >
+                   <method event="onclick">
+                        var point = dbUser.getPointer();
+                        point.selectChild(2);
+                        var _userID = classroot.mainTabs.userInfoTab.parentView.pView.view3.userIdTxtN.getText();
+		
+		                var firstName = classroot.mainTabs.userInfoTab.parentView.pView.view1.firstNameEditTxtN.getText();
+		                var lastName = classroot.mainTabs.userInfoTab.parentView.pView.view2.lastNameEditTxtN.getText();						                		
+		                var username = classroot.mainTabs.userInfoTab.parentView.pView.view3.usernameEditTxtN.getText();
+           				var password = classroot.mainTabs.userInfoTab.parentView.pView.view4.newPasswordEditTxt.getText();
+           				var confirmPassword = classroot.mainTabs.userInfoTab.parentView.pView.confirmView.newConfirmPasswordEditTxt.getText();
+		                var email = classroot.mainTabs.msgInfoTab.backView.view1.emailEditTxtN.getText();
+           				var mobile = classroot.mainTabs.msgInfoTab.backView.view2.mobileEditTxtN.getText();    
+		                var notes = classroot.mainTabs.userInfoTab.parentView.pView.view7.notesEditTxtN.getText();   
+		                var privilege = classroot.mainTabs.userInfoTab.parentView.pView.view5.privilegeSelectorN.getValue();
+		                var group = classroot.mainTabs.userInfoTab.parentView.pView.view6.groupCbx.getValue();
+		  		        
+		  		        
+						var aim = classroot.mainTabs.msgInfoTab.backView.imConnView.aimView.aimContactTxt.getText();
+						var yahoo = classroot.mainTabs.msgInfoTab.backView.imConnView.yahooView.yahooContactTxt.getText();
+						var google = classroot.mainTabs.msgInfoTab.backView.imConnView.googleView.googleContactTxt.getText();
+						var msn = classroot.mainTabs.msgInfoTab.backView.imConnView.msnView.msnContactTxt.getText();
+						var icq = classroot.mainTabs.msgInfoTab.backView.imConnView.icqView.icqContactTxt.getText();
+						var jabber = classroot.mainTabs.msgInfoTab.backView.imConnView.jabberView.jabberContactTxt.getText();
+		  		        
+		    	        var params = new LzParam();
+						params.addValue('user-id', _userID);    	        
+		        	    params.addValue('action', 'saveUserInfo', true);
+      					params.addValue('firstName', firstName);
+      					params.addValue('lastName', lastName);
+      					params.addValue('username', username);
+		            	params.addValue('password', password);
+		            	params.addValue('confirmPassword', confirmPassword);        
+           				params.addValue('email', email);
+			            params.addValue('mobile', mobile);
+           				params.addValue('notes', notes);
+           				params.addValue('group', group);
+           				params.addValue('privilege', privilege);
+           				
+           				//IM
+           				params.addValue('aim', aim);
+           				params.addValue('yahoo', yahoo);
+           				params.addValue('google', google);
+           				params.addValue('msn', msn);
+           				params.addValue('icq', icq);
+           				params.addValue('jabber', jabber);
+           				
+           				params.addValue('projectId', classroot.maintab.currProjectId);	 
+
+		    	        userNew.setQueryString(params);
+   	    				userNew.doRequest();
+                     </method>
+                     <hinttip tipid="USERSGROUPS-users-save" />
+                 </mdn_button>
+             </view>
+    </class>
+    
+    <!-- Deals with the new user result. -->
+    <datapointer xpath="dbNew:/root" rerunxpath="true"
+        ondata="processData();" onerror="canvas.showError(this);"
+        ontimeout="canvas.showTimeout();">
+        <method name="processData">
+            Debug.write("received newUser return data: " + this.serialize());
+            var result = this.getNodeText();
+            var action = this.getNodeAttribute('action');
+            var updateData = false;
+            
+            if (action == 'newUser'){
+                newUserWindow.errorMax.doStart();
+                newUserWindow.backView.errorView.error.setAttribute('text', result);
+                if (result == 'OK'){
+                    updateData = true;
+                    newUserWindow.errorMax.stop();
+                    newUserWindow.close();
+                }
+            } else if (action == 'editUser'){
+                if (result == 'OK'){
+                    updateData = true;
+                }
+            } else if (action == 'newGroup'){
+                newGroupWindow.errorMax.doStart();
+                newGroupWindow.backView.errorView.error.setAttribute('text', result);
+                if (result == 'OK'){
+                    updateData = true;
+                    newGroupWindow.errorMax.stop();
+                    newGroupWindow.close();
+                }
+            } else if (action == 'editGroup'){
+                if (result == 'OK'){
+                    updateData = true;
+                }
+            } else if (action == 'recycleUser'){
+            	var projectId = this.getNodeAttribute('projectId');
+	            dbUserView.errorView.txtEditUserErrorN.setAttribute('text', result);
+                if (result == 'OK'){
+                    updateData = true;
+					controller.displayEmptyUser(projectId);
+					newUser.clearDataFromNewUserPage();
+					//dbUserView.clearDataFromNewUserPage();
+					controller.getAllUsersGroups(projectId);
+                }
+            }
+            if (updateData){
+                controller.updateDbUsergroups();
+            }
+        </method>
+        
+ 	   </datapointer>
+
+	<!-- Deals with the new IM Contact result. -->
+ <!--   <datapointer xpath="saveImContact:/root" rerunxpath="true"
+    ondata="processData2();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    <method name="processData2">
+        var action = this.getNodeAttribute('action');
+        var result = this.getNodeAttribute('result');
+        var updateData = false;
+        if (action == 'saveImContact'){
+            newUser.errorView.txtErrorNewUserN.setAttribute('text', result);            
+            if (result == 'OK'){
+                updateData = true;
+            } 
+        }
+    </method>
+   </datapointer>
+ -->   
+		<datapointer xpath="userNew:/root" rerunxpath="true"
+		    ondata="processData();" onerror="canvas.showError(this);"
+		    ontimeout="canvas.showTimeout();">
+			<method name="processData">
+		        var action = this.getNodeAttribute('action');
+		        var result = this.getNodeAttribute('result');
+	    	    var userId = this.getNodeAttribute('user-id');
+	        	var userName = this.getNodeAttribute('name');
+	        	//var projectId = this.getNodeAttribute('projectId');
+		        var updateData = false;
+		        if (action == 'saveUser'){//
+	    	        dbUserView.errorView.txtEditUserErrorN.setAttribute('text', result);
+	    	        if (result == 'OK'){
+		    	        var params = new LzParam();
+/*		        	    params.addValue('action', 'usergroups', true);
+
+		    	        dbUsergroups.setQueryString(params);
+   	    				dbUsergroups.doRequest();*/
+   	    				controller.getAllUsersGroups(projectTabs.currTab.currProjectId);
+
+	    	        	//controller.getAllUsersGroups(0);
+	    	        }
+/*	        	    if (result == 'OK'){
+		        	   	classroot.maintab.userGroupCtrler.displayUser(projectTabs.currTab.currProjectId, userName, userId);
+					   	//cbxProvider.clearSelection();
+	   	               	updateData = true;
+	   	               	controller.getAllUsersGroups(projectTabs.currTab.currProjectId);
+	       			} else {
+	        			controller.displayEmptyUser();
+		            } */
+		        }else if(action == 'addNewUser'){
+	    	        if (result != ""){
+	    	        	newUser.errorView.txtErrorNewUserN.setAttribute('text', result);
+	    	        }
+	    	        
+	        	    if (result == 'OK'){
+		        	    controller.displayUser(0, '', userId);
+	        	    	//controller.getAllUsersGroups(0);
+	        	    	controller.getAllUsersGroups(projectTabs.currTab.currProjectId);
+		        	    		        	    
+	       			}else{
+		       			controller.displayEmptyUser();
+	       			}
+		        }
+			</method>
+		</datapointer>  
+    
+    <!-- The New User page -->
+   <class name="newUserm" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+        height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+        <method name="clearDataFromNewUserPage">
+	        //tabUser.setAttribute('selected', true);
+	        parentTabs.userTsb.backView.firstNameView.firstNameTxtN.setAttribute('text', '');
+	        parentTabs.userTsb.backView.lastNameView.lastNameTxtN.setAttribute('text', '');
+	        parentTabs.userTsb.backView.notesView.notesTxtN.setAttribute('text', '');
+	        parentTabs.userTsb.backView.privilegeView.cbxPrivilegeN.clearSelection();
+	        parentTabs.userTsb.backView.groupView.cbxGroupN.selectItemAt(0);
+			parentTabs.userTsb.backView.usernameView.usernameTxtN.setAttribute('text', '');
+          	parentTabs.userTsb.backView.passwordView.password.setAttribute('text', '');
+          	parentTabs.userTsb.backView.confirmView.newConfirmPasswordTxt.setAttribute('text', '');
+          	errorView.txtErrorNewUserN.setAttribute('text', '');
+    	</method>
+        
+    <simplelayout axis="y" spacing="2"/>
+		<attribute name="maintab"/>
+ 		<!-- Deals with the new User result. -->
+	  <tabs width="638" height="505" name="parentTabs" tabspacing="1" bgcolor="0x4386cc">
+         <attribute name="tabclass" value="tabWhiteTab" type="string" />
+         <method event="oninit">
+			<![CDATA[
+             	//Pushes the first tab in
+				this.subviews[0].layouts[0].setAttribute("inset", 15);
+			]]>
+		</method>
+         <tabpane datapath="gui:/gui-labels/tab-user/@label" name="userTsb" selected="true">
+		    <view name="backView" width="300" height="${immediateparent.height - 80}" x="30" y="20"  datapath="userNew:/root">
+		        <simplelayout axis="y" spacing="3"/>
+		            <view name="firstNameView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-first-name/@label" width="180" fgcolor="0x454545" />
+		                <edittext name="firstNameTxtN" text="" width="250"/>
+		                <hinttip tipid="USERSGROUPS-users-first-name" />
+		            </view>
+		            <view name="lastNameView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-last-name/@label" width="180" fgcolor="0x454545" />
+		                <edittext name="lastNameTxtN" text="" width="250"/>
+		                <hinttip tipid="USERSGROUPS-users-last-name" />
+		            </view>
+		            <view height="10" />
+		            <!-- licensee <view name="viewLicenseType">
+		            	<simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-license-type/@label" width="180" fgcolor="0x454545" />
+						<datacombobox  name="licenseTypeSelectorN" width="250" editable="false" bgcolor="${canvas.bgcolor}" x="180" shownitems="8"
+							itemdatapath="userNew:/root/licenseType" textdatapath='@name' valuedatapath='@name' selectfirst="false">      
+							 	<method event="ondata">
+	            					classroot.parentTabs.userTsb.backView.viewLicenseType.licenseTypeSelectorN.selectItemAt(0);
+						        </method>							
+						</datacombobox>			                
+		            </view> -->
+		            <view height="10" />
+		            <view name="privilegeView" >
+		            	<simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-privilege/@label" width="180" fgcolor="0x454545" />
+		                <hinttip tipid="USERSGROUPS-users-privilege" />
+						<datacombobox name="cbxPrivilegeN" width="250" editable="false" shownitems="8" bgcolor="${canvas.bgcolor}"
+							itemdatapath="userNew:/root/privilege" textdatapath='@description' valuedatapath='@name' selectfirst="false">      
+		                    <method event="onselect" reference="cbxPrivilegeN">
+			                     var selectedItem = this.getValue();
+			                     if(selectedItem == 'ADMIN'){
+			                     	classroot.parentTabs.userTsb.backView.usernameView.usernameTxtN.setAttribute('enabled', true);
+			                     	classroot.parentTabs.userTsb.backView.passwordView.password.setAttribute('enabled', true);
+	   								classroot.parentTabs.userTsb.backView.confirmView.newConfirmPasswordTxt.setAttribute('enabled', true);		                     	
+			                     }else{
+			                     	classroot.parentTabs.userTsb.backView.usernameView.usernameTxtN.setAttribute('enabled', false);
+			                     	classroot.parentTabs.userTsb.backView.passwordView.password.setAttribute('enabled', false);
+	   								classroot.parentTabs.userTsb.backView.confirmView.newConfirmPasswordEditTxt.setAttribute('enabled', false);
+			                     	classroot.parentTabs.userTsb.backView.usernameView.usernameTxtN.setText('');
+			                     	classroot.parentTabs.userTsb.backView.passwordView.password.setText('');
+			                     	classroot.parentTabs.userTsb.backView.confirmView.newConfirmPasswordTxt.setText('');
+			                     }
+		                    </method>
+						</datacombobox>				                    
+		            </view>
+		            <view name="usernameView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-username/@label" width="180" fgcolor="0x454545" />
+		                <edittext name="usernameTxtN" text="" width="250"/>
+		                <hinttip tipid="USERSGROUPS-users-username" />
+		            </view>
+		            <view name="passwordView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-password/@label" width="180" fgcolor="0x454545" />
+		                <hinttip tipid="USERSGROUPS-users-password" />
+		                <edittext name="password" password="true" text="" width="250">
+		                </edittext> 
+		            </view>
+	                <view name="confirmView">
+	                    <simplelayout axis="x"/>
+	                    <text datapath="gui:/gui-labels/lbl-confirm-password/@label" width="180" fgcolor="0x454545" />
+	                    <edittext width="250" name="newConfirmPasswordTxt" password="true"/>
+	                </view>
+	                <view height="10" />
+		            <view name="groupView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-group-cbx/@label" width="180" fgcolor="0x454545" />
+		                <hinttip tipid="USERSGROUPS-users-groups" />
+		                <datacombobox name="cbxGroupN" width="250" editable="false" shownitems="8" bgcolor="${canvas.bgcolor}"
+							itemdatapath="userNew:/root/group" textdatapath='@name' valuedatapath='@id' selectfirst="false">
+						</datacombobox>
+		            </view>
+		            <view name="notesView">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-notes/@label" width="180" fgcolor="0x454545" />
+		                <edittext name="notesTxtN" text="" width="250" multiline="true" height="70"/>
+		                <hinttip tipid="USERSGROUPS-users-notes" />
+		            </view>
+			        <view >
+				        <mdn_button datapath="gui:/gui-labels/btn-save/@label" x="329">
+				            <method event="onclick">
+				            	var firstName = classroot.parentTabs.userTsb.backView.firstNameView.firstNameTxtN.getText();
+				            	var lastName = classroot.parentTabs.userTsb.backView.lastNameView.lastNameTxtN.getText();
+				                var username = classroot.parentTabs.userTsb.backView.usernameView.usernameTxtN.getText();
+				                var password = classroot.parentTabs.userTsb.backView.passwordView.password.getText();
+				                var confirmPassword = classroot.parentTabs.userTsb.backView.confirmView.newConfirmPasswordTxt.getText();
+				                var privilege = classroot.parentTabs.userTsb.backView.privilegeView.cbxPrivilegeN.getValue();
+				                var group = classroot.parentTabs.userTsb.backView.groupView.cbxGroupN.getValue();
+				                var notes = classroot.parentTabs.userTsb.backView.notesView.notesTxtN.getText();
+				  		        
+				    	        var params = new LzParam();
+				        	    params.addValue('action', 'addUserInfo', true);
+				            	params.addValue('projectId', classroot.maintab.currProjectId);
+				            	params.addValue('username', username);
+				            	params.addValue('password', password);  
+				            	params.addValue('confirmPassword', confirmPassword);            	
+				                params.addValue('firstName', firstName);
+					            params.addValue('lastName', lastName);
+					            params.addValue('notes', notes);
+					            params.addValue('group', group);
+					            params.addValue('privilege', privilege);	            	
+				    	        userNew.setQueryString(params);
+				        	    userNew.doRequest();
+				            </method>
+				            <hinttip tipid="USERSGROUPS-users-save" />
+				        </mdn_button>
+			       </view>
+			</view>        
+		</tabpane>
+		
+		<tabpane datapath="gui:/gui-labels/tab-msg-info/@label" name="msgInfoTab" >
+			<view name="backView" width="300" height="${immediateparent.height - 80}" x="30" y="30"> 
+				<simplelayout axis="y" spacing="3"/>
+				<text datapath="gui:/gui-labels/txt-new-user-condition/@label" width="${immediateparent.width + 300}"  fontstyle="bold" fgcolor="0x454545" />
+			</view>
+		</tabpane>
+		<tabpane datapath="gui:/gui-labels/tab-user-custom-info/@label" name="customUserTab" >
+			<view name="backView" width="300" height="${immediateparent.height - 80}" x="30" y="30"> 
+				<simplelayout axis="y" spacing="3"/>
+				<text datapath="gui:/gui-labels/txt-new-user-condition/@label" width="${immediateparent.width + 300}"  fontstyle="bold" fgcolor="0x454545" />
+			</view>
+		</tabpane>		
+		<tabpane datapath="gui:/gui-labels/tab-msg-log/@label">
+			<view width="300" height="${immediateparent.height - 80}" x="30" y="30" >
+				<text datapath="gui:/gui-labels/txt-no-msg-log/@label" width="${immediateparent.width + 300}"  fontstyle="bold" fgcolor="0x454545" />	
+			</view>	
+		</tabpane>
+		
+	  </tabs>
+       <view height="0"/>
+       <view name="errorView" width="${immediateparent.width}" align="center">
+           <text name="txtErrorNewUserN" align="center" text="" fgcolor="red" fontstyle="bold" resize="true" height="50" multiline="false" />
+       </view>
+	  
+   </class>     
+    
+    <!-- The GroupView class. -->
+   <class name="groupView" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}"
+        height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}">
+     <simplelayout axis="y" />
+     <method name="clear">
+     	errorView.txtErrorEditGroupN.setText("");
+     </method>
+
+    <attribute name="currDB"/>
+    <attribute name="group"/>    
+	<attribute name="maintab"/>
+	
+	<attribute name="startTime"/>
+    <attribute name="updateTimerDelegate" type="expression" /> 
+    	
+    <handler name="onstartTime">
+		updateTimer();
+    </handler>
+    
+	<method name="updateTimer">
+		newGroupPermissionProgressBar.addValue();
+		if( typeof this.updateTimerDelegate == "undefined" ) {
+			this.updateTimerDelegate = new LzDelegate( this, "updateTimer" );
+			LzTimer.addTimer( this.updateTimerDelegate, 1000 );
+		} else {
+			LzTimer.resetTimer( this.updateTimerDelegate, 1000 );
+		}
+	</method>	
+
+    <view width="${immediateparent.width - 80}" height="${immediateparent.height - 30}" name="mainView" y="10">      
+        <simplelayout axis="y" />
+        <view height="30" name="parentView">
+            <view name="view1">
+                <simplelayout axis="x" spacing="5"/>
+                <text datapath="gui:/gui-labels/lbl-group-cbx/@label" width="80" fgcolor="0x454545" fontstyle="bold"/>
+                <hinttip tipid="USERSGROUPS-groups-group" />
+		    	<edittext datapath="dbGroup:/root/node/@name" name="groupName" width="150" fgcolor="0x454545" /> <!-- enabled="false"  -->   
+		    	<text text="" width="30"/>
+		    	<text name="groupIdEditTxtN" datapath="dbGroup:/root/node/@groupID" visible="false" width="200" fgcolor="0x454545">
+		        	<method event="ondata">
+			            var p = dbGroup.getPointer();
+			            p.selectChild(2);
+			            var guest = p.p.getAttr('guest');
+			        	if(guest == 'true'){
+			        		classroot.mainView.parentView.view1.guestGroup.setAttribute('value', true);
+			        	}else{
+				        	classroot.mainView.parentView.view1.guestGroup.setAttribute('value', false);
+			        	}
+	    	    	</method>		    	
+		    	</text>
+		    	<ftcheckbox2 name="guestGroup" labelXpath="gui:/gui-labels/lbl-guest-group/@label"/>		    	
+	      </view>
+        </view>
+		<view>
+			<simplelayout axis="x" spacing="20"/>
+	    	<text datapath="gui:/gui-labels/lbl-group-data-view-permission/@label" width="285" fgcolor="0x454545" fontsize="12"  fontstyle="bold"/>
+	        <text datapath="gui:/gui-labels/lbl-group-tbl-permission/@label" width="200" fgcolor="0x454545" fontsize="12" fontstyle="bold"/>
+	        <hinttip tipid="USERSGROUPS-groups-data_view_permissions" />
+        </view>        
+        <view width="${immediateparent.width}" height="${immediateparent.height -30}" name="parentView2">
+	        <view width="300" height="${immediateparent.height}" name="pView">
+                <simplelayout axis="x" spacing="15"/>
+	            <!-- the tree -->
+	            <view height="${immediateparent.height - 80}" visible="${this.height >= 10 ? true:false}"
+	                  width="${immediateparent.width}" bgcolor="0xcfcfcf" name="pView2">
+	                <view width="${immediateparent.width - 2}" x="1" y="1" name="pView3"
+	                            height="${immediateparent.height - 2}" clip="true" borderOpacity="1" bgcolor="white" >
+	                    <checktree nodepath="node" nodeclass="checktreenode" selectable="true"
+		                     width="${immediateparent.width}" name="permissionTree"
+		                     showtreelines="false" >
+		                     <datapath xpath="dbGroupViewPermissions:/root" axis="20" spacing="20" replication="lazy">
+	                     		<handler name="ondata">
+									Debug.write("set view tree datapath to be replication lazy");
+								</handler>
+							</datapath>	
+	                     <attribute name="newRoundRectWidth" value="298" />
+	                    </checktree> 
+	                    <smartvscollbar repmanager="nodeinst" />
+	                </view>
+	            </view> 
+	            
+		        <view height="${immediateparent.height - 80}" visible="${this.height >= 10 ? true:false}"
+		                  width="${immediateparent.width}" bgcolor="0xcfcfcf" name="pViewTbl2">
+		                <view width="${immediateparent.width - 2}" x="1" y="1" name="pViewTbl3"
+		                            height="${immediateparent.height - 2}" clip="true" borderOpacity="1" bgcolor="white" >
+		                    <checktree name="permissionTblTree" 
+			                     nodepath="node2" nodeclass="checktreenode" selectable="true"
+			                     width="${immediateparent.width}"
+			                     showtreelines="false" >
+			                     <datapath xpath="dbGroupTablePermissions:/root" axis="20" spacing="20" replication="lazy">
+		                     		<handler name="ondata">
+										Debug.write("set view tree datapath to be replication lazy");
+									</handler>
+								 </datapath>	
+		                     	<attribute name="newRoundRectWidth" value="298" />
+		                    </checktree>
+		                    <smartvscollbar repmanager="nodeinst" />
+		                </view>
+		            </view>
+	        </view>
+	        <view width="300" height="${immediateparent.height}" x="300">
+	            <simplelayout axis="y" spacing="2"/>
+                    <view height="${immediateparent.height - 75}"/>
+                        <view>
+                          <simplelayout axis="x"/>
+                          <text text="" width="205"/>
+	                       <mdn_button datapath="gui:/gui-labels/btn-save/@label" >
+				            <method event="onclick">
+  	            				<![CDATA[
+      	        				var groupId = classroot.mainView.parentView.view1.groupIdEditTxtN.getText();
+      	        				var groupName = classroot.mainView.parentView.view1.groupName.getText(); 
+      	        				var guest = classroot.mainView.parentView.view1.guestGroup.getAttribute('value');
+
+								var selId = new Array();
+	          	    				var selArray = classroot.mainView.parentView2.pView.pView2.pView3.permissionTree.getAllCheckedNodes();
+					            var count = selArray.length;
+					            for (var i=0;i< count;i++) {
+				    	            if(selArray[i].getAttr("type") == 'field')
+				        	        {
+				            	    	selId.push(selArray[i].getAttr("id"));	
+							        }
+					            }
+					            
+								var selTblId = new Array();
+	          	    			var tblSelArray = classroot.mainView.parentView2.pView.pViewTbl2.pViewTbl3.permissionTblTree.getAllCheckedNodes();
+					            var countTblArray = tblSelArray.length;
+					            
+					            for (var j=0; j< countTblArray; j++) {
+				    	            if(tblSelArray[j].getAttr("type") == 'table')
+				        	        {
+				            	    	selTblId.push(tblSelArray[j].getAttr("id"));					                
+							        }						            
+						        }
+
+								//----------------------------------
+					            classroot.txtProgress.setText("Saving ...");
+					            controller.setAttribute("stime", getTimer());
+					            
+					            classroot.newGroupPermissionProgressBar.setVisible(true);
+					            classroot.newGroupPermissionProgressBar.setValue(0);
+					            
+					            this.setAttribute("startTime", getTimer());	
+					            classroot.updateTimer();
+					            //----------------------------------
+					            					            
+					            var params = new LzParam();
+								params.addValue('action', 'setGroupPermissions', true);
+								params.addValue('projectId', classroot.maintab.currProjectId, true);
+								params.addValue('sel-id', selId, true);
+								params.addValue('groupId', groupId, true);
+								params.addValue('groupname', groupName, true);
+								params.addValue('guest', guest);									
+								params.addValue('selTblId', selTblId, true);
+	
+								saveGroup.setQueryString(params);
+								saveGroup.doRequest();
+
+				        	 ]]>
+				            </method>
+			            <hinttip tipid="USERSGROUPS-groups-save" />
+                       </mdn_button>
+				</view>
+	        </view>
+	    </view>
+    </view>
+    <text text="" name="txtProgress"/>
+	<view name="newGroupPermissionProgressBar" width="201" height="11" visible="false"> <!-- bgcolor="#666666" -->
+		<view x="1" y="1" width="200" height="10" bgcolor="#FFFFFF"/>
+		<view name="status" x="1" y="1" height="10" bgcolor="#BBBBFF"/>
+		<method name="setValue" args="value">
+			status.setAttribute('width', value);
+		</method>
+		<method name="addValue">
+			<![CDATA[
+				status.setAttribute('width', status.width + 1);
+			]]>
+		</method>
+	</view>    
+    <view name="errorView" >
+        <text name="txtErrorEditGroupN" text="" fgcolor="red" fontstyle="bold" resize="true"  width="350" height="100" multiline="true" />
+    </view>	        
+   </class>    
+    <!-- The New Group. -->
+   <class name="newGroupm" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}"
+        height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}">
+        
+    <attribute name="currDB"/>
+    <attribute name="group"/>
+    <attribute name="maintab"/>    
+
+    <method name="clearDataFromNewGroupPage"> 
+    	mainView.nameView.guestGroup.setAttribute('value', false);
+		mainView.nameView.groupNameTxtN.setText('');
+		errorView.txtErrorNewGroup.setText("");
+    </method>
+    
+    <attribute name="startTime"/>
+    <attribute name="updateTimerDelegate" type="expression" /> 
+    	
+    <handler name="onstartTime">
+		updateTimer();
+    </handler>
+    
+	<method name="updateTimer">
+		newGroupPermissionProgressBar.addValue();
+		if( typeof this.updateTimerDelegate == "undefined" ) {
+			this.updateTimerDelegate = new LzDelegate( this, "updateTimer" );
+			LzTimer.addTimer( this.updateTimerDelegate, 1000 );
+		} else {
+			LzTimer.resetTimer( this.updateTimerDelegate, 1000 );
+		}
+	</method>	
+	
+	<simplelayout axis="y" spacing="2"/>
+    <view width="${immediateparent.width - 80}" height="${immediateparent.height - 45}" y="10" name="mainView" >      
+        <simplelayout axis="y" spacing="5"/>
+        <view height="30" name="nameView">
+            <simplelayout axis="x" spacing="5"/>
+            <text datapath="gui:/gui-labels/lbl-group/@label" width="80" fgcolor="0x454545" />
+	    	<edittext name="groupNameTxtN" text="" width="200" />   
+	    	<hinttip tipid="USERSGROUPS-groups-group" />
+	    	<ftcheckbox2 name="guestGroup" labelXpath="gui:/gui-labels/lbl-guest-group/@label"/>
+        </view>       
+        
+		<view>
+			<simplelayout axis="x" spacing="15"/>
+	    	<text datapath="gui:/gui-labels/lbl-group-data-view-permission/@label" width="285" fgcolor="0x454545" fontsize="12"  fontstyle="bold"/>
+	        <text datapath="gui:/gui-labels/lbl-group-tbl-permission/@label" width="200" fgcolor="0x454545" fontsize="12" fontstyle="bold"/>
+	        <hinttip tipid="USERSGROUPS-groups-data_view_permissions" />
+        </view>        
+        <view width="${immediateparent.width}" height="${immediateparent.height -30}" name="pView" >
+	        <view width="300" height="${immediateparent.height}" name="view1">
+                <simplelayout axis="x" spacing="5"/>
+	            <!-- the VIEW tree -->
+	            <view height="${immediateparent.height - 80}" visible="${this.height >= 10 ? true:false}"
+	                  width="${immediateparent.width}" bgcolor="0xcfcfcf" name="view2">
+	                <view width="${immediateparent.width - 2}" x="1" y="1" name="view3"
+	                            height="${immediateparent.height - 2}" clip="true" borderOpacity="1" bgcolor="white">
+	                    <checktree datapath="dbGroupViewPermissionsNew:/root" name="permissionsTree"
+		                     nodepath="node" nodeclass="checktreenode" selectable="true"
+		                     width="${immediateparent.width}"
+	    	                 showtreelines="false" bgcolor="0xFFFFFF">
+	    	                 <attribute name="newRoundRectWidth" value="298" />
+	                    </checktree>
+	                    <smartvscollbar repmanager="nodeinst" />
+	                </view>
+	            </view>
+	            
+	            <!-- the TABLE tree -->
+	            <view height="${immediateparent.height - 80}" visible="${this.height >= 10 ? true:false}"
+	                  width="${immediateparent.width}" bgcolor="0xcfcfcf" name="view2Tbl">	            
+	                <view width="${immediateparent.width - 2}" x="1" y="1" name="view3Tbl"
+	                            height="${immediateparent.height - 2}" clip="true" borderOpacity="1" bgcolor="white">		                        
+	                    <checktree  name="tablePermissionsTree"
+		                     nodepath="node2" nodeclass="checktreenode" selectable="true"
+		                     width="${immediateparent.width}"
+	    	                 showtreelines="false" bgcolor="0xFFFFFF">
+			                     <datapath xpath="dbGroupTablePermissionsNew:/root" axis="20" spacing="20" replication="lazy">
+		                     		<handler name="ondata">
+										Debug.write("set view tree datapath to be replication lazy");
+									</handler>
+								 </datapath>			                     		    	                 
+	    	                 <attribute name="newRoundRectWidth" value="298" />
+	                    </checktree>	                            
+		                    <smartvscollbar repmanager="nodeinst" />
+		              </view>       	          
+	              </view>
+	        </view>
+	        <view width="300" height="${immediateparent.height}" x="300">
+	            <simplelayout axis="y" spacing="2"/>
+                 <view height="${immediateparent.height - 75}"/>
+                 <view>
+                    <simplelayout axis="x"/>
+                    <text text="" width="205" />
+                    <mdn_button datapath="gui:/gui-labels/btn-save/@label" >
+			            <method event="onclick">
+	            			<![CDATA[
+      	        			var groupName = classroot.mainView.nameView.groupNameTxtN.getText();
+      	        			var guest = classroot.mainView.nameView.guestGroup.getAttribute('value');
+							var selId = new Array();
+          	    			var selArray = classroot.mainView.pView.view1.view2.view3.permissionsTree.getAllCheckedNodes();
+          	    			
+          	    			var selTblId = new Array();
+          	    			var tblSelArray = classroot.mainView.pView.view1.view2Tbl.view3Tbl.tablePermissionsTree.getAllCheckedNodes();
+          	    			
+				            var count = selArray.length;
+				            for (var i=0;i< count;i++) {
+			    	            if(selArray[i].getAttr("type") == 'field')
+			        	        {
+			            	    	selId.push(selArray[i].getAttr("id"));					                
+						        }
+				            }
+				            
+				            var countTblArray = tblSelArray.length;
+				            for (var j=0; j< countTblArray; j++) {
+			    	            if(tblSelArray[j].getAttr("type") == 'table')
+			        	        {
+			            	    	selTblId.push(tblSelArray[j].getAttr("id"));					                
+						        }
+				            }				            
+   							//----------------------------------
+				            classroot.txtProgress.setText("Saving ...");
+				            controller.setAttribute("stime", getTimer());
+				            
+				            classroot.newGroupPermissionProgressBar.setVisible(true);
+				            classroot.newGroupPermissionProgressBar.setValue(0);
+				            
+				            this.setAttribute("startTime", getTimer());	
+				            classroot.updateTimer();
+				            //----------------------------------
+				            
+				            var params = new LzParam();
+							params.addValue('action', 'setGroupPermissions', true);
+							params.addValue('projectId', classroot.maintab.currProjectId, true);
+							params.addValue('sel-id', selId, true);
+							params.addValue('groupId', '0', true);
+							params.addValue('groupname', groupName);
+							params.addValue('guest', guest);
+							params.addValue('selTblId', selTblId, true);
+							saveGroup.setQueryString(params);
+							saveGroup.doRequest();
+			        		]]>
+			            </method>
+	                   <hinttip tipid="USERSGROUPS-groups-save" />
+                   </mdn_button>
+				</view>
+	        </view>
+	    </view>
+    </view>
+
+    <text text="" name="txtProgress"/>
+	<view name="newGroupPermissionProgressBar" width="201" visible="false"> <!-- height="11"  bgcolor="#666666" -->
+		<view x="1" y="1" width="200" height="10" bgcolor="#FFFFFF"/>
+		<view name="status" x="1" y="1" height="10" bgcolor="#BBBBFF"/>
+		<method name="setValue" args="value">
+			status.setAttribute('width', value);
+		</method>
+		<method name="addValue">
+			<![CDATA[
+				status.setAttribute('width', status.width + 1);
+			]]>
+		</method>
+	</view>    
+    
+    <view name="errorView" > 
+        <text name="txtErrorNewGroup" text="" fgcolor="red" fontstyle="bold" resize="true"  width="350" height="100" multiline="true" />
+    </view>	        
+   </class>
+
+    <class name="customQuery" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+            height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+	    <method name="clearData">
+		    addView.newCustomNameN.setText("");
+		    //deleteView.customFieldsN.clearSelection();
+		    deleteView.customFieldsN.selectItemAt(0);
+	        errorView.txtErrorCustomQuery.setText("");
+	   	</method>            
+         <simplelayout axis="y" spacing="3"/>
+         <view>
+         	<text datapath="gui:/gui-labels/lbl-custom-query-explain/@label" fgcolor="gray" width="522" multiline="true" />
+         </view>   
+         <view name = "addView">
+			<simplelayout axis="x" spacing="5"/>
+			<text datapath="gui:/gui-labels/lbl-new-custom/@label" width="180" fgcolor="0x454545" />
+			<edittext name="newCustomNameN" width="150"/>
+			<mdn_button datapath="gui:/gui-labels/btn-add/@label" >
+				<method event="onclick">
+		            var p = dbUserReply.getPointer();
+		            p.selectChild(1);
+
+                    var customName = classroot.addView.newCustomNameN.getText();
+                             
+	    	        var params = new LzParam();
+	        	    params.addValue('action', 'addNewCustom', true);
+             		params.addValue('customName', customName);
+		            params.addValue('projectId', classroot.maintab.currProjectId);
+	    	        addCustom.setQueryString(params);
+     	    		addCustom.doRequest();
+				</method>
+			</mdn_button>
+         </view>   
+         <view name = "deleteView">
+			<simplelayout axis="x" spacing="5"/>
+			<text datapath="gui:/gui-labels/lbl-exsist-custom/@label" width="180" fgcolor="0x454545" />
+            <datacombobox name="customFieldsN" width="150" editable="false" bgcolor="${canvas.bgcolor}"  shownitems="8"
+				itemdatapath="addCustom:/root/custom" textdatapath='@customName' valuedatapath='@customId' selectfirst="false">
+            </datacombobox>			                            
+			<mdn_button datapath="gui:/gui-labels/btn-delete/@label" >
+				<method event="onclick">
+                    var customId = classroot.deleteView.customFieldsN.getValue();
+                             
+	    	        var params = new LzParam();
+	        	    params.addValue('action', 'deleteCustomQuery', true);
+             		params.addValue('customId', customId);
+		            
+	    	        addCustom.setQueryString(params);
+     	    		addCustom.doRequest();
+				</method>
+			</mdn_button>         
+         </view>            
+        <view name="errorView">
+            <text name="txtErrorCustomQuery" text="" fgcolor="red" fontstyle="bold" width="${projectTabs.currTab._borderView._projectView._rightView.width - 50}" multiline="true" />
+        </view>	             
+   </class>         
+    
+	<!-- Deals with the new connection result. -->
+<!-- 
+   <datapointer xpath="saveImContact:/root" rerunxpath="true"
+    ondata="processData2();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+	    <method name="processData2">
+	        var action = this.getNodeAttribute('action');
+	        var result = this.getNodeAttribute('result');
+	        var updateData = false;
+	        if (action == 'saveImContact'){
+	            dbUserView.errorView.txtEditUserErrorN.setAttribute('text', result);
+	            if (result == 'OK'){
+	                updateData = true;
+	            } 
+	        }
+	    </method>
+   </datapointer>
+ -->
+  <!--  <datapointer xpath="clearMsgLog:/root" rerunxpath="true"
+    ondata="processData();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    <method name="processData">
+	    <![CDATA[
+	        var result = this.getNodeAttribute('result');
+			if(result == 'noData'){
+	        	dbUserView.mainTabs.msgLogTab.backView.msgLogView.setAttribute("visible", false);
+	        	dbUserView.mainTabs.msgLogTab.backView.clearBtnView.setAttribute("visible", false);
+				dbUserView.mainTabs.msgLogTab.backView.noMsgView.setAttribute("visible", true);
+	        }else{
+	        	dbUserView.mainTabs.msgLogTab.backView.msgLogView.setAttribute("visible", true);
+	        	dbUserView.mainTabs.msgLogTab.backView.clearBtnView.setAttribute("visible", true);
+				dbUserView.mainTabs.msgLogTab.backView.noMsgView.setAttribute("visible", false);
+	        }
+        ]]>
+    </method>
+   </datapointer>	-->
+
+   <datapointer xpath="msgLog:/root" rerunxpath="true"
+    ondata="processData();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    <method name="processData">
+	    <![CDATA[
+	        var result = this.getNodeAttribute('result');
+	        if(result == 'noData'){
+	        	dbUserView.mainTabs.msgLogTab.backView.msgLogView.setAttribute("visible", false);
+	        	//dbUserView.mainTabs.msgLogTab.backView.clearBtnView.setAttribute("visible", false);
+				dbUserView.mainTabs.msgLogTab.backView.noMsgView.setAttribute("visible", true);
+	        }else{
+	        	dbUserView.mainTabs.msgLogTab.backView.msgLogView.setAttribute("visible", true);
+	        	//dbUserView.mainTabs.msgLogTab.backView.clearBtnView.setAttribute("visible", true);
+				dbUserView.mainTabs.msgLogTab.backView.noMsgView.setAttribute("visible", false);
+	        }
+        ]]>
+    </method>
+   </datapointer>	
+   
+   <datapointer xpath="addCustom:/root" rerunxpath="true"
+    ondata="processData();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    	<method name="processData">
+	    <![CDATA[
+	        var action = this.getNodeAttribute('action');
+	        var result = this.getNodeAttribute('result');
+	        var userId = this.getNodeAttribute('user-id');
+	        var projectId = this.getNodeAttribute('projectId');
+	        if(result == 'OK'){
+		       controller.displayCustomQuery();           
+	        }else{	        
+	        	customQueryView.errorView.txtErrorCustomQuery.setAttribute('text', result);	        
+	        }
+			//customQueryView.deleteView.customFieldsN.selectItem("1");
+			customQueryView.clearData();
+			//customQueryView.deleteView.customFieldsN.clearSelection();
+        ]]>
+	    </method>
+   </datapointer>	
+
+   <datapointer xpath="defineCustom:/root" rerunxpath="true"
+    ondata="processData();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    	<method name="processData">
+	    <![CDATA[
+	        var result = this.getNodeAttribute('result');
+	        var userId = this.getNodeAttribute('user-id');
+	        var projectId = this.getNodeAttribute('projectId');
+	        if(result == 'OK'){
+		       controller.displayUser(projectId, '', userId);
+	        }
+        ]]>
+	    </method>
+   </datapointer>	
+   
+    <datapointer xpath="dbGroupTablePermissions:/root" rerunxpath="true"
+			    ondata="processData3();" onerror="canvas.showError(this);"
+			    ontimeout="canvas.showTimeout();">
+		    <method name="processData3">
+		        var result = this.getNodeAttribute('result');
+	        	if (result == 'OK'){
+		    	    var groupId = this.getNodeAttribute('group-id');
+		        	var groupName = this.getNodeAttribute('group-name');
+		        	var projectId = this.getNodeAttribute('projectId');
+		        	
+		        	controller.displayGroup(groupName, groupId);
+		        	controller.getAllUsersGroups(projectId);
+        		} 
+	    </method>
+   	 </datapointer>
+   
+   <datapointer xpath="saveGroup:/root" rerunxpath="true"
+			    ondata="processData3();" onerror="canvas.showError(this);"
+			    ontimeout="canvas.showTimeout();">
+		    <method name="processData3">
+		        var result = this.getNodeAttribute('result');
+		        var action = this.getNodeAttribute('action');		        
+		        if(action =='add'){
+			        newGroupView.errorView.txtErrorNewGroup.setAttribute('text', result);
+			    }
+		        if(action == 'edit'){
+		        	dbGroupView.errorView.txtErrorEditGroupN.setAttribute('text', result);
+		        }
+	        	if (result == 'OK'){
+		        	if(action == 'edit'){
+		                updateData = true;
+		                dbGroupView.txtProgress.setText('');
+		                dbGroupView.newGroupPermissionProgressBar.setVisible(false);
+		                dbGroupView.newGroupPermissionProgressBar.setValue(0);
+		                LzTimer.removeTimer(dbGroupView.updateTimerDelegate);		            	        	        		
+	        		}else if(action == 'add'){
+		                newGroupView.txtProgress.setText('');
+		                newGroupView.newGroupPermissionProgressBar.setVisible(false);
+		                newGroupView.newGroupPermissionProgressBar.setValue(0);
+		                LzTimer.removeTimer(newGroupView.updateTimerDelegate);		            	        	        			        			
+	        		}
+	        	
+		    	    var groupId = this.getNodeAttribute('group-id');
+		        	var groupName = this.getNodeAttribute('group-name');
+		        	var projectId = this.getNodeAttribute('projectId');
+                    controller.getGroupPermissions(projectId, groupId);
+                    controller.displayGroup(groupName, groupId);	
+                    controller.getAllUsersGroups(projectId);	        			        	
+        		} else {
+        		    Debug.write("Error validation");
+        			if(action == 'edit'){
+		 				dbGroupView.txtProgress.setText('');
+		                dbGroupView.newGroupPermissionProgressBar.setVisible(false);
+		                dbGroupView.newGroupPermissionProgressBar.setValue(0);
+		                LzTimer.removeTimer(dbGroupView.updateTimerDelegate);		            	        	        		
+		             }else if(action == 'add'){
+		 				newGroupView.txtProgress.setText('');
+		                newGroupView.newGroupPermissionProgressBar.setVisible(false);
+		                newGroupView.newGroupPermissionProgressBar.setValue(0);
+		                LzTimer.removeTimer(newGroupView.updateTimerDelegate);		     
+		             }
+        		}
+	    </method>
+   	 </datapointer>
+   	 
+   <datapointer xpath="userGroup:/root" rerunxpath="true"
+			    ondata="processData3();" onerror="canvas.showError(this);"
+			    ontimeout="canvas.showTimeout();">
+		    <method name="processData3">
+		    var result = this.getNodeAttribute('result');
+	        var userId = this.getNodeAttribute('user-id');
+	        var projectId = this.getNodeAttribute('projectId');		    
+		    if(result == 'OK'){
+				controller.getAllUsersGroups(projectId);
+		        controller.displayUser(projectId, '', userId);						    
+		    }
+			dbUserView.errorView.txtEditUserErrorN.setAttribute('text', result);		    
+
+	    </method>
+   	 </datapointer>    
+    
+<!--     <window id="newGroupWindow" title="New Group" opacity="0"
+                    x="${btnNewGroup.x + 10}" y="${users.y + btnNewGroup.parent.y + 50}"
+                    width="${btnNewGroup.width}" height="20" visible="false"
+                    closeable="true" resizable="true" >
+        <attribute name="isMax" value="false"/>
+        
+        <state name="max">
+          <animatorgroup duration="1000" process="simultaneous">
+            <animator attribute="width" to="342"/>
+            <animator attribute="height" to="140"/>
+            <animator attribute="x" to="300"/>
+            <animator attribute="y" to="200"/>
+            <animator attribute="opacity" to="1"/>
+            <animator attribute="visible" to="true"/>
+          </animatorgroup>
+        </state>
+        <state name="min" apply="true">
+          <animatorgroup duration="1000" process="simultaneous">
+            <animator attribute="width" to="${btnNewGroup.width}"/>
+            <animator attribute="height" to="20"/>
+            <animator attribute="x" to="${btnNewGroup.x + 10}"/>
+            <animator attribute="y" to="${users.y + btnNewGroup.parent.y + 50}"/>
+            <animator attribute="opacity" to="0"/>
+            <animator attribute="visible" to="false"/>
+          </animatorgroup>
+        </state>
+        <animator name="errorMax" duration="500" attribute="height" to="165"/>
+        
+        <view width="${immediateparent.width - 20}" height="${immediateparent.height - 20}"
+                    x="20" y="20" name="backView">
+            <simplelayout axis="y" spacing="2"/>
+                <view name="groupnameView">
+                    <simplelayout axis="x"/>
+                    <text datapath="gui:/gui-labels/lbl-group/@label" width="80" />
+                    <edittext name="groupname" text="" width="200"/>
+                </view>
+                <view height="10"/>
+                <view align="center">
+                <simplelayout axis="x" spacing="3"/>
+                <mdn_button text="Cancel">
+                    <method event="onclick">
+                        newGroupWindow.close();
+                    </method>
+                </mdn_button>
+                <mdn_button text="Save">
+                    <method event="onclick">
+                        newGroupWindow.backView.errorView.error.setAttribute('text', '');
+                        var groupname = newGroupWindow.backView.groupnameView.groupname.text;
+                        Debug.write("Groupname = " + groupname);
+                        var error = null;
+                        if (groupname == null || groupname == ""){
+                            error = "Missing group name";
+                        }
+                        if (error != null){
+                            newGroupWindow.errorMax.doStart();
+                            newGroupWindow.backView.errorView.error.setAttribute('text', error);
+                            return;
+                        } else {
+                            var params = new LzParam();
+                            params.addValue('action', 'newGroup', true);
+                            params.addValue('groupname', groupname, true);
+                            dbNew.setQueryString(params);
+                            dbNew.doRequest();
+                        }
+                    </method>
+                </mdn_button>
+            </view>
+            <view height="10"/>
+            <view name="errorView" align="center">
+                <text name="error" text="" fgcolor="red" fontstyle="bold" resize="true" />
+            </view>
+        </view>
+        <method name="close">
+            this.clearData();
+            if (this.isMax) {
+              this.max.remove();
+              this.min.apply();
+            } else {
+              this.max.apply();
+              this.min.remove();
+            }
+            this.isMax = !this.isMax;
+        </method>
+        <method name="clearData">
+            newGroupWindow.backView.groupnameView.groupname.setAttribute('text', '');
+        </method>
+    </window> -->
+</library>

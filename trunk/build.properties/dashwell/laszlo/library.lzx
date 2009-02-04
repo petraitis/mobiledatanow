@@ -1,0 +1,24 @@
+<library>
+	<include href="login.lzx" />
+	<include href="captionView.lzx" />
+	<include href="splashView.lzx" />
+	<include href="databases.lzx" />
+	<include href="databaseAddViews.lzx" />
+	<include href="usergroups.lzx" />
+	<include href="presentation.lzx" />
+	<include href="deployment.lzx" />
+	<include href="settings.lzx" />
+	<include href="helpView.lzx" />
+	<include href="binView.lzx" />
+	<include href="fileupload.lzx" />
+	<include href="projectView.lzx" />
+	<include href="webServices.lzx" />
+	<include href="queryMessaging.lzx" />
+	<include href="userReply.lzx" />
+	<include href="navigation.lzx" />
+	<include href="mainTab.lzx" />
+	<include href="headerView.lzx" />
+	<include href="navigationSettings.lzx" />
+	<include href="databaseController.lzx" />
+	<include href="userLicense.lzx" />
+</library>

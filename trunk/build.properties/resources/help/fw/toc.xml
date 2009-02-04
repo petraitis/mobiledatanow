@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+
+<!-- WSL framework table of contents -->
+
+
+<toc version="1.0">
+  <tocitem text="WSL Framework" target="fw.contents">
+    <tocitem text="User-Group Maintenance">
+        <tocitem text="User Maintenance"  target="fw.security.gui.UserTabPane" />
+        <tocitem text="Group Maintenance" target="fw.security.gui.GroupTabPane" />
+        <tocitem text="User"              target="fw.security.gui.UserPropertiesPanel" />
+        <tocitem text="Group"             target="fw.security.gui.GroupPropertiesPanel" />
+        <tocitem text="Feature"           target="fw.security.gui.FeaturePropertiesPanel" />
+    </tocitem>
+    <tocitem text="Maintenance Screens"         target="fw.gui.MaintenancePanels">
+        <tocitem text="Maintenance Screen"      target="fw.gui.MaintenancePanel" />
+        <tocitem text="OK-Cancel Screen"        target="fw.gui.OKCancelPanel" />
+        <tocitem text="OK Screen"               target="fw.gui.OKPanel" />
+        <tocitem text="List Maintenance Screen" target="fw.gui.ListMaintenancePanel" />
+    </tocitem>
+    <tocitem text="Search Screen"   target="fw.gui.SelectPanel" />
+    <tocitem text="Change Password" target="fw.security.gui.ChangePasswordPanel" />
+    <tocitem text="Login"           target="fw.security.gui.LoginPanel" />
+    <tocitem text="Wizard Screens"  target="fw.gui.WslWizardPanel" />
+  </tocitem>
+</toc>
+
+
+
+
+
+
+
+
+

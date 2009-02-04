@@ -1,0 +1,89 @@
+<library>
+	<class name="databaseController" >
+		
+		<attribute name="maintab"/>
+		<attribute name="userID" />
+		<attribute name="currDB" type="string" value="null"/>
+		<attribute name="currProject" type="string" value="null"/>
+		
+		<!-- Retrieves DB connection data for the selected DB and displays the view. -->
+		<method name="displayEmptyDBConnection">
+			Debug.write('Display Empty connection');
+			projectTabs.currTab.setCaptions('New Connection', 'Connection Settings');
+			canvas.switchMainView('_newDbConnection');			
+			this.maintab.setAttribute("currDBView", '_newDbConnection');
+		</method>
+				
+		<!-- Retrieves DB connection data for the selected DB and displays the view. -->
+		<method name="displayDBConnection" args="projectId, selDB">
+			Debug.write('Display connection for DB: ' + selDB);
+			projectTabs.currTab.setCaptions(selDB, 'Connection Settings');
+			this.currDB = selDB;
+			var d = canvas.datasets.dbConn;
+			d.setQueryParam("action", "getDbConnection");
+			d.setQueryParam("projectId", projectId);
+			d.setQueryParam("dbName", selDB);
+			d.doRequest();
+			canvas.switchMainView('_dbConnection');
+			this.maintab.setAttribute("currDBView", '_dbConnection');
+		</method>
+		
+		<!-- 
+		<method name="displayTables" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Tables Definition');
+			canvas.switchMainView('_dbTables');
+			this.maintab.setAttribute("currDBView", '_dbTables');
+		</method>		
+ 
+		
+		<method name="displayRelationships" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Relationships Definition');
+			canvas.switchMainView('_dbRelations');
+			this.maintab.setAttribute("currDBView", '_dbRelations');
+		</method>
+		-->
+
+		
+
+		
+		<!-- <method name="displayQueries" args="selDB">
+			canvas.setCaptions(selDB, 'Queries Definition');
+			canvas.switchMainView('_dbQueries');
+		</method> 
+
+		<method name="displaySelectQuery" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Select Query');
+			canvas.switchMainView('_dbNewSelectQuery');
+		</method>
+
+		<method name="displayInsertQuery" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Insert Query');
+			canvas.switchMainView('_dbNewInsertQuery');
+		</method>
+		
+		<method name="displayUpdateQuery" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Update Query');
+			canvas.switchMainView('_dbNewUpdateQuery');
+		</method>	-->			
+		
+		<!-- Display Web Services Page. -->
+		<method name="displayAddWebServices">
+			Debug.write('Display Connect To Web Services');
+			projectTabs.currTab.setCaptions('New Web Service', '');
+			canvas.switchMainView('_webServices');
+			this.maintab.setAttribute("currDBView", '_webServices');
+		</method>	
+		<method name="displayWebServiceSecondPage">
+			Debug.write('Display Web Service Second Page');
+			projectTabs.currTab.setCaptions('Web Service', '');
+			canvas.switchMainView('_webServiceSecondView');
+			this.maintab.setAttribute("currDBView", '_webServiceSecondView');
+		</method>		
+		<method name="displayWebServiceThirdPage">
+			Debug.write('Display Web Service Third Page');
+			canvas.switchMainView('_webServiceThirdView');
+			this.maintab.setAttribute("currDBView", '_webServiceThirdView');
+		</method>			
+					
+	</class>
+</library>

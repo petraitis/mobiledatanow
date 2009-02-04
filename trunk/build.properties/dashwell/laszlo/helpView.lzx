@@ -1,0 +1,177 @@
+<library>
+	<class name="helpView"  
+					bgcolor="${canvas.bgcolor}"
+					extends="mdn_roundrect">
+					<!-- width="${immediateparent.width - 1}"
+					height="${projectTabs.currTab._borderView._projectView._rightView.height - projectTabs.currTab._borderView._projectView._rightView._upperPart.height - 15}" -->
+		<attribute name="parentView"/>
+		<!-- 	
+       	<method event="oninit">
+			this.setWidth(this.immediateparent.width -1);			
+			this.setHeight(projectTabs.currTab._borderView._projectView._rightView.height - projectTabs.currTab._borderView._projectView._rightView._upperPart.height - 15);	    
+	    </method> 
+	     -->					
+		<simplelayout axis="y" spacing="10"/>
+
+		<view name="buttons" width="${immediateparent.width}">
+
+    		<text id="hinttipdisplayer" multiline="true"
+                  width="${parent.width  - 40}" height="90">
+
+                <handler name="oninit">
+                    //by default use english
+                    hinttipmanager.setAttribute("meta_key","tipid");
+                    hinttipmanager.setAttribute("meta_value","desc");
+                    hinttipmanager.setAttribute("meta_entrypath","hinttip_lang:/hinttip-root");
+    
+                    //register where to direct the output
+                    hinttipmanager.setAttribute("displayref",hinttipdisplayer);
+                </handler>              
+            </text>
+			<!-- SL:09/05/2006 OLD:
+			<roundrect width="${immediateparent.width / 2 - 50}" height="25" x="20"
+									backgroundStartColor="blue" 
+									backgroundStopColor="#5f77df" 
+									borderColor="blue">
+				<text text="What do you need help with?" resize="true" fgcolor="white" fontstyle="bold"/>
+			</roundrect>
+			-->
+			
+			<view name="button_panel" width="35" align="right" valign="top">
+				<simplelayout axis="x" spacing="1"/>
+				<roundrectbutton name="help_min" text="-" height="17" width="17">
+					<method event="onclick">
+					    //SL:09/05/2005 OLD: right_vert_divider.min.doStart();
+						if (classroot.parentView.classname == "mainTab"){
+							Debug.write("this is main tab HELP WINDOW");
+						    if (classroot.height >= 200)
+	                            projectTabs.currTab._borderView._projectView._rightView._right_vert_divider.mid.doStart();
+	                        else if (classroot.height >= 100)
+	                            projectTabs.currTab._borderView._projectView._rightView._right_vert_divider.min.doStart();
+						}else if (classroot.parentView.classname == "settingview"){
+							Debug.write("this is setting tab HELP WINDOW");
+						    if (classroot.height >= 200)
+	                            settingBox._projectView._rightView._right_vert_divider.mid.doStart();
+	                        else if (classroot.height >= 100)
+	                            settingBox._projectView._rightView._right_vert_divider.min.doStart();							
+						}
+
+
+					</method>
+				</roundrectbutton>
+				<roundrectbutton name="help_max" text="+" height="17" width="17">
+					<method event="onclick">
+					<![CDATA[
+						//SL:09/05/2005 OLD: right_vert_divider.max.doStart();
+						if (classroot.parentView.classname == "mainTab"){
+							Debug.write("this is main tab HELP WINDOW");
+							if (classroot.height >= 100)
+	                            projectTabs.currTab._borderView._projectView._rightView._right_vert_divider.max.doStart();
+	                        else if (classroot.height >= 30)
+	                            projectTabs.currTab._borderView._projectView._rightView._right_vert_divider.mid.doStart();
+						}else if (classroot.parentView.classname == "settingview"){
+							Debug.write("this is setting tab HELP WINDOW");
+							if (classroot.height >= 100)
+	                            settingBox._projectView._rightView._right_vert_divider.max.doStart();
+	                        else if (classroot.height >= 30)
+	                            settingBox._projectView._rightView._right_vert_divider.mid.doStart();
+						}
+
+                    ]]>
+					</method>
+				</roundrectbutton>
+			</view>
+			
+			<!-- 
+			<roundrectbutton name="help_close" text="x" height="17" width="17">
+				<method event="onclick">
+					Debug.write("close help");
+				</method>
+			</roundrectbutton>
+		 	-->
+		</view>
+
+        <!-- SL:09/05/2006 moved roundect below the buttons-->
+<!-- TODO: TEMPTORY COMMENT OUT BECAUSE NOT WORK NOW 
+        <roundrect width="${immediateparent.width / 2 - 50}" height="25" x="20"
+                    backgroundStartColor="blue"
+                    backgroundStopColor="#5f77df"
+                    borderColor="blue">
+            <text text="What do you need help with?" resize="true" fgcolor="white" fontstyle="bold"/>
+        </roundrect>
+
+		<view name="helpContent" width="${immediateparent.width}">
+			<simplelayout axis="x"/>
+			<view x="10" name="left" width="${immediateparent.width / 2 }">
+				<simplelayout axis="y" spacing="2"/>
+				<text x="30" text="* Projects" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Licensing" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Database Connections" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Database Tables" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Database Views" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Database Queries" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* E-mail Connections" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Web Services" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Users" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Groups" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Privileges" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Screen Designer" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Languages" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Database Drivers" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Mirrored Databases" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Data Transfer" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Scheduler" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Look and Feel" fgcolor="blue" clickable="true"/>
+				<text x="30" text="* Deployment" fgcolor="blue" clickable="true"/>
+			</view>
+			<view name="right" width="${immediateparent.width / 2 - 50}">
+				<simplelayout axis="y" spacing="2"/>
+				<roundrect width="${immediateparent.width}" height="25" 
+										backgroundStartColor="#8f7dff" 
+										backgroundStopColor="#d7d1ff" 
+										borderColor="#d7d1ff">
+					<text text="Getting Started" resize="true" fontstyle="bold"/>
+				</roundrect>
+				<view height="3"/>
+				<text x="10" text="* Requirements" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* Pre-Installation Checklist" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* Installation" fgcolor="blue" clickable="true"/>
+				<view height="8"/>
+				
+				<roundrect width="${immediateparent.width}" height="25" 
+										backgroundStartColor="#8f7dff" 
+										backgroundStopColor="#d7d1ff" 
+										borderColor="#d7d1ff">
+					<text text="What's New" resize="true" fontstyle="bold"/>
+				</roundrect>
+				<view height="3"/>
+				<text x="10" text="* Review the new features" fgcolor="blue" clickable="true"/>
+				<view height="8"/>
+				
+				<roundrect width="${immediateparent.width}" height="25" 
+										backgroundStartColor="#8f7dff" 
+										backgroundStopColor="#d7d1ff" 
+										borderColor="#d7d1ff">
+					<text text="Help" resize="true" fontstyle="bold"/>
+				</roundrect>
+				<view height="3"/>
+				<text x="10" text="* Glossary" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* Index" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* FAQ's" fgcolor="blue" clickable="true"/>
+				<view height="8"/>
+				
+				<roundrect width="${immediateparent.width}" height="25" 
+										backgroundStartColor="#8f7dff" 
+										backgroundStopColor="#d7d1ff" 
+										borderColor="#d7d1ff">
+					<text text="Ask Customer Support" resize="true" fontstyle="bold"/>
+				</roundrect>
+				<view height="3"/>
+				<text x="10" text="* About contacting customer support" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* View your open cases" fgcolor="blue" clickable="true"/>
+				<text x="10" text="* Log a case" fgcolor="blue" clickable="true"/>
+			</view>
+		</view> 
+-->		
+	</class>
+</library> 

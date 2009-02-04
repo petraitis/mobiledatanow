@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library>
+	<class name="customPopup" clip="true" opacity="0" extends="basewindow" x="${(canvas.width / 2) - (this.width / 2)}" y="${(canvas.height - this.height) - 10}">
+        <!-- Open / Close Methods -->
+        <method name="open" args="sText">
+           //Open Method
+           this.animatorOpen.doStart();
+           strokeRoundRect.blueRoundRect.whiteRoundRect.mainView.theText.setText(sText);
+        </method>
+        
+        <method name="close">
+            //Close Method
+            this.animatorClose.doStart();
+        </method>
+        
+        <method event="oninit">
+			<![CDATA[
+			]]>
+        </method>
+        
+        <!-- Animators -->
+        <animator name="animatorOpen" attribute="opacity" to="1" duration="150" start="false">
+            <handler name="onstart">
+				<!-- OnStart Event  -->
+				parent.bringToFront();
+            </handler>
+        </animator>
+        
+        <animator name="animatorClose" attribute="opacity" to="0" duration="150" start="false">
+            <handler name="onstop">
+				<!-- OnStop Event  -->
+            </handler>
+        </animator>
+		
+		<!-- Layout -->
+		<roundrect name="strokeRoundRect" width="400" height="100" backgroundStartColor="#2b5686" backgroundStopColor="#2b5686" borderColor="#2b5686" borderRadius="4">
+				<method event="oninit">
+					this.content.setAttribute("x", 1);
+					this.content.setAttribute("y", 1);
+				</method>
+			<roundrect name="blueRoundRect" width="${parent.width - 2}" height="${parent.height - 2}" backgroundStartColor="#3b72b1" backgroundStopColor="#3b72b1" borderColor="#4579b3" borderRadius="4">
+				<method event="oninit">
+					this.content.setAttribute("x", 0);
+					this.content.setAttribute("y", 2);
+				</method>
+				<!-- Close Icon -->
+				<view width="${parent.width - 2}" height="26" x="1">
+					<view width="21" height="38" x="${classroot.strokeRoundRect.width - 25}" y="1" resource="close_button" clickable="true">
+						<method event="onclick">
+							classroot.close();
+						</method>
+					</view>
+				</view>
+				<roundrect name="whiteRoundRect" width="${classroot.strokeRoundRect.width - 15}" height="${(parent.height - this.y) - 8}" x="${(parent.width / 2) - (this.width / 2)}" backgroundStartColor="#FFFFFF" backgroundStopColor="#FFFFFF" borderColor="#315f94" borderRadius="4">
+					<method event="oninit">
+						this.content.setAttribute("x", 10);
+						this.content.setAttribute("y", 10);
+					</method>
+					<view name="mainView" width="${parent.width - 20}">
+						<text name="theText" fgcolor="0xc60505" resize="true" x="${(parent.width / 2) - (this.width / 2)}">
+							<method event="ontext">
+								<![CDATA[
+									var nTextWidth = this.getTextWidth() + 33;
+									//Set Min Width if too Small
+									if(nTextWidth < 119) {
+										classroot.strokeRoundRect.setAttribute("width", 119);
+									} else {
+										classroot.strokeRoundRect.setAttribute("width", nTextWidth);
+									}
+									//Redraw Structure
+									classroot.strokeRoundRect.drawStructure();
+									classroot.strokeRoundRect.blueRoundRect.drawStructure();
+									classroot.strokeRoundRect.blueRoundRect.whiteRoundRect.drawStructure();
+								]]>
+							</method>
+						</text>
+				    </view>
+				</roundrect>
+			</roundrect>
+		</roundrect>   
+	</class>
+</library>

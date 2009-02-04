@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project basedir="." default="jar">
+    <property name="src" location="."/>
+    <property name="build.classes" location="classes"/>
+    <path id="classpath">
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/xmlrpc-1.2-b1.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/axis.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/axis-ant-2006-04-22.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/castor-1.1.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/jaxrpc.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/jdom.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/log4j-1.2.14.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/saaj.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/soap-2.3.1-2002-06-10.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/swt-2003-03-27.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/webservice.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/wsdl4j.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/shared/ant-2004-07-16.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/shared/ant-contrib-1.0b3.jar"/>
+        <pathelement location="C:/Documents and Settings/adele/workspace/MobileDataNow/lib/dashwell/shared/shared/ant-launcher-1.6.5-2005-06-02.jar"/>
+        <pathelement location="C:\Documents and Settings\adele\workspace\MobileDataNow\installer\tomcat-5.5.25/bin/bootstrap.jar"/>
+        <pathelement location="C:\Program Files\Java\jdk1.6.0_03/lib/tools.jar"/>
+        <pathelement location="C:\Documents and Settings\adele\workspace\MobileDataNow\WebServiceOutput\Service.jar"/>
+    </path>
+    <target name="compile">
+       <mkdir dir="${build.classes}"/>
+        <javac destdir="${build.classes}" debug="on">
+            <classpath refid="classpath" />
+            <src path="${src}"/>
+        </javac>
+    </target>
+    <target name="jar" depends="compile">
+        <copy todir="${build.classes}">
+            <fileset dir="." casesensitive="yes" >
+                <include name="**/*.wsdd"/>
+            </fileset>
+        </copy>
+        <jar jarfile="Contractor.jar" basedir="${build.classes}" >
+        <include name="**" />
+        <manifest>
+            <section name="org/apache/ws4j2ee">
+            <attribute name="Implementation-Title" value="Apache Axis"/>
+            <attribute name="Implementation-Vendor" value="Apache Web Services"/>
+            </section>
+        </manifest>
+        </jar>
+        <delete dir="${build.classes}"/>
+    </target>
+</project>

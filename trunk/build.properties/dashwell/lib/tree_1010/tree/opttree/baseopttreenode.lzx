@@ -1,0 +1,54 @@
+<library>
+    <class name="baseopttreenode">
+        <!--- @keywords private -->
+        <attribute name="dopen" value="$path{ parent.openattrpath }"/>
+        <!--- A boolean value representing whether or not this node
+              is open. -->
+        <attribute name="open" value="${ dopen == 'true' }"/>
+
+        <!--- @keywords private -->
+        <attribute name="ddepth" value="$path{ parent.depthattrpath }"/>
+        <!--- A 0-based depth number that indicates the depth of this
+              element in the tree. -->
+        <attribute name="depth" value="${ Number( ddepth ) }"/>
+
+        <!--- If true, this element is selected -->
+        <attribute name="highlight" value="null"/>
+
+        <!--- The amount, in pixels, to indent each element of the tree.-->
+        <attribute name="indent" value="10"/>
+
+        <!--- @keywords private -->
+        <attribute name="leafindent" value="${ depth * indent }"/>
+
+        <!--- @keywords readonly
+              True if this is the last node in its parent. Based on the
+              nodes as they appear in the replication manager's nodes
+              array after setNodes() has been called, not the XML 
+              hierarchy. -->
+        <attribute name="islast" value="false" type="boolean" />
+
+        <method event="ondata"><![CDATA[
+            // Determine if this is the last item in the list of siblings
+            var repMan = this.datapath.context;
+            var nodeIndex = null;
+            for (var i=0;i<repMan.nodes.length;i++) {
+                if (repMan.nodes[i]==this.datapath.p) {
+                    nodeIndex = i;
+                    break;
+                }
+            }
+
+            var i = (1*this.datapath.p.getAttr(parent.indexattr))==this.datapath.p.parentNode.childNodes.length-1;
+            this.setAttribute("islast",i);
+            ]]>
+        </method>
+
+        <datapath replication="lazy"/>
+
+        <method name="doSelected">
+            // TODO: Remove this method properly.
+        </method>
+
+    </class>
+</library>

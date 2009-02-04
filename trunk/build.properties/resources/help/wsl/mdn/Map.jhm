@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<!-- wsl.shopsrv help map file -->
+
+<map version="1.0">
+    <mapID target="mdn.admin.contents"                         url="index.html" />
+    <mapID target="mdn.admin.CriteriaPanel"                    url="ViewQuery.html#QueryCriteria" />
+    <mapID target="mdn.admin.DataStoreWizardSplashPanel"       url="DataStores.html#Splash" />
+    <mapID target="mdn.admin.DataStoreWizardKeyHelpPanel"      url="DataStores.html#KeyHelp" />
+    <mapID target="mdn.admin.DataTransferPropPanel"            url="DataTransfers.html#DataTansferProperties" />
+    <mapID target="mdn.admin.DataViewFieldPropPanel"           url="ViewQuery.html#ViewFieldProperties" />
+    <mapID target="mdn.admin.DataViewPermissionsTabPane"       url="UserGroup.html" />
+    <mapID target="mdn.admin.DataViewPropPanel"                url="ViewQuery.html#ViewProperties" />
+    <mapID target="mdn.admin.DataViewWizardSplashPanel"        url="ViewQuery.html#ViewWizardSplash" />
+    <mapID target="mdn.admin.DayCalendarPanel"                 url="Schedule.html#Day" />
+    <mapID target="mdn.admin.DirectSQLPanel"                   url="ViewQuery.html#DirectSql" />
+    <mapID target="mdn.admin.EntityPropPanel"                  url="DataStores.html#Entity" />
+    <mapID target="mdn.admin.ExecuteDataViewsPanel"            url="ViewQuery.html#ExecuteQuery" />
+    <mapID target="mdn.admin.FieldPropPanel"                   url="DataStores.html#Field" />
+    <mapID target="mdn.admin.GroupByPanel"                     url="ViewQuery.html#QueryGrouping" />
+    <mapID target="mdn.admin.GroupDataViewPropPanel"           url="UserGroup.html#GroupDataView" />
+    <mapID target="mdn.admin.ImportTablesPanel"                url="DataStores.html#ImportTables" />
+    <mapID target="mdn.admin.JdbcDriverPropPanel"              url="JDBC.html" />
+    <mapID target="mdn.admin.JdbcPropPanel"                    url="Mirror.html" />
+    <mapID target="mdn.admin.MaintainDataSourcesPanel"         url="DataStores.html" />
+    <mapID target="mdn.admin.MaintainDataTransfersPanel"       url="DataTransfers.html" />
+    <mapID target="mdn.admin.MaintainDataViewsPanel"           url="ViewQuery.html#ViewQuery" />
+    <mapID target="mdn.admin.MaintainTransferSchedulePanel"    url="Schedule.html" />
+    <mapID target="mdn.admin.MapViewFieldsPanel"               url="ViewQuery.html#ViewFields" />
+    <mapID target="mdn.admin.MonthCalendarTabPane"             url="Schedule.html#Month" />
+    <mapID target="mdn.admin.QueryWizardSplashPanel"           url="ViewQuery.html#QueryWizardSplash" />
+    <mapID target="mdn.admin.QueryPropPanel"                   url="ViewQuery.html#QueryProperties" />
+    <mapID target="mdn.admin.RelationshipsPanel"               url="DataStores.html#Relationships" />
+    <mapID target="mdn.admin.SchedulingPropPanel"              url="Schedule.html#SchedulingProperties" />
+    <mapID target="mdn.admin.SchedulingsTabPane"               url="Schedule.html#Transfers" />
+    <mapID target="mdn.admin.SortsPanel"                       url="ViewQuery.html#QuerySorts" />
+    <mapID target="mdn.admin.TransferEntitiesPanel"            url="DataTransfers.html#DataTansferEntities" />
+    <mapID target="mdn.admin.TransferFilterPanel"              url="DataTransfers.html#not_used" />
+    <mapID target="mdn.admin.TransferWizardSplashPanel"        url="DataTransfers.html#Splash" />
+    <mapID target="mdn.guiconfig.ActionPropertiesPanel"        url="PresentationBuilder.html#AddQuery" />
+    <mapID target="mdn.guiconfig.NewRecordPropPanel"           url="PresentationBuilder.html#AddNew" />
+    <mapID target="mdn.guiconfig.PresentationBuilderPanel"     url="PresentationBuilder.html" />
+    <mapID target="mdn.guiconfig.TextOrSubmenuPropertiesPanel" url="PresentationBuilder.html#AddText" />
+    <mapID target="mdn.guiconfig.LoginSettingsPropertiesPanel" url="PresentationBuilder.html#LoginSettings" />
+    <mapID target="mdn.licence.MdnLicenceManager"              url="licence.html" />
+    <mapID target="mdn.doc.eula"                               url="EULA.html" />
+    <mapID target="mdn.doc.howTo"                              url="HowTo.html" />
+    <mapID target="mdn.doc.definitions"                        url="Definitions.html" />
+</map>

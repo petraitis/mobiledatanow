@@ -1,0 +1,201 @@
+<canvas proxied="true" debug="true" height="100%" width="100%">
+	<debug x="10" y="190" width="510" height="200" />
+	<node id="wsrpVariables">
+		<attribute name="registrationHandle" />
+	</node>
+	<dataset name="dsRegister" />
+	<dataset name="dsInitCookie" />
+	<dataset name="dsPortletDescription" />
+	<dataset name="dsGetServiceDescription" />
+
+	<soap name="liferayWSRPRegistrationService"
+		wsdl="http://localhost/openlaszlo-3.0.2-servlet/RequestForwarder?requestString=localhost:81/c/wsrp/WSRPRegistrationService" >
+		<method event="onload">
+            Debug.write('Liferay WSRP Registration Service Loaded');
+        </method>
+
+		<method event="onerror" args="error">
+            debug.write('error:', error);
+        </method>
+
+		<method name="handler" args="response">
+            Debug.write('Liferay WSRP Registration Service response');
+        </method>
+		<remotecall name="register" funcname="register"
+			dataobject="dsRegister">
+			<param>
+				<method name="getValue">
+                  <![CDATA[
+                  return '<register xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+                  + '<consumerName>myLaszloConsumerName</consumerName>'
+                  + '<consumerAgent>myAgent</consumerAgent>'
+                  + '<methodGetSupported>true</methodGetSupported>'
+                  + '<consumerModes xsi:nil="true" />'
+                  + '<consumerWindowStates xsi:nil="true" />'
+                  + '<customUserProfileData xsi:nil="true" />'
+                  + '<registrationProperties xsi:nil="true" />'
+                  + '<extensions xsi:nil="true" />'
+                  + '</register>';
+				  ]]>
+				  </method>
+			</param>
+
+			<method event="ondata" args="ret">
+            <![CDATA[
+                var dp = new LzDataPointer();
+                wsrpVariables.setAttribute("registrationHandle", dp.xpathQuery("dsRegister:/item[1]/*/registrationHandle/text()"));
+                Debug.write(wsrpVariables.getAttribute("registrationHandle"));
+                Debug.write('Liferay WSRP Registration Service response');
+            ]]>
+            </method>
+		</remotecall>
+
+	</soap>
+
+	<soap name="liferayServiceDescriptionService"
+		wsdl="http://localhost/openlaszlo-3.0.2-servlet/RequestForwarder?requestString=localhost:81/c/wsrp/WSRPServiceDescriptionService">
+		<method event="onload">
+            Debug.write('Liferay WSRPServiceDescriptionService Loaded');
+        </method>
+
+		<method event="onerror" args="error">
+            debug.write('error:', error);
+        </method>
+		<method name="handler" args="response">
+            Debug.write('Got response:', response);
+        </method>
+
+		<remotecall name="getServiceDescription"
+			funcname="getServiceDescription"
+			dataobject="dsGetServiceDescription">
+			<param>
+				<method name="getValue">
+                  <![CDATA[
+                  return '<getServiceDescription xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+                  + '<registrationContext><registrationHandle>'+ wsrpVariables.getAttribute("registrationHandle") +'</registrationHandle></registrationContext>'
+                  + '</getServiceDescription>';
+				  ]]>
+				  </method>
+			</param>
+
+			<method event="ondata" args="ret">
+            <![CDATA[
+				Debug.inspect(dsGetServiceDescription);
+            ]]>
+            </method>
+		</remotecall>
+
+		<method event="ondata" args="value">
+           debug.write('result:\n', value);
+        </method>
+	</soap>
+
+
+	<soap name="liferayWSRPBaseService"
+		wsdl="http://localhost/openlaszlo-3.0.2-servlet/RequestForwarder?requestString=localhost:81/c/wsrp/WSRPBaseService">
+		<method event="onload">
+            Debug.write('Liferay WSRPBaseService Loaded');
+        </method>
+		<method event="onerror" args="error">
+            debug.write('error:', error);
+        </method>
+		<method name="handler" args="response">
+            Debug.write('Got response:', response);
+        </method>
+
+		<remotecall name="getMarkup" funcname="getMarkup"
+			dataobject="dsGetMarkup">
+			<param>
+				<method name="getValue">
+                  <![CDATA[
+	return '<getMarkup xmlns="urn:oasis:names:tc:wsrp:v1:types">'
+      +'<registrationContext><registrationHandle>'+ wsrpVariables.getAttribute("registrationHandle") +'</registrationHandle></registrationContext>'
+      +'<portletContext>'
+      +'<portletHandle>58</portletHandle>'
+      +'</portletContext>'
+      +'<runtimeContext>'
+      +'<userAuthentication>wsrp:none</userAuthentication>'
+      +'<portletInstanceKey>58</portletInstanceKey>'
+      +'<namespacePrefix>_58_</namespacePrefix>'
+      +'</runtimeContext>'
+      +'<userContext>'
+      +'<userContextKey></userContextKey>'
+      +'<profile>'
+      +'<name>'
+      +'<prefix></prefix>'
+      +'<given>Michael</given>'
+      +'<family>Duffy</family>'
+      +'<middle></middle>'
+      +'<suffix></suffix>'
+      +'<nickname></nickname>'
+      +'</name>'
+      +'</profile>'
+      +'</userContext>'
+      +'<markupParams>'
+      +'<secureClientCommunication>false</secureClientCommunication>'
+      +'<locales>en</locales>'
+      +'<mimeTypes>text/html</mimeTypes>'
+      +'<mode>wsrp:view</mode>'
+      +'<windowState>wsrp:normal</windowState>'
+      +'<clientData>'
+      +'<userAgent>Liferay WSRP Agent</userAgent>'
+      +'</clientData>'
+      +'<markupCharacterSets>UTF-8</markupCharacterSets>'
+      +'<validNewModes>wsrp:view</validNewModes>'
+      +'<validNewModes>wsrp:help</validNewModes>'
+      +'<validNewModes>wsrp:edit</validNewModes>'
+      +'<validNewWindowStates>wsrp:normal</validNewWindowStates>'
+      +'<validNewWindowStates>wsrp:maximized</validNewWindowStates>'
+      +'<validNewWindowStates>wsrp:minimized</validNewWindowStates>'
+      +'</markupParams>'
+      +'</getMarkup>';
+      				  ]]>
+				  </method>
+			</param>
+
+			<method event="ondata" args="ret">
+            <![CDATA[
+            Debug.write("Got markup");
+            ]]>
+            </method>
+		</remotecall>
+
+		<remotecall name="initCookie" funcname="initCookie"
+			dataobject="dsInitCookie">
+			<param>
+				<method name="getValue">
+                  <![CDATA[
+                  return '<initCookie xmlns="urn:oasis:names:tc:wsrp:v1:types">'
+                       + '<registrationContext><registrationHandle>'+ wsrpVariables.getAttribute("registrationHandle") +'</registrationHandle></registrationContext>'
+                       + '</initCookie>';
+				  ]]>
+				  </method>
+			</param>
+
+			<method event="ondata" args="ret">
+            <![CDATA[
+            Debug.write("initialized cookie");
+            ]]>
+            </method>
+		</remotecall>
+
+		<method event="ondata" args="value">
+           debug.write('result:\n', value);
+        </method>
+	</soap>
+
+
+	<view width="50%" height="25%">
+		<view layout="axis: y">
+			<button text="register"
+				onclick="Debug.write('invoking register...'); liferayWSRPRegistrationService.register.invoke();" />
+			<button text="getServiceDescription"
+				onclick="Debug.write('invoking getServiceDescription...'); liferayServiceDescriptionService.getServiceDescription.invoke();" />
+			<button text="initCookie"
+				onclick="Debug.write('invoking initCookie...'); liferayWSRPBaseService.initCookie.invoke();" />
+			<button text="getMarkup"
+				onclick="Debug.write('invoking getMarkup...'); liferayWSRPBaseService.getMarkup.invoke();" />
+		</view>
+	</view>
+</canvas>
+

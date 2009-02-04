@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+
+<web-app>
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2001-2005 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+
+    <display-name>OpenLaszlo Server</display-name>
+    <description/>
+
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>dashwell.root</param-value>
+	</context-param>
+	
+    <servlet>
+        <servlet-name>LPS</servlet-name>
+        <servlet-class>org.openlaszlo.servlets.LZServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>LZViewer</servlet-name>
+        <servlet-class>org.openlaszlo.servlets.LZViewer</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <servlet-class>AuthenticationServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+      <servlet-name>AxisServlet</servlet-name>
+      <servlet-class>
+          org.apache.axis.transport.http.AxisServlet
+      </servlet-class>
+    </servlet>
+
+    <!-- SL:08/28/2006 *** START *** -->
+	
+  <servlet>
+	  <servlet-name>OL_GuiServlet</servlet-name>
+    <display-name>OpenLaszlo Interface for GUI Elements</display-name>
+    <description>OpenLaszlo Interface for GUI Elements</description>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_GuiServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+	<servlet-name>OL_DataServlet</servlet-name>
+    <display-name>OpenLaszlo Interface for Data Requests</display-name>
+    <description>OpenLaszlo Interface for Data Requests</description>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_DataServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>OL_UserServlet</servlet-name>
+    <display-name>Deals with all requests related to Users and Groups.</display-name>
+    <description>Deals with all requests related to Users and Groups.</description>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_UserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_FileUploadServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_FileUploadServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_DriverFileUploadServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_DriverFileUploadServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_DBServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_DBServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_IMServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_IMServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_MessagingServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_MessagingServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OL_ProjectFileUploadServlet</servlet-name>
+    <servlet-class>com.framedobjects.dashwell.servlets.OL_ProjectFileUploadServlet</servlet-class>
+  </servlet>
+  <!-- *** END *** -->
+
+    <servlet-mapping>
+        <servlet-name>LPS</servlet-name>
+        <url-pattern>*.lzx</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LPS</servlet-name>
+        <url-pattern>*.lzo</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LZViewer</servlet-name>
+        <url-pattern>/LZViewer</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <url-pattern>/AuthenticationServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+      <servlet-name>AxisServlet</servlet-name>
+      <url-pattern>*.jws</url-pattern>
+    </servlet-mapping>
+
+
+  
+  <!-- SL:08/28/2006 *** START *** -->
+  <servlet-mapping>
+    <servlet-name>OL_GuiServlet</servlet-name>
+    <url-pattern>*.gui</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>OL_DataServlet</servlet-name>
+    <url-pattern>*.data</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>OL_UserServlet</servlet-name>
+    <url-pattern>*.user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OL_FileUploadServlet</servlet-name>
+    <url-pattern>*.file</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OL_DriverFileUploadServlet</servlet-name>
+    <url-pattern>*.driverfile</url-pattern>
+  </servlet-mapping>  
+  <servlet-mapping>
+    <servlet-name>OL_DBServlet</servlet-name>
+    <url-pattern>*.db</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OL_IMServlet</servlet-name>
+    <url-pattern>*.im</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>OL_MessagingServlet</servlet-name>
+    <url-pattern>*.email</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OL_ProjectFileUploadServlet</servlet-name>
+    <url-pattern>*.projectfile</url-pattern>
+  </servlet-mapping>   
+    <!-- *** END *** -->
+    
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    
+
+
+</web-app>

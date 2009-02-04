@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library>
+	<!-- The usergroups deployment class. -->
+	<class name="usergroupsDeployment" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+			height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+		<attribute name="currDB"/>
+		<view width="${immediateparent.width}" height="${immediateparent.height}" >
+			<view width="${immediateparent.width - 80}" 
+				height="${immediateparent.height - 80}" x="40" y="40">
+				<simplelayout axis="y" spacing="2"/>
+				<text datapath="gui:/gui-labels/lbl-usergroups/@label" fontstyle="bold" resize="true"/>
+				<view width="${immediateparent.width}" height="350">
+					<simplelayout axis="x" spacing="50"/>
+					<!-- The tree -->
+					<view height="${immediateparent.height}" width="250" bgcolor="white" clip="true">
+						<checktree id="treeDeployUsers" datapath="dbUsergroups:/root"
+				            nodepath="node" nodeclass="checkfiletreenode"
+				            width="${immediateparent.width}">
+				    </checktree>
+			    </view>
+				  <!-- 
+					
+						<simplelayout axis="y" spacing="2"/>
+						<tree datapath="gui:/gui-labels/tree-users/@label" open="true" fontstyle="bold">
+							<tree datapath="dbUsergroups:/usergroups/users/user/@name" isleaf="true" fontstyle="plain"/>
+						</tree>
+						<tree datapath="gui:/gui-labels/tree-groups/@label" open="true" fontstyle="bold">
+							<tree datapath="dbUsergroups:/usergroups/groups/group/@name" isleaf="true" fontstyle="plain"/>
+						</tree>
+					
+					 -->
+					<!-- The checkboxes -->
+					<view height="${immediateparent.height}" width="400" >
+						<view valign="middle">
+							<simplelayout axis="y" spacing="3"/>
+							<text datapath="gui:/gui-labels/lbl-settings/@label" fontstyle="bold"/>
+							<checkbox datapath="gui:/gui-labels/lbl-secure-access/@label"/>
+							<checkbox datapath="gui:/gui-labels/lbl-incl-username/@label"/>
+							<checkbox datapath="gui:/gui-labels/lbl-incl-password/@label"/>
+							<view height="30"/>
+							<text datapath="gui:/gui-labels/lbl-deploy-formats/@label" fontstyle="bold" resize="true"/>
+							<checkbox text="HTML"/>
+							<checkbox text="WAP"/>
+						</view>
+					</view>
+				</view>	
+				
+				<view height="10"/>
+				
+				<!-- The URL -->
+				<view width="${immediateparent.width}">
+					<simplelayout axis="y" spacing="2"/>
+					<text datapath="gui:/gui-labels/lbl-deploy-url/@label" fontstyle="bold" resize="true"/>
+					<edittext text="https://123.234.121.122:8443/Blissroot/BSAccess/mobile.html%username" width="${immediateparent.width - 40}"/>
+				</view>
+				
+				<view height="10"/>
+				
+				<!-- The send button -->
+				<view width="${immediateparent.width}">
+					<simplelayout axis="x" spacing="10"/>
+					<mdn_button datapath="gui:/gui-labels/btn-send/@label"/>
+					<text datapath="gui:/gui-labels/lbl-send-notif/@label" resize="true"/>
+				</view>
+			</view>
+		</view>
+	</class>
+	
+	<!-- Notification E-mail. -->
+	<class name="emailNotification" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+			height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+		<attribute name="currDB"/>
+		<view width="${immediateparent.width}" height="${immediateparent.height}" >
+			<view width="${immediateparent.width - 80}" 
+				height="${immediateparent.height - 80}" x="40" y="40">
+				<simplelayout axis="y" spacing="20"/>
+				<!-- From -->
+				<view width="${parent.width}">
+					<simplelayout axis="y" spacing="2"/>
+					<text datapath="gui:/gui-labels/lbl-from/@label"/>
+					<edittext text="administrator@blissoft.com" width="${parent.width / 2}"/>
+				</view>
+				<!-- Subject -->
+				<view width="${parent.width}">
+					<simplelayout axis="y" spacing="2"/>
+					<text datapath="gui:/gui-labels/lbl-subject/@label"/>
+					<edittext text="Mobile login info" width="${parent.width / 2}"/>
+				</view>
+				<!-- Body -->
+				<view width="${parent.width}" height="${parent.height / 2}">
+					<simplelayout axis="y" spacing="2"/>
+					<text datapath="gui:/gui-labels/lbl-body-email/@label"/>
+					<edittext text="content here ... (have to look into HTML-type input field)" multiline="true"
+										width="${parent.width}" 
+										height="${immediateparent.height}"/>
+				</view>
+			</view>
+		</view>
+	</class>
+</library>

@@ -1,0 +1,244 @@
+Mobile Data Now
+
+This product includes software developed by the Apache Software Foundation
+(http://www.apache.org/).
+
+END-USER LICENSE AGREEMENT FOR MOBILE DATA NOW LTD. SOFTWARE
+
+This Mobile Data Now Ltd. End-User License Agreement ("EULA") is a legal agreement
+between you (either an individual or a single entity) and Mobile Data Now Ltd.
+Ltd for the Mobile Data Now Ltd. software product(s) identified above which may
+include associated media, printed materials, and "online" or electronic
+documentation ("SOFTWARE PRODUCT"). By installing, copying, or otherwise
+using the SOFTWARE PRODUCT, you agree to be bound by the terms of this
+EULA. If you do not agree to the terms of this EULA, do not install or
+use the SOFTWARE PRODUCT.  If the SOFTWARE PRODUCT was purchased by you,
+you may return it to your place of purchase for a full refund.
+
+The SOFTWARE PRODUCT is protected by copyright laws and international
+copyright treaties, as well as other intellectual property laws and
+treaties. The SOFTWARE PRODUCT is licensed, not sold.
+
+This software is for evaluation purposes only.  You may evaluate the
+software for a period stated by the activation key, normally not exceeding
+thirty (30) days.  If you wish to use the software after the stated
+evaluation period, you have to purchase the appropriate license from Mobile Data Now Ltd.
+
+1.      GRANT OF LICENSE
+
+The SOFTWARE PRODUCT is licensed as follows:
+
+(a)     Installation and Use. Mobile Data Now Ltd. grants you the right to
+install and use one (1) copy of the SOFTWARE PRODUCT for the appropriate
+number of users for which you have purchased the license for.
+
+(b)      Backup Copies.  You may also make copies of the SOFTWARE PRODUCT
+as may be necessary for backup and archival purposes.
+
+(c)      Components.  Certain components of the SOFTWARE PRODUCT are
+subject to the following additional provisions:
+
+The SOFTWARE PRODUCT includes source code, redistributable files, and/or
+other files provided by a third party vendor (Third Party Software).
+Since use of Third Party Software might be subject to license restrictions
+imposed by the third party vendor, you should refer to the on-line
+documentation (if any), and/or Appendix"A" annexed hereto (if any)
+provided with Third Party Software for any license restrictions imposed
+by the third party vendor.  In any event, any license restrictions imposed
+by a third party vendor are in addition to, not in lieu of, the terms
+and conditions of the License Agreement.  Mobile Data Now Ltd. Ltd expressly
+disclaims any and all warranties for any Third Party Software.
+
+2.  DESCRIPTION OF OTHER RIGHTS AND LIMITATIONS.
+
+(a)      Maintenance of Copyright Notices.  You must not remove or alter
+any copyright notices on all copies of the SOFTWARE PRODUCT.
+
+(b)      Distribution.  You may not distribute copies of the SOFTWARE
+PRODUCT to third parties.
+
+(c)     Prohibition on Reverse Engineering, Decompilation, and Disassembly.
+You may not reverse engineer, decompile, or disassemble the SOFTWARE
+PRODUCT, except and only to the extent that such activity is expressly
+permitted by applicable law notwithstanding this limitation.
+
+(d)     Rental.  You may not rent, lease, or lend the SOFTWARE PRODUCT
+to any third party.
+
+(e)     Support Services.  Mobile Data Now Ltd. may provide you with support
+services related to the SOFTWARE PRODUCT ("Support Services").  Use of
+Support Services is governed by the Mobile Data Now Ltd. polices and programs
+described in the user manual, in "on line" documentation and/or other
+Mobile Data Now Ltd.-provided materials. Any supplemental software code provided
+to you as part of the Support Services shall be considered part of the
+SOFTWARE PRODUCT and subject to the terms and conditions of this EULA.
+With respect to technical information you provide to Mobile Data Now Ltd. as
+part of the Support Services, Mobile Data Now Ltd. may use such information for
+its business purposes, including for product support and development.
+Mobile Data Now Ltd. will not utilise such technical information in a form that
+personally identifies you.
+
+(f)     Compliance with Applicable Laws.  You must comply with all
+applicable laws regarding use of the SOFTWARE PRODUCT.
+
+(g)     Performance or Benchmark Testing.  You may not disclose the
+results of any benchmark test of the SOFTWARE PRODUCT to any third party
+without Mobile Data Now Ltd. prior written approval.
+
+(h)     Software Transfer. You may permanently transfer all of your
+rights under this EULA (i) only in conjunction with a permanent transfer
+of your validly licensed copy or copies of Mobile Data Now; (ii) provided
+you retain no copies; (iii) you transfer all of the SOFTWARE PRODUCT
+(including all component parts, the media and printed materials, any
+upgrades; and (iv) the recipient agrees to the terms of this EULA. If
+the SOFTWARE PRODUCT is an upgrade, any transfer must include all prior
+versions of the SOFTWARE PRODUCT.
+
+(i) Termination. Without prejudice to any other rights, Mobile Data Now Ltd. may terminate this EULA if you fail to comply with the terms and conditions of this EULA. In such event, you must destroy all copies of the SOFTWARE PRODUCT and all of its component parts.
+
+3.  UPGRADES. 
+
+If the SOFTWARE PRODUCT is labelled as an upgrade, you must be properly
+licensed to use a product identified by Mobile Data Now Ltd. as being eligible
+for the upgrade in order to use the SOFTWARE PRODUCT. A SOFTWARE PRODUCT
+labelled as an upgrade replaces and/or supplements the product that
+formed the basis for your eligibility for the upgrade. You may use the
+resulting upgraded product only in accordance with the terms of this
+EULA. If the SOFTWARE PRODUCT is an upgrade of a component of a package
+of software programs that you licensed as a single product, the SOFTWARE
+PRODUCT may be used and transferred only as part of that single product
+package.
+ 
+4.  COPYRIGHT.
+
+All title, including but not limited to copyrights, in and to the SOFTWARE
+PRODUCT and any copies thereof are owned by Mobile Data Now Ltd. or its suppliers.
+All title and intellectual property rights in and to the content which
+may be accessed through use of the SOFTWARE PRODUCT is the property of
+the respective content owner and may be protected by applicable copyright
+or other intellectual property laws and treaties. This EULA grants you
+no rights to use such content.  All rights not expressly granted are
+reserved by Mobile Data Now Ltd..
+
+5.  NOTE ON JAVA SUPPORT.  
+
+The SOFTWARE PRODUCT may contain support for programs written in Java.
+Java technology is not fault tolerant and is not designed, manufactured,
+or intended for use or resale as on-line control equipment in hazardous
+environments requiring fail-safe performance, such as in the operation
+of nuclear facilities, aircraft navigation or communication systems, air
+traffic control, direct life support machines, or weapons systems, in
+which the failure of Java technology could lead directly to death,
+personal injury, or severe physical or environmental damage.
+
+6.  NO WARRANTIES.  
+
+Mobile Data Now Ltd. expressly disclaims any warranty for the SOFTWARE PRODUCT.
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, MOBILE DATA NOW LTD. AND ITS
+SUPPLIERS PROVIDE TO YOU THE SOFTWARE PRODUCT, AND ANY (IF ANY) SUPPORT
+SERVICES RELATED TO THE SOFTWARE PRODUCT ("SUPPORT SERVICES") AS IS AND
+WITH ALL FAULTS; AND MOBILE DATA NOW LTD. AND ITS SUPPLIERS HEREBY DISCLAIM
+WITH RESPECT TO THE SOFTWARE PRODUCT AND SUPPORT SERVICES ALL WARRANTIES
+AND CONDITIONS, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
+NOT LIMITED TO, ANY (IF ANY) WARRANTIES OR CONDITIONS OF OR RELATED TO:
+TITLE, NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, LACK OF VIRUSES, ACCURACY OR COMPLETENESS OF RESPONSES, RESULTS,
+LACK OF NEGLIGENCE OR LACK OF WORKMANLIKE EFFORT, QUIET ENJOYMENT, QUIET
+POSSESSION, AND CORRESPONDENCE TO DESCRIPTION.  THE ENTIRE RISK ARISING
+OUT OF USE OR PERFORMANCE OF THE SOFTWARE PRODUCT AND ANY SUPPORT SERVICES
+REMAINS WITH YOU.
+
+7.  EXCLUSION OF INCIDENTAL, CONSEQUENTIAL AND CERTAIN OTHER DAMAGES.  
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL MOBILE DATA NOW LTD.
+SOLUTIONS OR ITS SUPPLIERS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT,
+OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, BUT NOT LIMITED TO,
+DAMAGES FOR:  LOSS OF PROFITS, LOSS OF CONFIDENTIAL OR OTHER INFORMATION,
+BUSINESS INTERRUPTION, PERSONAL INJURY, LOSS OF PRIVACY, FAILURE TO MEET
+ANY DUTY (INCLUDING OF GOOD FAITH OR OF REASONABLE CARE), NEGLIGENCE,
+AND ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN
+ANY WAY RELATED TO THE USE OF OR INABILITY TO USE THE SOFTWARE PRODUCT
+OR THE SUPPORT SERVICES, OR THE PROVISION OF OR FAILURE TO PROVIDE SUPPORT
+SERVICES, OR OTHERWISE UNDER OR IN CONNECTION WITH ANY PROVISION OF THIS
+SUPPLEMENTAL EULA, EVEN IF MOBILE DATA NOW LTD. OR ANY SUPPLIER HAS BEEN ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGES.
+
+8.  LIMITATION OF LIABILITY AND REMEDIES. 
+
+NOTWITHSTANDING ANY DAMAGES THAT YOU MIGHT INCUR FOR ANY REASON WHATSOEVER
+(INCLUDING, WITHOUT LIMITATION, ALL DAMAGES REFERENCED ABOVE AND ALL
+DIRECT OR GENERAL DAMAGES), THE ENTIRE LIABILITY OF MOBILE DATA NOW LTD. AND
+ANY OF ITS SUPPLIERS UNDER ANY PROVISION OF THIS SUPPLEMENTAL EULA AND
+YOUR EXCLUSIVE REMEDY FOR ALL OF THE FOREGOING SHALL BE LIMITED TO THE
+GREATER OF THE AMOUNT ACTUALLY PAID BY YOU FOR THE SOFTWARE PRODUCT OR
+NZ$50.00; PROVIDED HOWEVER, IF YOU HAVE ENTERED INTO A MOBILE DATA NOW'S
+SUPPORT SOLUTIONS AGREEMENT, MOBILE DATA NOW'S ENTIRE LIABILITY REGARDING
+SUPPORT SERVICES SHALL BE GOVERNED BY THE TERMS OF THAT AGREEMENT. THE
+FOREGOING LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SHALL APPLY TO THE
+MAXIMUM EXTENT
+
+9.  MISCELLANEOUS.
+
+This EULA is governed by the laws of the New Zealand
+
+Should you have any questions concerning this EULA, or if you desire to
+contact Mobile Data Now Ltd. for any reason, please contact the Mobile Data Now Ltd.
+subsidiary serving your country, or write:
+
+Mobile Data Now Ltd. Ltd.
+35K Maurice Road, Penrose
+PO Box 12863 Penrose 
+Auckland
+New Zealand
+
+Appendix "A"
+
+The Apache Software License, Version 1.1
+
+Copyright (c) 1999 The Apache Software Foundation.  All rights 
+reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer. 
+
+2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+ 3. The end-user documentation included with the redistribution, if
+    any, must include the following acknowlegement:  
+    "This product includes software developed by the 
+    Apache Software Foundation (http://www.apache.org/)."
+    Alternately, this acknowlegement may appear in the software itself,
+    if and wherever such third-party acknowlegements normally appear.
+
+ 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
+    Foundation" must not be used to endorse or promote products derived
+    from this software without prior written permission. For written 
+    permission, please contact apache@apache.org.
+
+ 5. Products derived from this software may not be called "Apache"
+    nor may "Apache" appear in their names without prior written
+    permission of the Apache Group.
+
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+THE APACHE SOFTWARE FOUNDATION ORITS CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGE.
+  
+ This software consists of voluntary contributions made by many
+  individuals on behalf of the Apache Software Foundation.  For more
+  information on the Apache Software Foundation, please see
+  <http://www.apache.org/>.

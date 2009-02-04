@@ -1,0 +1,73 @@
+<library>
+	<resource name="plusminus">
+		<frame src="../images/plus.gif" />
+		<frame src="../images/minus.gif" />
+	</resource>
+	<class name="treeitem" clickable="true">
+		<attribute name="grown" value="false" />
+		<attribute name="opened" value="false" />
+		<attribute name="haschildren" value="false" />
+		<method event="oninit">
+            this.content.grow.start();
+        </method>
+		<method event="ongrown" args="g">
+            if (g) {
+                this.content.grow.start();
+            } else {
+                this.shrink.start();
+            }
+        </method>
+		<method event="ondata"><![CDATA[
+        
+            var c = this.datapath.getNodeCount();
+            // Since text nodes 'count', skip if has text and only one
+            if (this.datapath.getNodeText() != "" && c == 1) return;
+            if (this.datapath.getNodeCount() ){
+               this.setAttribute( 'haschildren' , true );
+            } else {
+               this.setAttribute( 'haschildren' , false );
+            }
+        
+        ]]></method>
+		<method name="toggle" event="onclick">
+            this.setAttribute('opened', ! this.opened);
+            if (this.opened) {
+                this.showchildren.apply();
+            }
+        </method>
+
+		<animatorgroup name="shrink" start="false"
+			process="simultaneous">
+			<method event="onstop">
+                classroot.classroot.showchildren.remove();
+            </method>
+			<animator attribute="height" to="0" duration="500" />
+			<animator attribute="opacity" to="0" duration="400" />
+		</animatorgroup>
+		<view name="content" height="0" opacity="0">
+			<animatorgroup name="grow" start="false"
+				process="simultaneous">
+				<animator attribute="height" to="13" duration="500" />
+				<animator attribute="opacity" to="1" duration="500" />
+			</animatorgroup>
+
+			<simplelayout axis="x" spacing="2" />
+			<view resource="plusminus" width="13" height="13">
+				<attribute name="frame"
+					value="${classroot.opened ? 2 : 1}" />
+				<attribute name="visible"
+					value="${classroot.haschildren}" />
+			</view>
+			<text datapath="name()" />
+		</view>
+
+		<state name="showchildren">
+			<view y="13" x="13" name="children">
+				<simplelayout />
+				<treeitem grown="${classroot.opened}">
+                    <datapath xpath="*" pooling="true"/>
+                </treeitem>
+            </view>
+        </state>
+    </class>
+</library>

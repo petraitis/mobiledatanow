@@ -1,0 +1,16 @@
+<library>
+	<class name="mdnLogo" x="${(parent.width - this.width) - 10}" y="66">
+		
+		<!-- Attributes -->
+		<attribute name="version" type="text" />
+		
+		<!-- ** Logo View ** -->
+		<view height="24">
+			<view name="mdn_logo" width="202" height="24" resource="../images/mdn_logo.png" />
+			<!-- 
+			<text fontsize="14" x="${parent.mdn_logo.width + 2}" y="10" font="tabsFont" fgcolor="0xFFFFFF" name="txt" resize="true" text="${classroot.version}" />
+			 -->
+		</view>
+		
+	</class>
+</library>
