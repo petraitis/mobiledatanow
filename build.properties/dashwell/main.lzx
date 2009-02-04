@@ -1,0 +1,1518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<canvas width="100%" height="100%" debug="false" fontsize="11" proxied="false" dataloadtimeout="200000">
+<!-- Imported Fonts -->
+<!-- 
+<font name="default">
+  <face src="verity/verityplus11.ttf" style="plain" />
+  <face src="verity/verityplus11bold.ttf" style="bold" />
+  <face src="verity/verityplus11italic.ttf" style="italic" />
+  <face src="verity/verityplus11bolditalic.ttf" style="bold italic" />
+</font>
+ -->
+ 
+<font name="tabsFont" src="customresources/fonts/MYRIADAS.TTF"/>
+
+
+
+<!-- 1.32-10july08  -->
+<script>
+	//15 minute timeout
+	LzLoader.prototype.timeout = 900000;
+</script>
+	
+	<debug width="300" height="100" x="350" y="550" />
+	
+	<!-- Context menu hide play / pause etc -->
+	<handler name="oninit">
+		<![CDATA[
+			//Hiding
+			var cm1 = new LzContextMenu(); 
+			cm1.hideBuiltInItems();
+			this.setContextMenu(cm1);
+			
+			var sv = this.subviews;
+			if (sv) {
+			    for (var i = 0; i < sv.length; ++i) {
+			        var sview = sv[i];
+			        sview.setContextMenu(cm1);
+			        
+			        var ssv = sview.subviews;
+			        if (ssv) {
+			            sv = sv.concat(ssv);
+			        }
+			    }
+			}
+		]]>
+	</handler>
+	
+    <method event="oninit">
+    	Debug.write("................Canvas initialing.................");
+    	LzModeManager.makeModal(login);
+		Debug.write("projectButton clicked....");
+		vtabProject.createClosed();
+		//showLoadQueue();
+    </method>
+    
+ 
+    <method name="showLoadQueue"><![CDATA[
+        Debug.write("maxOpen: " + LzLoadQueue.maxOpen);
+        Debug.write("openConx: " + LzLoadQueue.openConx);
+        var loading = LzLoadQueue.loading;
+        for (var i = 0; i < loading.length; ++i) {
+            var r = loading[i];
+            if (r["dataset"] == undefined) {
+                Debug.write("loading: " + r);
+            } else {
+                Debug.write("loading: " + r.dataset.src);
+            }
+        }
+        var listofqs = LzLoadQueue.listofqs;
+        Debug.write("qs: " + listofqs.length);
+        for (var i = 0; i < listofqs.length; ++i) {
+            var q = listofqs[i];
+            Debug.write("q: " + q.length);
+            if (q != undefined) {
+                for (var j = 0; j < q.length; ++j) {
+                    Debug.write(q[j]);
+                }
+            }
+        }
+        LzTimer.addTimer(new LzDelegate(this, "showLoadQueue"), 20000);
+    ]]></method>   
+    
+    <!-- 
+   	<debug width="800" height="600" x="10" y="10" />
+    --> 
+	<!-- 
+	<text font="Times New Roman, Times, serif" />
+	 -->
+	<splash persistent="true">
+		<view width="1600" height="155" resource="images/mdn_splash_repeat.png" stretches="width" center="true" />
+		<view width="840" height="155" resource="images/mdn_splash_mid.png" center="true" />
+	</splash>
+<!-- 	
+  <dataset name="ds_paths">
+    <paths>http://localhost:8080/dashwell/</paths>
+  </dataset>	
+ -->  
+	<dataset name="ds_paths" request="true" src="paths.xml" /><!-- type="http" -->
+	<datapointer xpath="ds_paths:/paths">
+	  <method event="ondata">
+	    Debug.write("path", this.getNodeText());
+	    parent.gui.setAttribute( 'src', 			this.getNodeText() + "gui.gui" );
+	    //Debug.write("getGuiPath", parent.gui.getAttribute('src'));
+	    parent.nav.setAttribute( 'src', 			this.getNodeText() + "gui.gui?action=navigation" );
+	    parent.nav.doRequest();
+	    parent.userLicenses.setAttribute( 'src', 	this.getNodeText() + "data.data?action=userLicenses" );
+	    parent.userLicenses.doRequest();
+	    parent.loginData.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+	    parent.dbData.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+	    parent.dbGroup.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+	    parent.saveGroup.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+	    
+	    parent.dbConn.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbNewConn.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbDriver.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbDrivers.setAttribute( 'src', 		this.getNodeText() + "db.db?action=getDrivers" );
+	    Debug.write("dbDrivers path", parent.dbDrivers.getAttribute('src'));
+	    parent.dbDrivers.doRequest();
+	    
+	    parent.dbDriverReq.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbNewConnAvailTables.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbNewConnImportTables.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbNewConnLeftFields.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbNewConnRightFields.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbNewConnRelations.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbTable.setAttribute( 'src', 				this.getNodeText() + "db.db" );
+	    parent.dbLeftTable.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbRightTable.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbField.setAttribute( 'src', 				this.getNodeText() + "db.db" );
+	    parent.dbTablesTree.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbTablesViewTree.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbTablesViewTreeNew.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbJoins.setAttribute( 'src', 				this.getNodeText() + "db.db" );
+	    parent.dbViewsTree.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbView.setAttribute( 'src', 				this.getNodeText() + "db.db" );
+	    parent.dbViewDelete.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbViewField.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbViewReq.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbQuery.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbQueryDelete.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbQueryReq.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+	    parent.dbQueryReq2.setAttribute( 'src', 		this.getNodeText() + "db.db" );	    
+	    parent.wsLoad.setAttribute( 'src', 			this.getNodeText() + "db.db" );	    	    
+	    parent.dbSampleWebServices.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbThirdPartyWebServices.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbWebServiceOperation.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbWebServiceOperations.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+	    parent.dbWebServiceOperationReq.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbWebServiceDescription.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+	    parent.dbWebServiceQueryReq.setAttribute( 'src', 		this.getNodeText() + "db.db" );		
+		parent.qb_query_result_new.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+		parent.qb_query_result_edit.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+		parent.qb_query_result_ur_new.setAttribute( 'src', 		this.getNodeText() + "db.db" );
+		parent.qb_query_result_ur_edit.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+		parent.qb_query_builder.setAttribute( 'src', 			this.getNodeText() + "db.db" );
+		parent.qb_query_builder_query_msg.setAttribute( 'src', 	this.getNodeText() + "db.db" );
+		parent.qb_query_builder_query_msg_new.setAttribute( 'src', this.getNodeText() + "db.db" );
+		parent.qb_query_builder_user_reply.setAttribute( 'src', this.getNodeText() + "db.db" );
+		parent.qb_query_builder_user_reply_new.setAttribute( 'src', this.getNodeText() + "db.db" );
+
+	    
+	    parent.dbUser.setAttribute( 'src', 				this.getNodeText() + "data.data" );
+		parent.dbUsergroups.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		parent.dbGroupViewPermissions.setAttribute( 'src', 	this.getNodeText() + "data.data" );
+		parent.dbGroupTablePermissions.setAttribute( 'src', this.getNodeText() + "data.data" );
+		parent.dbGroupViewPermissionsNew.setAttribute( 'src', this.getNodeText() + "data.data" );
+		parent.dbGroupTablePermissionsNew.setAttribute( 'src', this.getNodeText() + "data.data" );				
+		parent.dbCSS.setAttribute( 'src', 				this.getNodeText() + "data.data?action=css" );
+		parent.dbCSS.doRequest();
+		parent.lang.setAttribute( 'src', 				this.getNodeText() + "data.data?action=lang" );
+		parent.lang.doRequest();
+		parent.defaultLang.setAttribute( 'src', 		this.getNodeText() + "data.data?action=defaultLang" );
+		parent.defaultLang.doRequest();
+		parent.langReq.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.langDelete.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.dbNavDbs.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.navHome.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.navProject.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.dbProject.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.dbProjectDefault.setAttribute( 'src', 	this.getNodeText() + "data.data" );
+		parent.dbProjectReadOnly.setAttribute( 'src', 	this.getNodeText() + "data.data" );
+		parent.dbExportStruc.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		parent.dbExportFile.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		parent.exportFileURL.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		parent.dbProjectDelete.setAttribute( 'src', 	this.getNodeText() + "data.data" );
+		parent.navPres.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.navSett.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.navDepl.setAttribute( 'src', 			this.getNodeText() + "data.data" );
+		parent.recycleData.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		parent.screenDef.setAttribute( 'src', 			this.getNodeText() + "data.data?action=screenDef" );
+		parent.screenDef.doRequest();
+		parent.projectFileUploadURL.setAttribute('src', this.getNodeText() + "projectfile.projectfile");
+		parent.importprojectFile.setAttribute( 'src', 		this.getNodeText() + "data.data" );
+		
+		parent.dbNew.setAttribute( 'src', 				this.getNodeText() + "user.user" );
+		parent.userNew.setAttribute( 'src', 			this.getNodeText() + "user.user" );
+		parent.displayUserInfo.setAttribute( 'src', 	this.getNodeText() + "user.user" );   
+		parent.groupNew.setAttribute( 'src', 			this.getNodeText() + "user.user" );  
+		parent.userGroup.setAttribute( 'src', 			this.getNodeText() + "user.user" );     
+		parent.addCustom.setAttribute( 'src', 			this.getNodeText() + "user.user" );
+		parent.defineCustom.setAttribute( 'src', 		this.getNodeText() + "user.user" );		
+		parent.msgLog.setAttribute( 'src', 				this.getNodeText() + "user.user" );  	
+		parent.clearMsgLog.setAttribute( 'src', 		this.getNodeText() + "user.user" );
+
+		parent.dbFileUpload.setAttribute( 'src', 		this.getNodeText() + "file.file" );
+		parent.fileUploadURL.setAttribute( 'src', 		this.getNodeText() + "file.file" );//this.getNodeText() + "data.data?action=fileUploadURL" );
+		
+		parent.dbDriverFileUpload.setAttribute( 'src', 	this.getNodeText() + "driverfile.driverfile" );
+		parent.driverFileUploadURL.setAttribute( 'src', this.getNodeText() + "driverfile.driverfile" );//this.getNodeText() + "data.data?action=driverFileUploadURL" );
+		
+		parent.imNew.setAttribute( 'src', 			this.getNodeText() + "im.im" );
+		parent.imSave.setAttribute( 'src', 			this.getNodeText() + "im.im" );
+		parent.imView.setAttribute( 'src', 			this.getNodeText() + "im.im" );
+		parent.connDisConn.setAttribute( 'src', 	this.getNodeText() + "im.im" );
+		parent.imDelete.setAttribute( 'src', 		this.getNodeText() + "im.im" );
+		parent.allIm.setAttribute( 'src', 			this.getNodeText() + "im.im" );
+		parent.restoreObjSett.setAttribute( 'src', 	this.getNodeText() + "im.im" );
+
+		//parent.saveImContact.setAttribute( 'src', 	this.getNodeText() + "data.data" ); 
+		parent.dbEmail.setAttribute( 'src', 		 this.getNodeText() + "email.email" );  
+		parent.dbMsg.setAttribute( 'src', 			 this.getNodeText() + "email.email" );  
+		parent.dbMsg2.setAttribute( 'src', 			 this.getNodeText() + "email.email" );
+		parent.dbMsgWS.setAttribute( 'src', 			 this.getNodeText() + "email.email" );  
+		parent.dbUserReply.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.dbUserReply2.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.db_save_ur.setAttribute( 'src', 		 this.getNodeText() + "email.email" );  	
+		parent.saveUserReply.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.dbMsgCriteria.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.dbMsgTest.setAttribute( 'src', 		 this.getNodeText() + "email.email" );  
+		parent.dbDeleteQuery.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.dbDeleteUR.setAttribute( 'src', 		 this.getNodeText() + "email.email" );  
+		parent.dbSep.setAttribute( 'src', 			 this.getNodeText() + "email.email" );  
+		parent.dbSetsave.setAttribute( 'src', 		 this.getNodeText() + "email.email" );  
+		parent.dbMsgControls.setAttribute( 'src', 	 this.getNodeText() + "email.email" );  
+		parent.saveBlockContact.setAttribute( 'src', this.getNodeText() + "email.email" ); 
+		parent.dbSearch.setAttribute( 'src', 		 this.getNodeText() + "email.email" );
+		parent.saveSearch.setAttribute( 'src', 		 this.getNodeText() + "email.email" ); 		
+		parent.testSearch.setAttribute( 'src', 		 this.getNodeText() + "email.email" );
+		parent.dbSmppSett.setAttribute( 'src', 		 this.getNodeText() + "email.email" ); 				
+		parent.dbSmppSave.setAttribute( 'src', 		 this.getNodeText() + "email.email" );
+		parent.dbPubMsgLog.setAttribute( 'src', 		 this.getNodeText() + "email.email" );		
+		
+		parent.dbSecureLoginLink.setAttribute( 'src', this.getNodeText() + "data.data?action=getSecureLoginLink" );
+		parent.dbSecureLoginLink.doRequest();
+		parent.dbRegisteredEmail.setAttribute( 'src', this.getNodeText() + "data.data?action=getRegisteredEmail" );
+		parent.dbRegisteredEmail.doRequest();
+		parent.dbLogFilePath.setAttribute( 'src', this.getNodeText() + "data.data?action=getLogFilePath" );
+		parent.dbLogFilePath.doRequest();
+	  </method>
+	</datapointer>
+	
+	
+	<!-- **************************************************************************************** -->
+	<!-- All datasets below. SL:08/28/2006 hacked dataset to use "map.map" servlet mapping pattern-->
+	<!-- **************************************************************************************** -->	
+	<dataset name="gui"						request="true" cacheable="true" /><!-- src="http://localhost:8080/dashwell/gui.gui" -->
+	<dataset name="nav"						request="true" /><!-- src="http://localhost:8080/dashwell/gui.gui?action=navigation"  -->
+	<dataset name="userLicenses"			request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data?action=userLicenses"  -->
+	<dataset name="loginData"				request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbData"					request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->	
+	<dataset name="dbGroup"					request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="saveGroup"				request="false" />	<!-- src="http://localhost:8080/dashwell/data.data"  -->
+	
+	<dataset name="dbConn"					request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConn"				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbDriver"				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbDrivers"				request="true" /><!-- src="http://localhost:8080/dashwell/db.db?action=getDrivers"  -->
+	
+	<dataset name="dbDriverReq"				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConnAvailTables" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConnImportTables" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConnLeftFields" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConnRightFields" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbNewConnRelations" 		request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbTable" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbLeftTable" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbRightTable" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbField" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbTablesTree" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbTablesViewTree" 		request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbTablesViewTreeNew" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbJoins" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbViewsTree" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbView" 					request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbViewDelete" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbViewField" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbViewReq" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbQuery" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbQueryDelete" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->	
+	<dataset name="dbQueryReq" 				request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbQueryReq2" 			request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="wsLoad" 					request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->	
+	<dataset name="dbSampleWebServices" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbThirdPartyWebServices" request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbWebServiceOperation" 	request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbWebServiceOperations" 	request="false" />
+	<dataset name="dbWebServiceOperationReq" request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->	
+	<dataset name="dbWebServiceDescription" request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="dbWebServiceQueryReq" 		request="false" /><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_result_new" 		request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_result_edit" 		request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_result_ur_new" 		request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_result_ur_edit" 		request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_builder" 				request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_builder_query_msg" 		request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_builder_query_msg_new" 	request="false" timeout="120000"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_builder_user_reply" 	request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	<dataset name="qb_query_builder_user_reply_new" request="false"/><!-- src="http://localhost:8080/dashwell/db.db"  -->
+	
+		
+	<dataset name="dbUser" 					request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbUsergroups" 			request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbGroupViewPermissions" 	request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbGroupTablePermissions" request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->	
+	<dataset name="dbGroupViewPermissionsNew" 	request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbGroupTablePermissionsNew" request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->		
+	<dataset name="dbCSS" 					request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data?action=css"  -->
+	<dataset name="lang" 					request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data?action=lang"  -->
+	<dataset name="defaultLang"				request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data?action=defaultLang"  -->
+	<dataset name="langReq" 				request="false"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="langDelete" 				request="false"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbNavDbs" 				request="true" timeout="120000" dataloadtimeout="120000"/><!-- cacheable="true" src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="navHome" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="navProject" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbProject" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbProjectDefault" 		request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbProjectReadOnly" 		request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbExportStruc" 			request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="dbExportFile" 			request="false" /><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="exportFileURL" 			request="true" cacheable="false"/>
+	<dataset name="dbProjectDelete" 		request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="navPres" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="navSett" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="navDepl" 				request="false" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="recycleData" 			request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data"  -->
+	<dataset name="screenDef" 				request="true" cacheable="true"/><!-- src="http://localhost:8080/dashwell/data.data?action=screenDef"  -->
+	<dataset name="projectFileUploadURL" 	request="false" cacheable="false"/>
+	<dataset name="importprojectFile" 		request="false" cacheable="false"/>
+		
+	<dataset name="dbNew"					request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->
+	<dataset name="userNew" 				request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->   
+	<dataset name="displayUserInfo" 		request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->   
+	<dataset name="groupNew" 				request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->  
+	<dataset name="userGroup" 				request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->     
+	<dataset name="addCustom" 				request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->     
+	<dataset name="defineCustom" 			request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->     	
+	<dataset name="msgLog" 					request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->     	
+	<dataset name="clearMsgLog" 			request="false" /><!-- src="http://localhost:8080/dashwell/user.user"  -->	
+	
+	<dataset name="dbFileUpload" 			request="false" cacheable="false" /><!-- src="http://localhost:8080/dashwell/file.file"  -->
+	<dataset name="fileUploadURL" 			request="false" cacheable="false"/><!-- src="http://localhost:8080/dashwell/data.data?action=fileUploadURL"  -->
+	<dataset name="dbDriverFileUpload" 		request="false" cacheable="false" /><!-- src="http://localhost:8080/dashwell/driverfile.driverfile"  -->
+	<dataset name="driverFileUploadURL" 	request="false" cacheable="false"/><!-- src="http://localhost:8080/dashwell/data.data?action=driverFileUploadURL"  -->
+	<dataset name="imNew" 					request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->
+	<dataset name="imSave" 					request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->	
+	<dataset name="imView" 					request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->
+	<dataset name="connDisConn" 			request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->
+	<dataset name="imDelete" 				request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->   
+	<dataset name="allIm" 					request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->
+	<dataset name="restoreObjSett" 			request="false" /><!-- src="http://localhost:8080/dashwell/im.im"  -->
+	
+	<!-- <dataset name="saveImContact" 			request="false" /> --><!-- src="http://localhost:8080/dashwell/data.data"  -->     
+	<dataset name="dbEmail" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->      
+	<dataset name="dbMsg" 					request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  
+	<dataset name="dbMsg2" 					request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  
+	<dataset name="dbMsgWS" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  	
+	<dataset name="dbUserReply" 			request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  
+	<dataset name="dbUserReply2" 			request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  		
+	<dataset name="db_save_ur" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  		
+	<dataset name="saveUserReply" 			request="false"/><!-- src="http://localhost:8080/dashwell/email.email"  -->
+	<dataset name="dbMsgCriteria" 			request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->  
+	<dataset name="dbMsgTest" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->
+	<dataset name="dbDeleteQuery" 			request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->
+	<dataset name="dbDeleteUR" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->
+	<dataset name="dbSep" 					request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->
+	<dataset name="dbSetsave" 				request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->	
+	<dataset name="dbMsgControls"			request="false" />
+	<dataset name="saveBlockContact" 		request="false" /><!-- src="http://localhost:8080/dashwell/email.email"  -->		
+	<dataset name="dbSearch" 				request="false" /><!-- email.email -->
+	<dataset name="saveSearch" 				request="false" /><!-- email.email -->	
+	<dataset name="testSearch" 				request="false" /><!-- email.email -->	
+	<dataset name="dbSmppSett" 				request="false" /><!-- email.email -->	
+	<dataset name="dbSmppSave" 				request="false" /><!-- email.email -->		
+	<dataset name="dbPubMsgLog" 			request="false" /><!-- email.email -->			
+
+	<dataset name="dbSecureLoginLink" 		request="true" cacheable="false" />
+	<dataset name="dbRegisteredEmail" 		request="true" cacheable="false" />
+	<dataset name="dbLogFilePath" 			request="true" cacheable="false" />
+	
+	<dataset name="hinttip_lang" src="lang/hinttip_en.xml"/><!--SL:09/05/2006 -->
+	<!-- **************************************************************************************** -->
+	<!-- Finishing Dataset -->
+	<!-- **************************************************************************************** -->
+
+
+
+	<!-- **************************************************************************************** -->
+	<!-- All includes below. -->
+	<!-- **************************************************************************************** --> 
+	<include href="lib/ftgrid.lzx" />
+	<include href="lib/ftcheckbox2.lzx" />
+	<include href="lib/querybuilder/library.lzx" />
+	<include href="laszlo/appController.lzx" />
+	<include href="lib/busybanner.lzx"/>
+	
+	<appController id="controller"/>	
+	
+	<include href="lib/fileexport.lzx" />
+	<include href="lz/tree.lzx" />
+	<include href="lib/mdn_button.lzx" />
+	<include href="lib/mdn_roundrect.lzx" />
+	<include href="lib/treecontrol.lzx" />
+	
+	<include href="lib/tree/checktree/library.lzx" />
+	<include href="lib/tree/opttree/library.lzx" />
+	<!-- <include href="lib/multipledragtree/opttree/library.lzx" /> -->
+	<include href="lib/tree/icontree/icontreenode.lzx" />
+	<include href="lib/tree/dragtree/library.lzx" />
+	<!-- <include href="lib/multipledragtree/dragtree/library.lzx" /> -->
+
+
+	<include href="lib/smartvscrollbar/smartvscrollbar.lzx"/><!-- SL:08/31/2006 -->
+	<include href="lib/hinttip/hinttip.lzx" /><!-- SL:09/05/2006 -->
+	
+	<!-- SL:08/25/2006
+	<include href="lps/components/incubator/roundrectbutton.lzx" />
+	<include href="lps/components/incubator/roundrect.lzx" /> -->
+	<include href="incubator/roundrectbutton.lzx" />
+	<include href="incubator/roundrect.lzx" />
+
+	<include href="laszlo/library.lzx" />		
+	
+	<include href="lzunit" />
+	<!-- This file tests the link dialog functionality --> 
+	<include href="incubator/stylishbutton.lzx" /> 
+	<include href="incubator/shadowbox.lzx"/>
+	<include href="incubator/borderinput.lzx"/>
+	<include href="incubator/lzcombobox.lzx"/>
+	<include href="incubator/textstyle.lzx"/>
+	<include href="incubator/tooltip/tooltip.lzx"/>
+	<include href="incubator/baseedittext.lzx" />
+	<include href="incubator/tooltip/tooltipview.lzx" />
+	    
+	<include href="incubator/rich-text/richtexttoolbar.lzx"/>
+	<include href="incubator/rich-text/richtexteditarea.lzx"/>
+	<include href="incubator/rich-text/linkdialog.lzx"/>
+	<include href="incubator/rich-text/formatbtn.lzx"/>
+	<include href="incubator/rich-text/formatfontcolor.lzx"/>
+	<include href="incubator/rich-text/formatfontface.lzx"/>
+	
+	<include href="rpc/library.lzx"/>
+	
+	<include href="lz/library.lzx"/>
+	<include href="lz/tabelement.lzx"/>
+
+	<!-- Newest Resources -->
+	<include href="laszlo/mdnlogo.lzx"/>
+	<include href="laszlo/custom_tabs.lzx"/>
+	<include href="laszlo/custom_help.lzx"/>
+	<include href="laszlo/scrolledittext.lzx"/>
+	<include href="laszlo/mdnLoading.lzx"/>
+	<include href="laszlo/custom_log.lzx"/>
+	<include href="laszlo/custom_popup.lzx"/>
+	
+	<!-- **************************************************************************************** -->
+	<!-- Finishing includes. -->
+	<!-- **************************************************************************************** --> 
+
+ 	<resource name="bold_icon_rsc" src="images/bold.png"/>
+    <resource name="italic_icon_rsc" src="images/italic.png"/>
+    <resource name="underline_icon_rsc" src="images/underline.png"/>
+    
+    <resource name="bullet_icon_rsc" src="images/bullet_list.png"/>
+    <resource name="indent_icon_rsc" src="images/indent.png"/>
+    <resource name="outdent_icon_rsc" src="images/outdent.png"/>
+    
+    <resource name="lft_align_icon_rsc" src="images/lft_align.png"/>
+    <resource name="center_icon_rsc" src="images/center.png"/>
+    <resource name="rt_align_icon_rsc" src="images/rt_align.png"/>
+    
+    <resource name="link_icon_rsc" src="images/link.png" />
+    <resource name="resetfmt_icon_rsc" src="images/reset.png" />
+
+    <resource name="rte_btn">
+        <frame src="images/rte_btn_up.swf"/>
+        <frame src="images/rte_btn_mo.swf"/>
+        <frame src="images/rte_btn_dn.swf"/>
+    </resource>
+  
+  
+  
+	<resource name="navigationIcons">
+		<!-- 1 --><frame src="images/blank.png" />
+		<!-- 2 --><frame src="images/projects.png" />
+		<!-- 3 --><frame src="images/project.png" />
+		<!-- 4 --><frame src="images/database.png" />
+		<!-- 5 --><frame src="images/connection.png" />
+		<!-- 6 --><frame src="images/table.png" />
+		<!-- 7 --><frame src="images/relationships.png" />
+		<!-- 8 --><frame src="images/view.png" />
+		<!-- 9 --><frame src="images/query.png" />
+		<!-- 10 --><frame src="images/email.png" />
+		<!-- 11 --><frame src="images/table.png" />
+		<!-- 12 --><frame src="images/tables.png" />
+		<!-- 13 --><frame src="images/field.png" />
+		<!-- 14 --><frame src="images/single_admin.png" />
+		<!-- 15 --><frame src="images/single_user.png" />
+		<!-- 16 --><frame src="images/groups-admin.png" />
+		<!-- 17 --><frame src="images/groups-users.png" />
+		<!-- 18 --><frame src="images/presentation.png" />
+		<!-- 19 --><frame src="images/presentation_general.png" />
+		<!-- 20 --><frame src="images/designer.png" />
+		<!-- 21 --><frame src="images/deployment2.png" />
+		<!-- 22 --><frame src="images/notification_email.png" />
+		<!-- 23 --><frame src="images/general_settings.png" />
+		<!-- 24 --><frame src="images/language.png" />
+		<!-- 25 --><frame src="images/db_drivers.png" />
+		<!-- 26 --><frame src="images/mirrored_db.png" />
+		<!-- 27 --><frame src="images/ldap.png" />
+		<!-- 28 --><frame src="images/data_transfer.png" />
+		<!-- 29 --><frame src="images/scheduler.png" />
+		<!-- 30 --><frame src="images/look_feel.png" />
+		<!-- 31 --><frame src="images/user.png" />
+		<!-- 32 --><frame src="images/users.png" />
+		<!-- 33 --><frame src="images/group.png" />
+		<!-- 34 --><frame src="images/groups.png" />
+		<!-- 35 --><frame src="images/sitemap.png" />
+		<!-- 36 --><frame src="images/db_othersources.png" />
+		<!-- 37 --><frame src="images/db_email.png" />
+		<!-- 38 --><frame src="images/db_webservice.png" />
+		<!-- 39 --><frame src="images/webservices.png" />
+		<!-- 40 --><frame src="images/add.png" />    
+		<!-- 41 --><frame src="images/phone_sound.png" />        
+		<!-- 42 --><frame src="images/status_online.png" />            
+		<!-- 43 --><frame src="images/userReply.png" />  
+		<!-- 44 --><frame src="images/views.png" />          		
+		<!-- 45 --><frame src="images/separator.png" /> 	
+		<!-- 46 --><frame src="images/guest-group.png" /> 			
+		<!-- 47 --><frame src="images/msg-controls.png" />
+		<!-- 48 --><frame src="images/msg-sett.png" /> 				
+		<!-- 49 --><frame src="images/vcard.png" /> 
+		<!-- 50 --><frame src="images/message-controls.png" /> 	
+		<!-- 51 --><frame src="images/messaging_search.png" /> 
+		<!-- 52 --><frame src="images/smpp-sett.png" /> 			
+		<!-- 53 --><frame src="images/users-custom-values.png" />
+		<!-- 54 --><frame src="images/new-email.png" /> 	 	
+	</resource>
+
+	<!-- **************************************************************************************** -->
+	<!-- Classes -->
+	<!-- **************************************************************************************** -->     
+	<class name="simpletreenode" extends="sharedtreenode">
+	   <attribute name="folderstate" 
+	              value="$path{'@_folderstate'}" />
+	</class>
+
+  	<class name="filetreenode" extends="icontreenode" labelx="40">
+	    
+	<!-- Nick Hinttip for tree nodes -->
+	<method event="ondata">
+
+            var tipid = this.data.getAttr("hinttip");
+            //Debug.write(tipid,this.data);
+            
+            //if there's a tipid provided for this node, create the hinttip instanceif not exist yet
+            if (tipid) {
+                if(!this['hasHinttip']){
+                    Debug.write("filetreenode.ondata | creating hinttip child for the firsttime and assign it tipid="+tipid);
+
+                    //new hinttip( this , {name: 'hinttip', tipid : tipid } );
+                    this.makeChild({name: 'hinttip', attrs: {name: '_hinttip',tipid : tipid}});
+                    this.setAttribute("hasHinttip",true);
+                }else{
+                    Debug.write("filetreenode.ondata | reusing a hinttip child and assign it tipid="+tipid);
+                    this._hinttip.setAttribute("tipid",tipid);
+                }
+            }
+        </method>    
+	    
+	    <method name="updateIcon">
+	      var frameNum = 1;
+	      switch (this.iconstate) {
+	        case "projects":
+	            frameNum = 2;
+	            break;
+	        case "project":
+	            frameNum = 3;
+	            break;
+	        case "database":
+	            frameNum = 4;
+	            break;
+	        case "connection":
+	            frameNum = 5;
+	            break;
+	        case "table":
+	            frameNum = 6;
+	            break;
+	        case "relationship":
+	            frameNum = 7;
+	            break;
+	        case "view":
+	            frameNum = 8;
+	            break;
+	        case "query":
+	            frameNum = 9;
+	            break;
+	        case "email":
+	            frameNum = 10;
+	            break;
+	        case "table":
+	            frameNum = 11;
+	            break;
+	        case "tables":
+	            frameNum = 12;
+	            break;
+	        case "field":
+	            frameNum = 13;
+	            break;
+	        case "singleUser":
+	            frameNum = 14;
+	            break;
+	        case "singleAdmin":
+	            frameNum = 15;
+	            break;
+	        case "adminGroups":
+	            frameNum = 16;
+	            break;
+	        case "userGroups":
+	            frameNum = 17;
+	            break;
+	        case "presentation":
+	            frameNum = 18;
+	            break;
+	        case "presentationGeneral":
+	            frameNum = 19;
+	            break;
+	        case "designer":
+	            frameNum = 20;
+	            break;
+	        case "deployment":
+	            frameNum = 21;
+	            break;
+	        case "emailNotification":
+	            frameNum = 22;
+	            break;
+	        case "generalSettings":
+	            frameNum = 23;
+	            break;
+	        case "language":
+	            frameNum = 24;
+	            break;
+	        case "dbDrivers":
+	          	frameNum = 25;
+	            break;
+	        case "mirroredDB":
+	          	frameNum = 26;
+	            break;
+	        case "ldap":
+	          	frameNum = 27;
+	            break;
+	        case "dataTransfer":
+	          	frameNum = 28;
+	            break;
+	        case "scheduler":
+	          	frameNum = 29;
+	            break;
+	        case "lookAndFeel":
+	          	frameNum = 30;
+	            break;
+	        case "user":
+	          	frameNum = 31;
+	            break;
+	        case "users":
+	          	frameNum = 32;
+	            break;
+	        case "group":
+	          	frameNum = 33;
+	            break;
+	        case "group":
+	          	frameNum = 34;
+	            break;
+	        case "sitemap":
+	         	frameNum = 35;
+	            break;
+	        case "db_othersources":
+	          	frameNum = 36;
+	            break;
+	        case "db_email":
+	          	frameNum = 37;
+	            break;
+	        case "db_webservices":
+	          	frameNum = 38;
+	            break;
+	        case "webservices":
+	          	frameNum = 39;
+	            break;
+	        case "add":
+	          	frameNum = 40;
+	            break;
+	        case "sms":
+	          	frameNum = 41;
+	            break;
+	        case "im":
+	          	frameNum = 42;
+	            break;
+	        case "ur":
+	          	frameNum = 43;
+	            break;
+	        case "views":
+	          	frameNum = 44;
+	            break;	
+	        case "separator":
+	          	frameNum = 45;
+	            break;	
+	        case "guest":
+	          	frameNum = 46;
+	            break;		            
+	        case "msg-controls":
+	          	frameNum = 47;
+	            break;		            	            
+	        case "msg-sett":
+	          	frameNum = 48;
+	            break;		            	            	            
+	        case "account":
+	          	frameNum = 49;
+	            break;
+	        case "msg":
+	          	frameNum = 50;
+	            break;	
+	        case "messaging_search":
+	          	frameNum = 51;
+	            break;	            
+	        case "smpp-sett":
+	          	frameNum = 52;
+	            break;	     
+	        case "users-custom-values":
+	          	frameNum = 53;
+	            break;	                   		                        		            		                        	
+	        case "new-email":
+	          	frameNum = 54;
+	            break;	                   		                        		            		                        		            
+	      }
+	      // If there is no icon, don't indent the text.
+	      if (frameNum == 1) {
+	          this.setAttribute("labelx", 20);
+	      } else {
+	          this.setAttribute("labelx", 35);
+	      }
+	      if (this["icon"]) {
+	          this.icon.setResourceNumber(frameNum);
+	      }
+	    </method>
+	    <view name="icon" resource="navigationIcons" x="${parent.leafindent+16}" width="16" height="16" stretches="both" />
+  	</class>
+  
+	<!-- Definition of the users & group dragtreenode. -->
+	<class name="dragfiletreenode" extends="dragtreenode" labelx="40">
+	    <attribute name="iconstate" value="$path{'@_iconstate'}" />
+	  
+ 		<method event="ondata">
+
+            var tipid = this.data.getAttr("hinttip");
+            //Debug.write(tipid,this.data);
+            
+            //if there's a tipid provided for this node, create the hinttip instanceif not exist yet
+            if (tipid) {
+                if(!this['hasHinttip']){
+                    Debug.write("filetreenode.ondata | creating hinttip child for the firsttime and assign it tipid="+tipid);
+
+                    //new hinttip( this , {name: 'hinttip', tipid : tipid } );
+                    this.makeChild({name: 'hinttip', attrs: {name: '_hinttip',tipid : tipid}});
+                    this.setAttribute("hasHinttip",true);
+                }else{
+                    Debug.write("filetreenode.ondata | reusing a hinttip child and assign it tipid="+tipid);
+                    this._hinttip.setAttribute("tipid",tipid);
+                }
+            }
+        </method>	  	  
+	  
+	    <method name="updateIcon">
+	      var frameNum = 1;
+	      switch (this.iconstate) {
+	        case "projects":
+	            frameNum = 2;
+	            break;
+	        case "project":
+	            frameNum = 3;
+	            break;
+	        case "database":
+	            frameNum = 4;
+	            break;
+	        case "connection":
+	            frameNum = 5;
+	            break;
+	        case "table":
+	            frameNum = 6;
+	            break;
+	        case "relationship":
+	            frameNum = 7;
+	            break;
+	        case "view":
+	            frameNum = 8;
+	            break;
+	        case "query":
+	            frameNum = 9;
+	            break;
+	        case "email":
+	            frameNum = 10;
+	            break;
+	        case "table":
+	            frameNum = 11;
+	            break;
+	        case "tables":
+	            frameNum = 12;
+	            break;
+	        case "field":
+	            frameNum = 13;
+	            break;
+	        case "generalSettings":
+	            frameNum = 23;
+	            break;
+	        case "language":
+	            frameNum = 24;
+	            break;
+	        case "dbDrivers":
+	          	frameNum = 25;
+	            break;
+	        case "mirroredDB":
+	          	frameNum = 26;
+	            break;
+	        case "ldap":
+	          	frameNum = 27;
+	            break;
+	        case "dataTransfer":
+	          	frameNum = 28;
+	            break;
+	        case "scheduler":
+	          	frameNum = 29;
+	            break;
+	        case "lookAndFeel":
+	          	frameNum = 30;
+	            break;
+	        case "user":
+	          	frameNum = 31;
+	            break;	            
+	        case "users":
+	            frameNum = 32;
+	            break;
+	        case "group":
+	            frameNum = 33;
+	            break;
+	        case "groups":
+	            frameNum = 34;
+	            break;
+	        case "db_email":
+	          	frameNum = 37;
+	            break;
+	        case "webservices":
+	          	frameNum = 39;
+	            break;
+	        case "add":
+	          	frameNum = 40;
+	            break;
+	        case "sms":
+	          	frameNum = 41;
+	            break;
+	        case "im":
+	          	frameNum = 42;
+	            break;
+	        case "ur":
+	          	frameNum = 43;
+	            break;	            
+	        case "views":
+	          	frameNum = 44;
+	            break;
+	        case "separator":
+	          	frameNum = 45;
+	            break;
+	        case "guest":
+	          	frameNum = 46;
+	            break;	 
+	        case "msg-controls":
+	          	frameNum = 47;
+	            break;	            	                       
+	        case "msg-sett":
+	          	frameNum = 48;
+	            break;		            	            	            
+	        case "account":
+	          	frameNum = 49;
+	            break;
+	        case "msg":
+	          	frameNum = 50;
+	            break;
+	        case "messaging_search":
+	          	frameNum = 51;
+	            break;	            
+	        case "smpp-sett":
+	          	frameNum = 52;
+	            break;	     
+	        case "users-custom-values":
+	          	frameNum = 53;
+	            break;	            	
+	       case "new-email":
+	          	frameNum = 54;
+	            break;	                   		                        		            		                        		            
+	      }
+	      // If there is no icon, don't indent the text.
+	      if (frameNum == 1) {
+			this.setAttribute("labelx", 15);
+	      } else {
+			this.setAttribute("labelx", 40);
+	      }
+	      if (this["icon"]) {
+	        this.icon.setResourceNumber(frameNum);
+	      }
+	    </method>
+	
+	    <method event="oniconstate">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="onopen">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="oninit">
+	        this.updateIcon();
+	    </method>
+	
+	    <!-- This method must be overwritten -->
+	    <view name="icon" x="${parent.leafindent+19}" resource="navigationIcons">
+	    </view>
+	</class>
+  
+	<!-- Definition of the tables & fields checktreenode. -->
+	<class name="checkfiletreenode" extends="checktreenode" labelx="55">
+	    <attribute name="iconstate" value="$path{'@_iconstate'}" />
+	   
+	  	<method event="ondata">
+
+            var tipid = this.data.getAttr("hinttip");
+            //Debug.write(tipid,this.data);
+            
+            //if there's a tipid provided for this node, create the hinttip instanceif not exist yet
+            if (tipid) {
+                if(!this['hasHinttip']){
+                    Debug.write("filetreenode.ondata | creating hinttip child for the firsttime and assign it tipid="+tipid);
+
+                    //new hinttip( this , {name: 'hinttip', tipid : tipid } );
+                    this.makeChild({name: 'hinttip', attrs: {name: '_hinttip',tipid : tipid}});
+                    this.setAttribute("hasHinttip",true);
+                }else{
+                    Debug.write("filetreenode.ondata | reusing a hinttip child and assign it tipid="+tipid);
+                    this._hinttip.setAttribute("tipid",tipid);
+                }
+            }
+        </method> 
+	   
+	    <method name="updateIcon">
+	      var frameNum = 1;
+	      switch (this.iconstate) {
+	        case "table":
+				frameNum = 11;
+				break;
+			case "tables":
+				frameNum = 12;
+				break;
+	        case "field":
+	            frameNum = 13;
+	            break;
+	        case "user":
+				frameNum = 31;
+				break;
+	        case "users":
+	            frameNum = 32;
+	            break;
+	        case "group":
+	            frameNum = 33;
+	            break;
+	        case "groups":
+	            frameNum = 34;
+	            break;
+	        case "newIM":
+	          	frameNum = 40;
+	            break;
+	        case "imConn":
+				frameNum = 41;
+				break;
+	        case "separator":
+				frameNum = 45;
+				break;
+	        case "guest":
+				frameNum = 46;
+				break;	
+	        case "msg-controls":
+				frameNum = 47;
+				break;		
+	        case "msg-sett":
+	          	frameNum = 48;
+	            break;		            	            	            													
+	        case "msg":
+	          	frameNum = 50;
+	            break;
+	        case "messaging_search":
+	          	frameNum = 51;
+	            break;	            
+	        case "smpp-sett":
+	          	frameNum = 52;
+	            break;	     
+	        case "users-custom-values":
+	          	frameNum = 53;
+	            break;	            	
+	       case "new-email":
+	          	frameNum = 54;
+	            break;	                   		                        		            		                        		            
+	      }
+	      // If there is no icon, don't indent the text.
+	      if (frameNum == 1) {
+	        this.setAttribute("labelx", 15);
+	      } else {
+	          this.setAttribute("labelx", 55);
+	      }
+	      if (this["icon"]) {
+	        this.icon.setResourceNumber(frameNum);
+	      }
+	    </method>
+	
+	    <method event="oniconstate">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="onopen">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="oninit">
+	        this.updateIcon();
+	    </method>
+	
+	    <!-- This method must be overwritten -->
+	    <view name="icon" x="${parent.leafindent+37}" resource="navigationIcons">
+	    </view>
+	</class>
+
+	<!-- Definition of the Instatnt Messenger dragtreenode. -->
+	<class name="imtree" extends="dragtreenode" labelx="40">
+	    <attribute name="iconstate" value="$path{'@_iconstate'}" />
+	    <method name="updateIcon">
+	      var frameNum = 1;
+	      switch (this.iconstate) {
+	        case "imConn":
+	          frameNum = 41;
+	            break;
+	      }
+	      // If there is no icon, don't indent the text.
+	//      if (frameNum == 1) {
+	//        this.setAttribute("labelx", 15);
+	//      } else {
+	//          this.setAttribute("labelx", 55);
+	//      }
+	//      if (this["icon"]) {
+	//        this.icon.setResourceNumber(frameNum);
+	//      }
+	    </method>
+	
+	    <method event="oniconstate">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="onopen">
+	        this.updateIcon();
+	    </method>
+	    
+	    <method event="oninit">
+	        this.updateIcon();
+	    </method>
+	
+	    <!-- This method must be overwritten -->
+	    <view name="icon" x="${parent.leafindent+19}" resource="navigationIcons">
+	    </view>
+  	</class>
+
+
+
+
+	<!-- **************************************************************************************** -->
+	<!-- Finishing Classes -->
+	<!-- **************************************************************************************** -->
+	<!-- 
+	<dragtreefloater id="floater" _dragtreeref="${projectTabs.currTab._projectView.nav.navigation.usersTabelement.usersTreeBody.usersTree.treeNavUsers}" />
+	<dragtreefloater id="floater2" _dragtreeref="${treeSett}" />
+	<dragtreefloater id="floater3" _dragtreeref="${treePres}" />
+	<dragtreefloater id="floater4" _dragtreeref="${treeDbs}" /> 
+ 	-->
+	<dragtreefloater id="floater" />
+	<dragtreefloater id="floater2" />
+	<dragtreefloater id="floater3" />
+	<dragtreefloater id="floater4" />
+	<dragtreefloater id="floater5" />
+	<dragtreefloater id="floater6" />
+  
+	<!-- All styles below. -->
+	<style name="customstyle" isdefault="true" basecolor="null"/>
+
+	<!-- **************************************************************************************** -->
+	<!-- All data pointer below. -->
+	<!-- **************************************************************************************** -->
+	<datapointer xpath="gui:/*" 
+	     ondata="Debug.write('Loading the GUI definition file.' + this.serialize());"/>
+	
+	<datapointer xpath="nav:/*" 
+	     ondata="Debug.write('Loading the navigation file.' + this.serialize());"/>
+	     
+	<datapointer xpath="dbNavDbs:/*" 
+	     ondata="processData();" 
+	     onerror="canvas.showError(this);"
+		 ontimeout="canvas.showTimeout(); canvas.timeout(this, this.timeout);"
+		 ><!--   -->
+			<method name="processData">
+				Debug.write('Loading the navigation database file.' + this.serialize());
+				
+				//Debug.write("!!!!!!!!!!!!!!!!!!!load time!!!!!!!!!!!!!!!: ", dbNavDbs.dataRequest.loadtime, dbNavDbs.getLoadtime());
+				//Debug.write("!!!!!!!!!!!!!!!!!!!load time!!!!!!!!!!!!!!!: ", );
+		        var result = this.getNodeText();
+		        var action = this.getNodeAttribute('action');
+		        var projectId = this.getNodeAttribute('projectId');
+                var connID = this.getNodeAttribute('connId');
+                var dbName = this.getNodeAttribute('dbName');		        
+		        //var updateData = false;
+		        Debug.write("inside the data pointer processData newDbConnection...", result, projectId, connID, dbName);
+				if (action == 'newDbConnection'){
+		            //newDbConnectionWindow.errorMax.doStart();
+		            Debug.write("inside the data pointer processData newDbConnection...");
+		            if (result == 'OK'){
+		                updateData = true;
+						//controller.updateDatabases(projectId);
+						Debug.write("inside the data pointer processData newDbConnection...", result, "getTablesTree");
+		                controller.getTablesTree(projectId, connID);
+		                projectTabs.currTab.databaseCtrler.displayDBConnection(projectId, dbName); 
+		                newDbConnectionWindow.body.backView.progressView.txtProgress.setText('');
+
+		            }//else{
+		 				newDbConnectionWindow.body.backView.progressView.txtProgress.setText('');
+		 				newDbConnectionWindow.body.backView.errorView.error.setText(result);                      
+		            //}
+		                newDatabaseProgressBar.setVisible(false);
+		                newDatabaseProgressBar.setValue(0);
+		                LzTimer.removeTimer(newDbConnectionWindow.updateTimerDelegate);		            
+		        }				
+			</method>    
+	</datapointer>
+	     
+	<method name="timeout" args="caller, timeoutValue">
+	  Debug.write(caller + ' timed out with a timeout value of ' + timeoutValue + '.');
+	  Debug.write('delay was '+ (getTimer() - controller.stime));
+	</method> 
+	
+	<datapointer xpath="dbData:/*" rerunxpath="true"
+		ondata="processData();" onerror="canvas.showError(this);"
+		ontimeout="canvas.showTimeout();">
+		<method name="processData">
+		    Debug.write("???????received dbData: " + this.serialize());
+		</method>
+	</datapointer>
+
+	<!-- Deals with the login result. -->
+	<datapointer xpath="loginData:/*" rerunxpath="true"
+	    ondata="processData();" onerror="canvas.showError(this);"
+	    ontimeout="canvas.showTimeout();">
+	    <method name="processData">
+	        Debug.write("TEST THAT processData Function has run: True");
+	        Debug.write("data: ", this.data);
+	        Debug.write("data: ", this.datapath);
+	        <![CDATA[
+	        loginError1.setText('');
+	        loginError2.setText('');
+	        loginError3.setText('');
+ 	        updateError1.setText('');
+	        updateError2.setText('');
+	        updateError3.setText('');  
+	        Debug.write("received loginData: " + this.serialize());	        
+	        var result = this.getNodeAttribute("result");
+	        var action = this.getNodeAttribute("action");
+			
+	        if (result == 'ok'){
+	            if (action =='login'){
+		            login.containerView.loginAnimator.doStart();
+		            login.tabView.loginAnimator.doStart();
+		            //var username = this.getNodeAttribute("username");
+		            /*var num = this.getNodeAttribute("numUsers");
+		            var days = this.getNodeAttribute("daysLeft");
+		            if (num == 0){
+		            	numUsers.setText('Unlimited User License');
+		            }else{
+		            	numUsers.setText(num + ' User License');
+		            }
+		            if (days == 0){
+		            	daysLeft.setText('Perpetual:');
+		            }else if (days == 1){
+		            	daysLeft.setText(days + ' day left');
+		            }else{
+		            	daysLeft.setText(days + ' days left');
+		            }*/
+		            //loginUser.setText(username);
+		            //loginError1.setText('Submitting...');
+		        }else if (action == "forgotPassword"){
+		        	loginError1.setText('Please check your email. The new ');
+		        	loginError2.setText('password has been sent to your email box.');
+		        }/*else if (action == 'updateLicense'){
+		        	updateError1.setText('Your user license has been successfully updated.');
+		            var num = this.getNodeAttribute("numUsers");
+		            var days = this.getNodeAttribute("daysLeft");
+		            Debug.write("User License Updated: num", num, "days", days);
+		            if (num == 0){
+		            	numUsers.setText('Unlimited User License');
+		            }else{
+		            	numUsers.setText(num + ' User License');
+		            }
+		            if (days == 0){
+		            	daysLeft.setText('Permanent');
+		            }else if (days == 1){
+		            	daysLeft.setText(days + ' day left');
+		            }else if (days > 1){
+		            	daysLeft.setText(days + ' days left');
+		            }else{	
+		            	daysLeft.setText('Expired or Invalid');
+		            }
+		        }*/else if (action == 'changeEmailAddress'){
+		        	updateError1.setText('Your email address has been successfully updated.');
+		        }
+	        }else{		        
+		        var result1 = this.getNodeAttribute("error1");
+			    var result2 = this.getNodeAttribute("error2");	        
+			    var result3 = this.getNodeAttribute("error3");	        
+			                
+		        /*if (action == 'updateLicense'){
+			        updateError1.setText(result1);
+			        updateError2.setText(result2);
+			        updateError3.setText(result3);		        
+		        }else{*/
+			        loginError1.setText(result1);
+			        loginError2.setText(result2);
+			        loginError3.setText(result3);
+		        //}	        
+	        }
+	        ]]>
+	    </method>
+	</datapointer>
+	
+	<!-- Gets the Log File Path. -->
+	<datapointer xpath="dbLogFilePath:/root" rerunxpath="true"
+				ondata="processData();" onerror="canvas.showError(this);"
+				ontimeout="canvas.showTimeout();">
+		<method name="processData">
+			var MdnServerLog = this.getNodeAttribute("MdnServerLog");
+			var MdnServerError = this.getNodeAttribute("MdnServerError");
+			var EmailServerLog = this.getNodeAttribute("EmailServerLog");
+			var EmailServerError = this.getNodeAttribute("EmailServerError");
+			var SmsServerLog = this.getNodeAttribute("SmsServerLog");
+			var SmsServerError = this.getNodeAttribute("SmsServerError");
+			var IMServerLog = this.getNodeAttribute("IMServerLog");
+			var IMServerError = this.getNodeAttribute("IMServerError");
+			
+			Debug.write("received dbLogFilePath return data", MdnServerLog, MdnServerError, EmailServerLog, EmailServerError, 
+				SmsServerLog, SmsServerError, IMServerLog, IMServerError);
+			controller.setAttribute('MdnServerLog', MdnServerLog);
+			controller.setAttribute('MdnServerError', MdnServerError);
+			controller.setAttribute('EmailServerLog', EmailServerLog);
+			controller.setAttribute('EmailServerError', EmailServerError);
+			controller.setAttribute('SmsServerLog', SmsServerLog);
+			controller.setAttribute('SmsServerError', SmsServerError);
+			controller.setAttribute('IMServerLog', IMServerLog);
+			controller.setAttribute('IMServerError', IMServerError);
+		</method>
+	</datapointer>		
+	<!-- **************************************************************************************** -->
+	<!-- Finishing data pointer. -->
+	<!-- **************************************************************************************** -->
+
+	<!-- **************************************************************************************** -->
+	<!-- Methods. -->
+	<!-- **************************************************************************************** -->   
+	<method name="switchMainView" args="nextView">
+		<![CDATA[
+		var states = [projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._splash, 
+					  projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._home, 
+					  projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._newHome,
+					  projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._export, 
+					  projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbConnection, 
+					  projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._newDbConnection,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbTables, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbRelations, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbViews, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbView,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbNewSelectQuery, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbNewInsertQuery, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._dbNewUpdateQuery, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._webServices, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._webServiceSecondView,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._webServiceThirdView,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._user, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._newUser, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._group, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._newGroup, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._displayPres, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._emailNotif,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._deploy, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._newMsg, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._msgInfo, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._addUserReply, 
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._editUserReply,
+                      projectTabs.currTab._borderView._projectView._rightView._upperPart._mainView._customQuery];
+		                            
+		Debug.write("Prepare to switch view to: " + nextView);
+		
+		if (projectTabs.currTab.currView != null && projectTabs.currTab.currView == nextView){
+			Debug.write("Same as current view: " + projectTabs.currTab.currView);
+			return;
+		}
+		else{
+			//Remove everything first
+			for (var i in states) {
+				states[i].remove();
+			}
+			
+			//Apply the next view
+			for (var i in states) {	
+				//Debug.write("NO Same as current view: ", states[i].name , nextView);
+			
+				if (states[i].name == nextView) {
+				  Debug.write("Switch view to: " + nextView);
+				  states[i].apply();
+				  projectTabs.currTab.setAttribute("currView", nextView);
+				  Debug.write("Set current view to: " + nextView);
+				}
+			}     
+		}
+		
+		]]>
+	</method>
+   	
+	<method name="showError" args="path">
+		Debug.write("Server error: " + path.getDataset().getErrorString()); 
+	</method>
+	
+	<method name="showTimeout" args="path">
+		Debug.write("Timeout error: ", path, path.getDataset(), path.getDataset().getErrorString()); 
+	</method>   	
+	<!-- 
+	<method name="waiting">
+	<![CDATA[
+		this.setAttribute("_timeoutCounter",this["_timeoutCounter"]+1)
+		if(this.xset.getLoadTime()==null)
+		{
+			if(this["_timeoutCounter"]>=100) // 100 * 200 is 20 seconds
+			{
+				var myMsg = new xqlMsg
+				myMsg.xqlWin.setAttribute('title','XQL Time Out Error')
+				myMsg.xqlWin.xqlMsgText.setAttribute('text','Pleas e inform your system administrator about this error')
+				myMsg.xqlWin.bContainer.bOK.setAttribute('visible' ,'true')
+				return
+			}
+			this.waitDelegate = new LzDelegate( this, "waiting" );
+			LzTimer.addTimer( this.waitDelegate, 200 );
+		}else{
+			this.setAttribute("_timeoutCounter",0)
+			this.waitDelegate = new LzDelegate( this, "fetchX" );
+			LzTimer.addTimer( this.waitDelegate, 700 );
+		}
+	]]>
+	</method> -->
+	<!-- **************************************************************************************** -->
+	<!-- Finishing Methods. -->
+	<!-- **************************************************************************************** --> 
+<!-- 
+    <view name="inittime" bgcolor="white" visible="true" >
+        <method event="oninit" reference="canvas">
+            var d = new LzDelegate( mytext , "tellTime" );
+            LzIdle.callOnIdle( d );
+            this.bringToFront();
+        </method>
+        <text id="mytext" resize="true">
+            <method name="tellTime" args="t">
+                this.setText( "Time taken: " + t );
+            </method>
+        </text>
+    </view>
+ -->   
+	<!-- **************************************************************************************** -->
+	<!-- The layout. -->
+	<!-- **************************************************************************************** -->
+    <view width="100%" height="100%" clip="true" bgcolor="white">
+    <view width="100%" height="714">
+    <view width="100%" height="121" resource="images/body_background.png" stretches="width" />
+    <view	id="totalView"
+			width="950"
+			x="${(canvas.width / 2) - (this.width / 2)}">
+	<view width="950" height="121" resource="images/totalview_background.png" />
+	<!-- ** Header View ** -->
+	<view id="mdnHeaderView" width="100%" height="100">
+		<mdnHeader />
+		<mdnLogo version="Version 2.0" />
+	</view>
+	<!-- ** Project Slider ** -->
+	<view id="projectPallete" x="0" y="0" width="0" height="${immediateparent.height}" visible="true"><!-- width="${project_divider.x}" -->
+		<customLog id="myCustomLog"></customLog>
+		<vtabpanel id="vtabProject"></vtabpanel>
+	</view>
+	<view id="body">
+		<!-- ** Project Container ** -->
+		<view id="all" width="950" height="${632 - 28}" x="0" y="70"><!-- width="821" height="569" -->
+			<tabs id="projectTabs" _contentWidth="${parent.width}" _contentHeight="${parent.height}" bordersize="0">
+				<attribute name="newtabpaneIdArray" value="new Array()"/>
+		        <attribute name="newtabpaneArray" value="new Array()"/>
+		        <attribute name="currTab"/>
+				<attribute name="projectIDConstants" value="1"/>
+				<attribute name="tabclass" value="tabMainTab" type="string" />
+				<attribute name="whereami" />
+				<attribute name="wasfromsave" type="boolean" value="false" />
+				<attribute name="querybuilder_maxwidth" type="number" value="0" />
+				<attribute name="querybuilder_maxwidth_sub" type="number" value="0" />
+				<attribute name="querybuilder_maxwidth_userinput" type="number" value="0" />
+				<text name="querybuilder_text_test" fgcolor="0x696969" resize="true" visible="false">
+					<method event="ontext">
+						var nCurrQueryWidth = this.getTextWidth() + 30;
+						//Debug.write("########################## Width", nCurrQueryWidth);
+						if(nCurrQueryWidth > parent.querybuilder_maxwidth) {
+							parent.querybuilder_maxwidth = nCurrQueryWidth;
+							Debug.write("IS BIGGER", nCurrQueryWidth);
+						} else {
+							//Debug.write("IS NOT BIGGER");
+						}
+					</method>
+				</text>
+				<text name="querybuilder_subtext_test" fgcolor="0x696969" resize="true" visible="false">
+					<method event="ontext">
+						var nCurrQuerySubWidth = this.getTextWidth() - parent.querybuilder_maxwidth + 53;
+						//Debug.write("########################## Sub Width", nCurrQuerySubWidth);
+						if(nCurrQuerySubWidth > parent.querybuilder_maxwidth_sub) {
+							parent.querybuilder_maxwidth_sub = nCurrQuerySubWidth;
+							Debug.write("IS BIGGER", nCurrQuerySubWidth);
+						} else {
+							//Debug.write("IS NOT BIGGER");
+						}
+					</method>
+				</text>
+				<text name="querybuilder_subtext_testuserinput" fgcolor="0x696969" resize="true" visible="false">
+					<method event="ontext">
+						var nCurrQueryInputWidth = this.getTextWidth() + 12;
+						//Debug.write("########################## Sub Width", nCurrQuerySubWidth);
+						if(nCurrQueryInputWidth > parent.querybuilder_maxwidth_userinput) {
+							parent.querybuilder_maxwidth_userinput = nCurrQueryInputWidth;
+							Debug.write("IS BIGGER", nCurrQueryInputWidth);
+						} else {
+							//Debug.write("IS NOT BIGGER");
+						}
+					</method>
+				</text>
+				<method event="oninit">
+					<![CDATA[
+						//Pushes the first tab in
+						this.subviews[0].layouts[0].setAttribute("inset", 10);
+						//Removed the background colour of the Tabs
+						this.subviews[1].setAttribute("bgcolor", null);
+						
+						controller.getDefaultProject();
+						
+						var newTab = new mainTab(this, {text:"Sample1", currProjectId:"1"});
+			    		
+			    		//Save this instance to the array
+			    		this.newtabpaneArray[0] = newTab;
+			    		this.newtabpaneIdArray[0] = 1;
+			    		
+			    		//Causes The Error
+			    		newTab.tab.setAttribute("selected", true);
+						newTab.tab.setAttribute("bgcolor", null);
+						
+						this.setAttribute("currTab", newTab);
+					]]>
+				</method>
+			</tabs>
+		</view>
+	</view>
+	</view>
+	</view>
+	<scrollbar />
+	</view>
+	<!-- **************************************************************************************** -->
+	<!-- Finishing the layout. -->
+	<!-- **************************************************************************************** -->   
+
+	<class name="ConnIDConstants" />
+	<ConnIDConstants id="connIDConstants" />
+	
+	<class name="ConnNameConstants" />
+	<ConnNameConstants id="connNameConstants" />	
+	
+	<!-- <class name="ProjectIDConstants" />
+	<ProjectIDConstants id="projectIDConstants" />	 -->
+
+    <!-- gray mask which covers the whole canvas-->
+    <settingview  id="settingBox"/>
+    <userLicense  id="userLicenseBox"/>
+	<customHelp id="customHelpBox" />
+   	<customPopup id="customPopupBox" />
+	
+    <view name="grayout" opacity="0.5"
+          width="100%" height="100%"
+          bgcolor="black" visible="true">
+          <animator name="allAnimator" attribute="opacity" to="0" duration="1000" start="false" />
+          <animator name="blackout" attribute="opacity" to="0.5" duration="1000" start="false" />
+    </view>
+          
+          
+    <loginView id="login" opacity="1" />      
+	<mdnLoading id="mdnIsLoading" opacity="0" />
+	
+</canvas>

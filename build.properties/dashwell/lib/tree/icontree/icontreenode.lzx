@@ -1,0 +1,23 @@
+<library>
+    <class name="icontreenode" extends="sharedtreenode">
+        <attribute name="labelx" value="30" />
+
+        <attribute name="iconstate" value="$path{'@_iconstate'}" />
+
+        <method event="oniconstate">
+            this.updateIcon();
+        </method>
+        
+        <method event="onopen">
+            this.updateIcon();
+        </method>
+
+        <method event="oninit">
+            this.updateIcon();
+        </method>
+
+        <!-- This method must be overwritten -->
+        <method name="updateIcon" />
+
+    </class>
+</library>

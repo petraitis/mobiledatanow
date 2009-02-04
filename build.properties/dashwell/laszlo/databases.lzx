@@ -1,0 +1,597 @@
+<library>
+   <!-- The Connection class. -->
+   <class name="dbConnection" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+        height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}">
+	
+	<attribute name="maintab"/>
+	
+	<view name="dbConnectionMainView" width="${immediateparent.width - 80}" 
+          height="${immediateparent.height - 20}" y="10">    
+	    <simplelayout axis="y" spacing="2"/>
+	    <view name="backView" width="${immediateparent.width}" height="210" 
+	                 datapath="dbConn:/root/dbConnection">
+	        <method event="ondata">
+	            var p = dbConn.getPointer();
+	            p.selectChild(2);
+	            Debug.write(p);
+	            var mirrorred = p.p.getAttr('mirrorred');
+	            var driver = p.p.getAttr('driver');
+	            var driverId = p.p.getAttr('driverId');
+	            Debug.write('++ driverId: ' + driverId + ', mirrorred:' + mirrorred );
+	            this.driverView.cbxDriver.selectItem(driverId);
+	            //this.mirrorView.chkMirror.setValue(mirrorred == 1);
+	        </method>
+	        <simplelayout axis="y" spacing="2"/>
+	        <view name="connNameView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-name/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtConnName" width="200" datapath="@name" enabled="false"/>
+	            <hinttip tipid="DATASOURCES-connection-name" />
+	        </view>
+            <view name="driverView">
+                <simplelayout axis="x"/>
+                <text name="driversNum" datapath="dbDrivers:/root/@driversNum" visible="false" />
+                <text datapath="gui:/gui-labels/lbl-driver/@label" width="100" fgcolor="0x454545"></text>
+                <datacombobox name="cbxDriver" width="200" editable="false" bgcolor="${canvas.bgcolor}" 
+                	datapath="dbDrivers:/root"
+                	itemdatapath="dbDrivers:/root/driver"
+                	valuedatapath='@id' 
+                	textdatapath='@name' enabled="false"><!-- datapath="@driver" -->
+					<handler name="onselect">
+						
+						//Get tags number by dataset xml
+						var driverP = dbDrivers.getPointer();
+						driverP.selectChild(1);
+						var nodecount = driverP.getNodeCount();
+						//----------------------------------
+					
+						var sel = this.itemdatapath;
+						Debug.write("sel [", sel, "]");
+						var dp = new LzDatapointer(this);
+						var nodes = dp.xpathQuery(this.itemdatapath);
+						Debug.write("nodes [", nodes, "]");
+						if (! (nodes instanceof Array)) nodes = [nodes];
+						var index = this.getItemIndex(this.getValue());
+						Debug.write("index [", index, "]");
+						dp.setPointer(nodes[index]);
+						
+						var urlFormat = dp.xpathQuery("@urlFormat");
+						Debug.write("urlFormat [", urlFormat, "]");
+						classroot.dbConnectionMainView.backView.urlFormatView.txtUrlFormat.setText(urlFormat);
+					</handler>
+                </datacombobox>
+                <hinttip tipid="DATASOURCES-connection-drivers" />
+            </view>	        
+	        <view name="urlFormatView" height="21">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-url-format/@label" width="100" fgcolor="0x454545"></text>
+	            <text name="txtUrlFormat" width="600" ></text>
+	            <hinttip tipid="DATASOURCES-connection-url" />
+	        </view>	        
+	        <view name="urlView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-url/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtUrl" width="200" datapath="@url" />
+	            <view width="5"></view>
+	            <!-- <text name="txtUrlFormat" width="400" ></text> -->
+	            <hinttip tipid="DATASOURCES-connection-url" />
+	        </view>
+	        <view name="usernameView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-username/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtUsername" width="200" datapath="@username"/>
+	            <hinttip tipid="DATASOURCES-connection-username" />
+	        </view>
+	        <view name="passwordView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-password/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtPassword" width="200" datapath="@password" password="true"/>
+	            <hinttip tipid="DATASOURCES-connection-password" />
+	        </view>
+	        <view height="10"/>
+	        <view name="buttonView" width="300" x="0">
+	            <view width="100"/>
+	            <!-- This delete button needs to be changed to a save button, and the delete function can be dragged to the
+	            recycle bin or a right click option on the tree - Nick 1 May 2007-->          
+	            <view width="3"/>
+	            <mdn_button datapath="gui:/gui-labels/btn-save/@label" width="80" x="220">
+	                <method event="onclick">
+	                    dbConnectionView.setError('');
+	                    dbConnectionView.dbConnectionMainView.backView.datapath.updateData();
+	                    Debug.write(dbConnectionView.dbConnectionMainView.backView.datapath);
+	                    var point = dbConn.getPointer();
+	                    point.selectChild(2);
+	                    var id = point.getNodeAttribute('id');
+	                    Debug.write('Checking for ID = ' + id);
+	                    if (id == null || id == 'undefined' || id == 0){
+	                        dbConnectionView.setError('No DB connection selected.');
+	                        return;
+	                    }
+	                    /*canvas.deleteDbConnection.setAttribute('connID', id);
+	                    canvas.deleteDbConnection.open();
+	                    */
+	                    var name = point.getNodeAttribute('name');
+		                //var driver = point.getNodeAttribute('driver');
+		                var driverId = classroot.dbConnectionMainView.backView.driverView.cbxDriver.getValue();
+		                var username = point.getNodeAttribute('username');
+	                    var password = point.getNodeAttribute('password');
+	                    var url = point.getNodeAttribute('url');
+	                    //var schema = point.getNodeAttribute('schema');
+	                    var error = null;
+	                    if (name == null || name == ""){
+	                        error = "Missing name";
+	                    }
+	                    if (driverId == null || driverId == ""){
+	                        if (error == null){
+	                            error = "Please select a driver.";
+	                        }
+	                    }
+	                    if (url == null || url == ""){
+	                        if (error == null){
+	                            error = "Missing URL.";
+	                        }
+	                    }
+	                    //Debug.write("************ schema **************", schema);
+	                    if (error != null){
+	                        dbConnectionView.setError(error);
+	                        return null;
+	                    } else {
+	                        var d = canvas.datasets.dbConn;
+	                        //var params = new LzParam();   
+	                        d.setQueryParam('action', 'saveConn', true);
+	                        Debug.write("classroot.maintab.currProjectId in connection class", classroot.maintab.currProjectId);
+	                        d.setQueryParam('projectId', classroot.maintab.currProjectId, true);
+	                        d.setQueryParam('name', name, true);
+	                        d.setQueryParam('url', url, true);
+	                        d.setQueryParam('driverId', driverId, true);
+	                        //d.setQueryParam('schema', schema, true);
+	                        d.setQueryParam('username', username, true);
+	                        d.setQueryParam('password', password, true);
+	                        //dbConn.setQueryString(params);
+	                        Debug.write("************ Save Connection!!! **************");
+	                        d.doRequest();
+	                    }
+				        databaseProgressBar.setValue(0);	                    
+	                </method>
+	                <hinttip tipid="DATASOURCES-connection-save" />
+	            </mdn_button> 
+	            <view width="10"/>           
+
+	        </view>
+			<view id="databaseProgressBar" width="300" height="24" bgcolor="#666666" visible="false">
+				<view x="1" y="1" width="198" height="22" bgcolor="#FFFFFF"/>
+				<view name="status" x="1" y="1" height="22" bgcolor="#BBBBFF"/>
+				<!-- <text name="percent" x="5" y="3" fontstyle="bold" fgcolor="#6666FF"/> -->
+				<method name="setValue" args="value">
+					<![CDATA[
+						status.setAttribute('width', value);
+						//percent.setText(Math.round(value) + '%');
+					]]>
+				</method>
+			</view>
+	        <!-- <view height="10"/> -->
+	        <view name="errorView" y="0" x="0">
+	            <text name="txtError" text="" fgcolor="red" fontstyle="bold" resize="true" width="650" height="40" multiline="true"/>
+	        </view>
+	        
+	    </view>
+	    <view name="tableTree" width="${immediateparent.width}" height="${immediateparent.height - 210}">
+            <simplelayout axis="x" spacing="20"/>
+            <!-- the tree -->
+            <view height="273" visible="${this.height >= 10 ? true:false}"
+                        width="${(immediateparent.width / 2) - 128}" bgcolor="0xcfcfcf">
+                <view width="${parent.width - 2}" x="1" y="1"
+                            height="271" clip="true" bgcolor="white">
+                    <checktree datapath="dbTablesTree:/root"
+                     	nodepath="node" nodeclass="filetreenode" selectable="true"
+                     	width="${immediateparent.width}"
+                     	showtreelines="false" bgcolor="0xFFFFFF">
+                     	<attribute name="newRoundRectWidth" value="284" />
+                    <method event="onselect" args="sel">
+                          Debug.write("sel: ", sel);
+		                  var selNode = sel.data;
+		                  var selNodeType = selNode.attributes.type;
+		                  var selNodeID = selNode.attributes.id;
+		                  Debug.write("node: " + selNode);
+		                  if (selNodeType == 'table'){
+		                    Debug.write('Display table with ID: ' + selNodeID);
+		                    controller.getTable(selNodeID, false);
+		                    hideFields.setAttribute("visible", false);
+		                  } else if (selNodeType == 'field'){
+		                    Debug.write('Display field with ID: ' + selNodeID);
+		                    controller.getTableField(selNodeID, true);
+		                    controller.getField(selNodeID, true);
+		                    hideFields.setAttribute("visible", true);
+		                                       
+		                    var p2 = dbTable.getPointer();
+		                    Debug.write('dbTable: ' +p2);
+		                    
+	                        var p = dbField.getPointer();
+	                        p.selectChild(2);
+	                        var fieldID = p.p.getAttr('fieldID');
+	                        Debug.write('++ fieldID: ' + fieldID  );
+	                        if (fieldID == null || fieldID == 'undefined' || fieldID == 0){
+	                            return;
+	                        }
+		                    
+		                  }
+                    </method>
+                  </checktree>
+                  <smartvscollbar repmanager="nodeinst" /><!-- SL:08/31/2006 task 4.6.1 -->
+                </view>
+            </view>	  
+            <!-- The right hand panel -->
+			<view name="properties" height="${immediateparent.height}" width="300">
+	            <simplelayout axis="y" spacing="2"/>
+	            <text datapath="gui:/gui-labels/lbl-table-props/@label" fontstyle="bold" resize="true" fgcolor="0x454545" />
+	            <hinttip tipid="DATASOURCES-connection-tableproperties" />
+	            <view height="10"/>
+	            <view >
+	                <simplelayout axis="x"/>
+	                <text datapath="gui:/gui-labels/lbl-name/@label" width="100" fgcolor="0x454545" />
+	                <edittext id="txtTableName" datapath="dbTable:/root/table/@name" width="240" enabled="false"/>
+	                <hinttip tipid="DATASOURCES-connection-tablename" />
+	            </view>
+	            <view >
+	                <simplelayout axis="x"/>
+	                <text datapath="gui:/gui-labels/lbl-description/@label" width="100" fgcolor="0x454545" />
+	                <edittext id="txtTableDescription" datapath="dbTable:/root/table/@description" width="240" enabled="false"/>
+	                <hinttip tipid="DATASOURCES-connection-tabledescription" />
+	            </view>
+	            <view height="10"/>
+	            <view id="hideFields">
+	           		<simplelayout axis="y" spacing="2"/>
+		            <text datapath="gui:/gui-labels/lbl-field-props/@label" fontstyle="bold" resize="true" fgcolor="0x454545" />
+		            <hinttip tipid="DATASOURCES-connection-fieldproperties" />
+		            <view height="10"/>
+		            <view >
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-name/@label" width="100" fgcolor="0x454545" />
+		                <edittext id="txtTableFieldName" datapath="dbTable:/root/table/field/@name" width="240" enabled="false"/><!--   -->
+		                <hinttip tipid="DATASOURCES-connection-fieldname" />
+		            </view>
+		            <view name="fieldType">
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-type/@label" width="100" fgcolor="0x454545" />
+		                <edittext name="cbxFieldType" datapath="dbTable:/root/table/field/@type" width="240" enabled="false">
+		                </edittext>
+		                <hinttip tipid="DATASOURCES-connection-fieldtype" />
+		            </view>
+		            <view >
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-size/@label" width="100" fgcolor="0x454545" />
+		                <edittext datapath="dbTable:/root/table/field/@size" width="240" enabled="false"/>
+		                <hinttip tipid="DATASOURCES-connection-fieldsize" />
+		            </view>
+		            <view >
+		                <simplelayout axis="x"/>
+		                <text datapath="gui:/gui-labels/lbl-description/@label" width="100" fgcolor="0x454545" />
+		                <edittext datapath="dbTable:/root/table/field/@description" width="240" height="80" multiline="true" enabled="false"/>
+		                <hinttip tipid="DATASOURCES-connection-descriptions" />
+		            </view>
+		            <view height="3"/>
+		            <view align="center">
+		                <text id="txtTableFieldError" text="" fgcolor="red" fontstyle="bold" resize="true" width="750" height="40" multiline="true"/>
+		            </view>
+	            </view>
+	            <view height="3"/>
+	        </view>              
+	    </view>
+    </view>
+    <method name="setError" args="error">
+        dbConnectionView.dbConnectionMainView.backView.errorView.txtError.setAttribute('text', error);
+    </method>
+    
+    <method name="getConnName">
+        return dbConnectionView.dbConnectionMainView.backView.connNameView.txtConnName.getAttribute('text');
+    </method>
+    
+    <method name="clearData">
+        var point = dbConn.getPointer();
+        point.selectChild(2);
+        point.setNodeAttribute('id', 0);
+        point.setNodeAttribute('name', '');
+        point.setNodeAttribute('username', '');
+        point.setNodeAttribute('password', '');
+        //point.setNodeAttribute('schema', '');
+        point.setNodeAttribute('url', '');
+        point.setNodeAttribute('driver', '');
+        point.setNodeAttribute('mirrorred', '');
+        Debug.write("Try to clear urlFormat data");
+        dbConnectionView.dbConnectionMainView.backView.urlFormatView.txtUrlFormat.setText('');
+    </method>
+   </class>
+   
+   <!-- Deals with the new connection result. -->
+   <datapointer xpath="dbNewConn:/root" rerunxpath="true"
+    ondata="processData();" onerror="canvas.showError(this);"
+    ontimeout="canvas.showTimeout();">
+    <method name="processData">
+        Debug.write("received newDbConn return data: " + this.serialize());
+        var result = this.getNodeText();
+        var action = this.getNodeAttribute('action');
+        var projectId = this.getNodeAttribute('projectId');
+        var updateData = false;
+        Debug.write("inside the data pointer processData...", result);
+        /*if (action == 'newDbConnection'){
+            //newDbConnectionWindow.errorMax.doStart();
+            Debug.write("inside the data pointer processData newDbConnection...");
+            if (result == 'OK'){
+                updateData = true;
+				controller.updateDatabases(projectId);
+                
+                var connID = this.getNodeAttribute('connId');
+                var dbName = this.getNodeAttribute('dbName');
+                Debug.write("inside the data pointer processData newDbConnection...", projectId, connID, dbName);
+				
+                controller.getTablesTree(projectId, connID);
+                projectTabs.currTab.databaseCtrler.displayDBConnection(projectId, dbName); 
+                newDbConnectionWindow.body.backView.progressView.txtProgress.setText('');
+            }else{
+ 				newDbConnectionWindow.body.backView.progressView.txtProgress.setText('');
+ 				newDbConnectionWindow.body.backView.errorView.error.setText(result);                      
+            }          
+        }*/
+    </method>
+   </datapointer>
+   
+   <!-- The New DbConnection panel. -->
+   <class name="newDbConnectionWindowClass" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+        height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}">  
+    
+    <attribute name="maintab"/>
+	<attribute name="startTime"/>
+    <attribute name="updateTimerDelegate" type="expression" /> 
+    <handler name="onstartTime">
+    	//newDatabaseProgressBar.setValue(1);
+		updateTimer();
+    </handler>
+    
+	<method name="updateTimer">
+		newDatabaseProgressBar.addValue();
+		if( typeof this.updateTimerDelegate == "undefined" ) {
+			this.updateTimerDelegate = new LzDelegate( this, "updateTimer" );
+			LzTimer.addTimer( this.updateTimerDelegate, 1000 );
+		} else {
+			LzTimer.resetTimer( this.updateTimerDelegate, 1000 );
+		}
+	</method>
+
+	<attribute name="savingTime"/>
+
+
+
+    <!-- <animator name="errorMax" duration="500" attribute="height" to="320"/> -->
+	<view name="body"  width="${immediateparent.width - 80}" 
+          height="${immediateparent.height - 80}" y="10">    
+	    <simplelayout axis="y" spacing="2"/>
+<!-- <view height="20">
+	<text oninit="updateTimer()">
+		<attribute name="secondsPassed" type="number" value="0"/>
+		<method name="updateTimer">
+			this.setAttribute('text', this.secondsPassed );
+			this.secondsPassed++;
+			if( typeof this.del == "undefined" ) {
+				this.del = new LzDelegate( this, "updateTimer" );
+				LzTimer.addTimer( this.del, 1000 );
+			} else {
+				LzTimer.resetTimer( this.del, 1000 );
+			}
+		</method>
+	</text>
+</view> -->
+	    <view name="backView" width="${immediateparent.width}" height="250">
+	        <simplelayout axis="y" spacing="2"/>
+	        <view name="nameView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-name-star/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtName" width="200" text=""/>
+	            <hinttip tipid="DATASOURCES-connection-name" />
+	        </view>
+            <view name="driverView" >
+                <simplelayout axis="x"/>
+                <text datapath="gui:/gui-labels/lbl-driver/@label" width="100" fgcolor="0x454545"></text>
+                <datacombobox name="cbxDriver" width="200" editable="false"
+                	datapath="dbDrivers:/root"
+                	itemdatapath="dbDrivers:/root/driver"
+                	textdatapath='@name' 
+                	valuedatapath='@id' selectfirst="false">
+					<method event="ondata">
+						Debug.write("############# ON DATA EVENT FIRED");
+						//Select new DB Driver
+                     	if(projectTabs.wasfromsave) {
+                     		Debug.write("############################################# XOXOXO SELECTING LAST");
+	                     	//Get tags number by dataset xml
+							var driverP = dbDrivers.getPointer();
+							driverP.selectChild(1);
+							Debug.write("^^^^^^^^^^^^^^^ driver Pointer xml: ", driverP);					
+							var selectIndexPos = parseFloat(driverP.getNodeCount()) - 1;
+							Debug.write("############ selectIndexPos= ", selectIndexPos);
+							//----------------------------------
+							this.selectItemAt(selectIndexPos);
+							projectTabs.setAttribute("wasfromsave", false);
+						}
+					</method>
+					<method event="onselect">
+						var addNew = this.getValue();
+						Debug.write("The Value is: ", addNew);
+						
+						if(addNew == 0) {
+							settingBox.setAttribute("goToSpecialView", true);
+							settingBox.open();
+							controller.getNewDriver();
+	                        controller.showDbDriver();
+	                        dbDriverClassID.clearData();
+						} else {
+							var dp = new LzDatapointer(this);
+							
+							var nodes = dp.xpathQuery(this.itemdatapath);
+							if (! (nodes instanceof Array)) nodes = [nodes];
+							
+							var index = this.getItemIndex(this.getValue());
+							dp.setPointer(nodes[index]);
+							
+							var urlFormat = dp.xpathQuery("@urlFormat");
+							classroot.body.backView.urlFormatView.txtUrlFormat.setText(urlFormat);
+						}
+					</method>
+					<method event="clearSelection">
+						Debug.write("clear selection");
+						//parent.txtUrlFormat.setText("");
+						//classroot.body.backView.urlFormatView.txtUrlFormat.setText("");
+					</method>
+                </datacombobox>
+                <hinttip tipid="DATASOURCES-connection-drivers" />
+            </view>
+	        <view name="urlFormatView" height="21">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-url-format/@label" width="100" fgcolor="0x454545"></text>
+	            <text name="txtUrlFormat" width="600" text=""/>
+	            <hinttip tipid="DATASOURCES-connection-url" />
+	        </view>	        
+	        <view name="urlView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-url/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtUrl" width="200" text=""/>
+	            <view width="5"></view>
+	            <!-- <text name="txtUrlFormat" width="400" text=""/> -->
+	            <hinttip tipid="DATASOURCES-connection-url" />
+	        </view>
+	        <view name="usernameView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-username/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtUsername" width="200" text=""/>
+	            <hinttip tipid="DATASOURCES-connection-username" />
+	        </view>
+	        <view name="passwordView">
+	            <simplelayout axis="x"/>
+	            <text datapath="gui:/gui-labels/lbl-password/@label" width="100" fgcolor="0x454545"></text>
+	            <edittext name="txtPassword" width="200" text="" password="true"/>
+	            <hinttip tipid="DATASOURCES-connection-password" />
+	        </view>
+			<view height="10"/>
+	        <view width="300" x="40">
+		        <mdn_button datapath="gui:/gui-labels/btn-save/@label" width="70" x="190">
+		            <method event="onclick">
+		                var addNew = parent.parent.driverView.cbxDriver.getValue();
+		                //Debug.write("Testing NUMBER Save: ", addNew);
+		                //Test to make sure Driver is NOT 'Add New'
+		                if(addNew != 0) {
+		                	newDbConnectionWindow.doRequest('newDbConnection');
+		                }
+		            </method>
+		            <hinttip tipid="DATASOURCES-connection-save" />
+		        </mdn_button>
+	       </view>
+			<view id="newDatabaseProgressBar" width="600" height="24" bgcolor="#666666" visible="false">
+				<view x="1" y="1" width="598" height="22" bgcolor="#FFFFFF"/>
+				<view name="status" x="1" y="1" height="22" bgcolor="#BBBBFF"/>
+				<method name="setValue" args="value">
+					<![CDATA[
+						status.setAttribute('width', value);
+						//percent.setText(Math.round(value) + '%');
+					]]>
+				</method>
+				<method name="addValue">
+					<![CDATA[
+						//Debug.write("Current status width is", status.width);
+						status.setAttribute('width', status.width + 1);
+						//percent.setText(Math.round(value) + '%');
+					]]>
+				</method>
+			</view>
+	       <view height="10"/>
+	       <view name="progressView" ><!-- align="center" -->
+				<text name="txtProgress" text="" fgcolor="red" fontstyle="bold" resize="true" width="650" height="25" multiline="true"/>
+	       </view>
+	       <view height="10"/>
+	       <view name="errorView" ><!-- align="center" -->
+				<text name="error" text="" fgcolor="red" fontstyle="bold" resize="true" width="650" height="50" multiline="true"/>
+	       </view>
+	    </view>
+	    
+		    
+    </view>
+    <method name="clearData">
+    	this.body.backView.nameView.txtName.setText('');
+    	this.body.backView.driverView.cbxDriver.clearSelection();
+    	this.body.backView.urlView.txtUrl.setText('');
+    	this.body.backView.usernameView.txtUsername.setText('');
+    	this.body.backView.passwordView.txtPassword.setText('');
+    	this.body.backView.errorView.error.setText('');
+    	Debug.write("clear selection in clearData");
+		//this.body.backView.driverView.txtUrlFormat.setText('');
+		//this.body.backView.urlFormatView.txtUrlFormat.setText('');
+		this.body.backView.progressView.txtProgress.setText('');
+    </method>    
+    <method name="doRequest" args="action">
+        newDbConnectionWindow.body.backView.errorView.error.setAttribute('text', '');
+        var name = newDbConnectionWindow.body.backView.nameView.txtName.text;
+	    var driverId = newDbConnectionWindow.body.backView.driverView.cbxDriver.getValue();
+	    var username = newDbConnectionWindow.body.backView.usernameView.txtUsername.text;
+        var password = newDbConnectionWindow.body.backView.passwordView.txtPassword.text;
+        var url = newDbConnectionWindow.body.backView.urlView.txtUrl.text;
+        var error = null;
+        if (name == null || name == ""){
+            error = "Missing name";
+        }
+        if (driverId == null || driverId == ""){
+            if (error == null){
+                error = "Please select a driver.";
+            }
+        }
+        if (url == null || url == ""){
+            if (error == null){
+                error = "Missing URL.";
+            }
+        }
+        if (error != null){
+            //newDbConnectionWindow.errorMax.doStart();
+            //newDbConnectionWindow.body.backView.errorView.error.setAttribute('text', error);
+            customPopupBox.open(error);
+            newDbConnectionWindow.body.backView.progressView.txtProgress.setText("");
+            return null;
+        } else {
+ 			var d = canvas.datasets.dbNavDbs;
+			d.setAttribute("dataloadtimeout", 200000);
+			 			
+ 			d.setQueryParam('action', action, true);
+            d.setQueryParam('projectId', this.maintab.currProjectId, true);
+            d.setQueryParam('name', name, true);
+            d.setQueryParam('url', url, true);
+            d.setQueryParam('driverId', driverId, true);
+            d.setQueryParam('username', username, true);
+            d.setQueryParam('password', password, true);
+            d.doRequest();
+            /*var params = new LzParam();   
+            params.addValue('action', action, true);
+            Debug.write("this.maintab.currProjectId in new connection class", this.maintab.currProjectId);
+            params.addValue('projectId', this.maintab.currProjectId, true);
+            params.addValue('name', name, true);
+            params.addValue('url', url, true);
+            params.addValue('driverId', driverId, true);
+            //params.addValue('schema', schema, true);
+            params.addValue('username', username, true);
+            params.addValue('password', password, true);
+            //params.addValue('mirrorred', mirrorred, true);
+            dbNavDbs.setQueryString(params);
+            dbNavDbs.doRequest();*/
+ 			
+            Debug.write("action is " + action);
+            
+            newDbConnectionWindow.body.backView.progressView.txtProgress.setText("Saving ...");
+            controller.setAttribute("stime", getTimer());
+            
+            newDatabaseProgressBar.setVisible(true);
+            newDatabaseProgressBar.setValue(0);
+            
+            this.setAttribute("startTime", getTimer());
+            /*if (action == 'newDbConnection'){
+				databases.openned();
+            }*/
+        }
+    </method>
+  </class>
+   
+
+</library>

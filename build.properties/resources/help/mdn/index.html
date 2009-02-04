@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Mobile Data Now Administrator
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Mobile Data Now Administrator</font>
+
+<p>
+The Mobile Data Now Administrator is a GUI application that is used to
+manage Mobile Data Now (MDN).
+<br>
+The MDN Administrator is used to configure JDBC Drivers and Data Stores
+to access your company's databases, define views and queries on that data and
+build menus to present that data to your users. See the
+<a href="HowTo.html">How To</a> guide for instructions about  how to perform
+common tasks and <a href="Definitions.html">Definitions and Terminology</a> for
+an explanation of the terms and terminology used in this documentation.
+<p>
+Also see the <a href="install/install.html">Installation and Configuration</a>
+guide for details on installing MDN and configuring and starting the MDN Server
+and Servlet.
+<p>
+Before using the Mobile Data Now Administrator you should read the
+<a href="EULA.html">licence agreement</a>, register MDN and get a licence
+activation key and start the MDN server and <a href="licence.html">set the licence
+activation key</a>.
+
+<p><br><a name="Start"><font size="+2">Starting the Mobile Data Now Administrator</font></a>
+<p>
+To start the MDN Administrator choose <b>Mdn Administrator</b> from the
+<em>Start|Programs|Mobil Data Now</em> menu under Windows, or type
+<em>mdnadmin</em> from a command shell window under Linux/Solaris.
+
+<p>
+The administrator will display an error message and fail to start if the MDN
+Server is not running or if MDN has not been licensed.
+
+<p><br><font size="+2">Login</font>
+<p>
+When the MDN Administrator application is started you must login
+with a valid username and password using the
+<a href="../fw/LoginPanel.html">Login</a> screen that is displayed when the MDN
+Administrator starts. The username can be the name of any user defined in the
+<a href="UserGroup.html">Users and Groups</a> screen. There is a default
+administrator user with a username of <i>admin</i> and a password of <i>admin</i>
+that you can use to log in for the first time. It is advisable to change the
+default password immediately.
+<p>
+
+<br><font size="+2">The Mobile Data Now Administrator Screen</font>
+<p>
+<img src="images/admin.gif">
+<p>
+The MDN Administrator comprises a menu and a button bar. The button bar
+provides quick access to the following frequently used operations:<br>
+<a href="DataStores.html">Data Stores</a> ;
+<a href="ViewQuery.html">Views and Queries</a> ;
+<a href="UserGroup.html">Users and Groups</a> ;
+<a href="PresentationBuilder.html">Presentation Builder</a> ;
+<a href="DataTransfers.html">Data Transfers</a> ;
+<a href="Schedule.html">Schedule</a> ;
+<a href="Mirror.html">Mirror Data Stores</a> ;
+<a href="JDBC.html">JDBC Drivers</a> ;
+<a href="#About">About</a> and
+<a href="#Exit">Exit</a>.
+<p>
+Moving the mouse over a button will display a tooltip describing the button's
+function. Clicking the button will activate the function.
+<p>
+The menus have the following structure:
+<br>
+File - <a href="../fw/ChangePasswordPanel.html">Change Password</a> and
+<a href="#Exit">Exit</a>.
+<br>
+Maintain - <a href="DataStores.html">Data Stores</a> ;
+<a href="ViewQuery.html">Views and Queries</a> ;
+<a href="UserGroup.html">Users and Groups</a> ;
+<a href="PresentationBuilder.html">Presentation Builder</a> ;
+<a href="DataTransfers.html">Data Transfers</a> ;
+<a href="Schedule.html">Schedule</a> ;
+<a href="Mirror.html">Mirror Data Stores</a> and
+<a href="JDBC.html">JDBC Drivers</a>.
+<br>
+Help - <a href="#About">About</a> and <a href="#Help">Help Contents</a>.
+
+<p>
+<br>
+The <a href="../fw/ChangePasswordPanel.html">Change Password</a> screen is used
+to change the password of the currently logged in user.
+
+<p>
+The <a href="DataStores.html">Data Stores</a> screen is used to create or modify
+data store definitions that define which tables in your company's
+databases may be accessed by MDN.
+
+<p>
+The <a href="ViewQuery.html">Views and Queries</a> screen is used to define
+views and queries on the data stores. The views and queries may perform joins
+across multiple tables within a data store.
+
+<p>
+The <a href="UserGroup.html">Users and Groups</a> screen is used to create users
+and groups and define the views and fields available to each group.
+
+<p>
+The <a href="PresentationBuilder.html">Presentation Builder</a> screen is used
+to define a set of menus for a given group to allow members of that group to
+access views and queries.
+
+<p>
+The <a href="DataTransfers.html">Data Transfers</a> screen is used to define
+data transfers between data stores and mirror data stores.
+
+<p>
+The <a href="Schedule.html">Schedule</a> screen is used to schedule data
+transfers for automatic execution at a later date.
+
+<p>
+The <a href="Mirror.html">Mirror Data Stores</a> screen is used to define
+mirrors to which information in a data store can be transferred using a data
+transfer.
+
+<p>
+The <a href="JDBC.html">JDBC Drivers</a> screen is used to define a JDBC driver
+which may then be used by MDN to connect to a database.
+
+<p>
+<br>
+<a name="About"><font size="+2">About</font></a>
+<p>
+This function displays an about box detailing the Mobile Data Now Administrator
+version and copyright information.
+<p>
+
+<br><a name="Help"><font size="+2">Help Contents</font></a>
+<p>
+Displays help for the MDN Administrator.
+<p>
+
+<br><a name="Exit"><font size="+2">Exit</font></a>
+<p>
+Exits the application. All open windows are closed and any unsaved changes are
+discarded.
+<p>
+
+</BODY>
+
+</HTML>
+

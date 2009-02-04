@@ -1,0 +1,16 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<wml>
+    <card title="redirect">
+	  <onevent type="onenterforward">
+		<go href="servlet/MdnWmlServlet"/>         
+	  </onevent>         
+	  <onevent type="onenterbackward">             
+		<go href="servlet/MdnWmlServlet"/>         
+	  </onevent>         
+	  <do  type="accept" label="Go">
+            <go  href="servlet/MdnWmlServlet"/>
+        </do>         
+	  <p>Go to the Mdn Introduction page</p>
+    </card> 
+</wml> 

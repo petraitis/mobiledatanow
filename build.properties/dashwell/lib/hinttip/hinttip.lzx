@@ -1,0 +1,245 @@
+<library>
+    <node id="hinttipmanager">
+        <attribute name="meta_entrypath" type="string" />
+        <attribute name="meta_key" type="string" />
+        <attribute name="meta_value" type="string" />
+        <attribute name="displayref" /><!-- the reference to the object that will show the tip -->
+
+        <attribute name="_dp" value="$once{new LzDatapointer()}"/>
+        <attribute name="_cachedTip"/>
+
+        <method name="applyTip" args="tipid">
+            //Debug.write("hinttipmanager.applyTip() ");
+            displayref.setText(getTip(tipid));
+            
+            //var newYPos = displayref.getAttribute("height");
+            //var halfHeight = 124 / 2;
+            //var calcNewYPos = (halfHeight - (newYPos / 2)) - 8;
+            //displayref.setAttribute("y", calcNewYPos);
+        </method>
+
+        <method name="removeTip">
+            //Debug.write("hinttipmanager.removeTip() ");
+            //displayref.setText('Move your mouse over headings to show context sensitive help.');
+            
+            //var newYPos = displayref.getAttribute("height");
+            //var halfHeight = 124 / 2;
+            //var calcNewYPos = (halfHeight - (newYPos / 2)) - 8;
+            //displayref.setAttribute("y", calcNewYPos);
+        </method>
+
+        <method name="getTip" args="tipid">
+        <![CDATA[
+            var tipdesc = _cachedTip[tipid];
+
+            Debug.write("hinttipmanager.getTip() | tipdesc="+tipdesc);
+            return tipdesc;
+        ]]>
+        </method>
+
+        <method name="hasTip" args="tipid">
+        <![CDATA[
+            //Debug.write("hinttipmanager.hasTip() ");
+            var ret = _cachedTip[tipid] ? true : false;
+
+            //Debug.write("hasTip() | ret="+ret);
+            return ret;
+
+        ]]>
+        </method>
+
+        <handler name="onmeta_entrypath">
+            if (!this.isinited || this.meta_entrypath == "" || this.meta_entrypath == null)
+                return;
+
+            //Debug.write("hinttip.onmeta_entrypath | this.meta_entrypath="+this.meta_entrypath);
+            this._dp.setAttribute("xpath",this.meta_entrypath);
+            buildCache();
+        </handler>
+        
+        <method name="buildCache">
+        <![CDATA[
+            if (!this.isinited)
+                return;
+
+            //Debug.write("buildCache()");
+            this._cachedTip = {}; //init the cache
+
+            var cnodes = this._dp.p.childNodes;
+
+            for (var i = 0; i < cnodes.length; i++){
+                var key = cnodes[i].getAttr(this.meta_key);
+                var val = cnodes[i].getAttr(this.meta_value);
+                
+                //take care of manual linebreak
+                var arr = val.split("\\n");
+                val = arr.join('\n');
+                this._cachedTip[key] = val;
+            }
+            //Debug.inspect(this._cachedTip);
+        ]]>
+        </method>
+
+    </node>
+
+    <class name="hinttip" initstage="late">
+        <!--- SL:09/01/2006 the id to seek for the desc -->
+        <attribute name="tipid" type="string"/>
+        <!--- SL:09/26/2006 the timing delay for showing/hiding tip -->
+        <attribute name="timingdelay" value="50" type="number"/>
+
+        <!--- text that appears in the tooltip.  null or empty string means tooltip will not show. -->
+        <attribute name="text" type="text"/>
+        <!--- @keywords private -->
+        <attribute name="_mousein" value="false" type="boolean"/>
+        <!--- @keywords private -->
+        <attribute name="_checkdel" value="null"/>
+        <!--- @keywords private -->
+        <attribute name="_lastmousex" value="0"/>
+        <!--- @keywords private -->
+        <attribute name="_lastmousey" value="0"/>
+
+        <!--- special attribute for tracking hack of 'clickable' attr adjustment for LzText instance -->
+        <attribute name="_metaAdjustClickableAttr" value="__metaHinttipAdjustedClickable" type="string" />
+
+        <attribute name="tipalign" value="" type="string" />
+        <attribute name="hinttip_name" value="null" type="string"/>
+
+        <!--- @keywords private -->
+        <method event="oninit">
+        <![CDATA[
+            this.overdel = new LzDelegate(this, "startCheck", parent, "onmouseover");
+            this.outdel = new LzDelegate(this, "removeTip", parent, "onmouseout");
+            this.outdel.register(parent, "onclick");
+
+            //SPECIAL codes for handling desired mouse events
+            //SL:09/05/2006 in order to get mouse event, a text object must be clickable
+            if((parent instanceof LzText || parent.classname == "LzView"  )&& !parent['clickable']){
+               parent.setAttribute('clickable',true);
+               parent.setAttribute(this._metaAdjustClickableAttr,true);
+            }
+
+        ]]>
+        </method>
+
+        <!--- @keywords private -->
+        <method name="startCheck">
+        <![CDATA[
+            //Debug.write("hinttip.startCheck()");
+            if (hinttipmanager.hasTip(this.tipid)) {
+                this._mousein = true;
+                if (!this._checkdel) this._checkdel = new LzDelegate(this, "checkTip");
+                this._lastmousex = canvas.getMouse('x');
+                this._lastmousey = canvas.getMouse('y');
+                this.lasttime = new Date();
+
+                LzIdle.callOnIdle(this._checkdel);
+            }
+        ]]>
+        </method>
+    
+        <!--- @keywords private -->
+        <method name="checkTip">
+            //Debug.write("hinttip.checkTip()");
+
+            if (!this._mousein) return;
+
+            var now = new Date();
+            var newmousex = canvas.getMouse('x');
+            var newmousey = canvas.getMouse('y');
+            var timediff = now.getTime() - this.lasttime.getTime();
+    
+            if ((this._lastmousex != newmousex) || (this._lastmousey != newmousey)) {
+                this._lastmousex = newmousex;
+                this._lastmousey = newmousey;
+                this.lasttime = now;
+            }
+            if (timediff > this.timingdelay) {
+                this.applyTip();
+            } else {
+                LzIdle.callOnIdle(this._checkdel);
+            }
+        </method>
+    
+        <!--- @keywords private -->
+        <method name="applyTip"> <![CDATA[
+            //Debug.write("hinttip.applyTip()");
+
+            //if there's subviews added, show the
+            hinttipmanager.applyTip(this.tipid);
+        ]]></method>
+    
+        <!--- @keywords private -->
+        <method name="removeTip">
+        <![CDATA[
+            //Debug.write("hinttip.removeTip()");
+            //let others know that the mouse is not over the tip holder anymore
+            this._mousein = false;
+            
+            //clear the tip
+            hinttipmanager.removeTip();
+        ]]>
+        </method>
+
+    </class>
+    
+
+    <!-- SL:09/05/2006 a wrapper hinttip for a complex custom component, i.e. gridcolumn, etc. -->
+    <class name="hinttipspecial" datapath="null" placement="header">
+        <attribute name="tipid" type="string"/>
+        <attribute name="type" type="string"/>
+        <attribute name="_appliedto" value="null" />
+
+        <handler name="oninit">
+            var refname = null;
+            var appliedto = null;
+            
+            if(this.type == "gridcolumnheader"){
+                //SL:09/05/2006 NOTE: This is a hack to the gridcolumn header button. it refers to the internal 'mybutton' object.
+                refname = "mybutton";
+            }else {
+                Debug.write("hinttipspecial.oninit : unimplemented type '"+this.type+"' ... fall back to hinttip default implementation");
+            }
+            /* else if (this.type == "gridcell"){
+              //grid cell resides under a gridcolumn which can be anything.
+              refname = null;
+            
+              //a cell must be clickable inorder to get the mouseover event
+              if(!parent.getAttribute('clickable'))
+                  parent.setAttribute('clickable',true);
+            }
+            */
+
+            if(refname!=null)
+              appliedto = parent[refname];
+            else
+              appliedto = parent;
+
+            this.setAttribute('_appliedto',appliedto);
+            
+            this.del1 = new LzDelegate(this,"doMouseover");
+            this.del1.register(appliedto,"onmouseover");
+            
+            this.del2 = new LzDelegate(this,"doMouseout");
+            this.del2.register(appliedto,"onmouseout");
+        
+        </handler>
+        
+        <handler name="ondata">
+            //Debug.write("hinttipgridcolumn.ondata | this.data"+this.data);
+            this.setAttribute("data",null);
+        </handler>
+        
+        <method name="doMouseover">
+            //Debug.write("onmouseover");
+            this.onmouseover.sendEvent();
+        </method>
+        
+        <method name="doMouseout">
+            //Debug.write("onmouseout");
+            this.onmouseout.sendEvent();
+        </method>
+
+        <hinttip tipid="${classroot.tipid}" />
+    </class>
+</library>

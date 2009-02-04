@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+JDBC Drivers
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">JDBC Drivers</font>
+
+<p>
+<img src="images/JdbcDrivers.gif">
+<p>
+<br>
+
+The JDBC drivers screen is a
+<a href="../fw/MaintenancePanel.html#List">List Maintenance</a> screen
+that you use to maintain the set of JDBC drivers recognised by Mobile Data  Now.
+<p>
+Before you use this screen to add a new JDBC driver for use by MDN you must
+install the <i>JAR</i> file for the driver into the <i>lib</i> directory under
+the MDN install directory. Then you must edit the <b>mdnserver.lax</b> file to
+add the location of the JDBC driver to the <b>lax.class.path</b>. The
+<i>lax.class.path</i> sets the CLASSPATH used by MDN Server to locate its JARS.
+<p>
+For example if your new JDBC driver is called <i>driver.jar</i> and you
+installed MDN to <i>c:\mdn</i> then <i>driver.jar</i> should be placed in <i>c:\mdn\lib</i>
+and the text <b>;c:\mdn\lib\driver.jar</b> should be appended to the end of the
+line in <i>mdnserver.lax</i> that begins with <i>lax.class.path=</i>.
+<p>
+See the <a href="install/install.html">Installation and Configuration</a>
+guide for more information on starting MDN, the MDN startup scripts and setting
+classpaths.
+
+<p>
+Press the <b>Clear</b> button, then enter the driver information and press
+<b>Insert</b>.
+<p>
+The <b>Name</b> field is the name you want to use to refer to the JDBC driver.
+<p>
+The <b>Driver</b> field is the fully qualified package and class name of the
+JDBC driver. The driver documentation will indicate what name you should place
+in this field.
+<p>
+<b>Description</b> is any addition text describing the driver.
+
+
+</BODY>
+
+</HTML>
+

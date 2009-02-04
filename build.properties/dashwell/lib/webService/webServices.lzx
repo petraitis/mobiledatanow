@@ -1,0 +1,477 @@
+<canvas debug="true" height="800" width="1000">
+   <dataset name="Resultset" />
+   <dataset name="db_query_result"/>
+   <!-- The Web Service Third Page class. -->
+   <!-- <class name="webServiceThirdPage" width="${projectTabs.currTab._projectView._rightView.width - 1}" 
+        height="${projectTabs.currTab._projectView._rightView._upperPart.height - projectTabs.currTab._projectView._rightView._upperPart._header.height - 1}" bgcolor="${canvas.bgcolor}"
+        extends="mdn_roundrect" >
+   --> 
+   <include href="../querybuilder/library.lzx" />
+   <include href="../ftgrid.lzx" />
+   
+   
+	<dataset name="qb_query" src="../qbQuery_condition.xml"/>
+	<dataset name="qb_views" src="../qbViews.xml"/>
+	<dataset name="qb_comps" src="../qbComparison.xml"/>
+	
+	       
+	   <view name="backView" width="${immediateparent.width}" height="${immediateparent.height}" x="40" y="0">
+	       <simplelayout axis="y" spacing="10"/>
+	        <!-- 
+	        	The top panel 
+	        	Show the Name/description
+	        -->  
+	         <view height="28">
+	       	    <simplelayout axis="y" spacing="2"/>
+	       	    <text text="add web service query" fontstyle="bold" width="200"/>
+	            <!--
+	            <view>
+	                <simplelayout axis="x"/>
+	                <text text="name" width="200"/>
+	                <edittext id="txtWebServiseQueryName" datapath="dbQuery:/root/query" text="$path{'@name'}" width="200"/>
+	            </view>
+	            <view>
+	                <simplelayout axis="x"/>
+	                <text text="description" width="200"/>
+	                <edittext id="txtWebServiseQueryDescription" datapath="dbQuery:/root/query" text="$path{'@description'}" width="500"/>
+	            </view>
+	            <view>
+	                <simplelayout axis="x"/>
+	                <text text="url" width="200"/>
+	                <text id="txtWebServiseURL" width="500"/>
+	            </view>
+	            <view>
+	                <simplelayout axis="x"/>
+	                <text text="operation" width="200"/>
+	                <text id="txtWebServiseOperation" width="500"/>
+	            </view>
+	            -->
+	        </view>   
+			<view width="${immediateparent.width-10}" height="${immediateparent.height - 300}" visible="${this.height >= 10 ? true:false}">
+				<view width="${immediateparent.width}" x="0" y="0"
+				            height="${immediateparent.height}" >
+					<querybuilder id="qb_query_builder_select" width="${immediateparent.width}" 
+					    height="${immediateparent.height}"  ><!-- queryType="select" -->
+					</querybuilder >
+				</view>			
+		  	</view>
+		  	<view width="${immediateparent.width}" height="30" align="right">
+				<simplelayout axis="x" spacing="10"/>
+				<button align="right" text="test" width="180">
+		              <method event="onclick">
+		              	<![CDATA[
+							//webServicesSoap.onload();
+							//webServicesSoap.remoteInvoke.setAttribute("funcname", "keywordSearchRequest");
+							var loaded = webServicesSoap.getAttribute("isloaded");
+							Debug.write("web Service loaded: " + loaded);
+							
+
+		                    var pointer = qb_query.getPointer();
+		                    var ok = pointer.selectChild(2);
+				       		var attribute = pointer.getNodeAttribute('field').split('.');
+				       		var type = pointer.getNodeAttribute("valueOrCondition");
+				       		
+				       		if (type == "SIMPLE"){
+								Debug.write("This is simple SOAP");
+								var params = webServicesSoap.getParams();	
+			                    webServicesSoap.remotecallFunc.invoke(params);				       			
+				       		}
+				       		else{
+					       		var obj = attribute[0];
+			                    webServicesSoap.setAttribute('myobject1', new webServicesSoap.proto[obj]());
+			                    Debug.write("webServicesSoap.myobject1 has been set:", webServicesSoap.getAttribute('myobject1'), global[ 'webServicesSoap' ][ 'myobject1']);
+			                    
+					       		while (ok){	        		
+					        		
+					        		var field = pointer.getNodeAttribute("field");
+					        		var value = pointer.getNodeAttribute("value");		        		
+					        		var pos = field.indexOf(".");
+					        		var name = field.substring(pos+1);
+					        		
+			                        attribute = pointer.getNodeAttribute('field').split('.');
+			                        
+			                        
+			                        global[ 'webServicesSoap' ][ 'myobject1'][attribute[1]] = value;
+			                        Debug.write("global[ 'webServicesSoap' ][ 'myobject1'][attribute[1]]", global[ 'webServicesSoap' ][ 'myobject1'][attribute[1]]);
+			                        ok = pointer.selectNext();
+			                    }
+			                     Debug.write("webServicesSoap.myobject1 has been set in parameters:", webServicesSoap.getAttribute('myobject1'), global[ 'webServicesSoap' ][ 'myobject1']);
+			                     var params = [];
+			                     params[0] = webServicesSoap.myobject1;
+			                     Debug.write(params);
+			                     webServicesSoap.remotecallFunc.invoke(params);							
+						 	}	
+						]]>
+		              </method>
+				</button> 
+				
+				<button align="right" text="save" width="80">
+		              <method event="onclick">
+		              	<![CDATA[
+                        var dbQueryP = dbQuery.getPointer();
+			            dbQueryP.selectChild(2);
+			            Debug.write(dbQueryP);
+			            var queryId = dbQueryP.p.getAttr('queryID');
+			            Debug.write('SAVE QUERY BUTTON CLICKED ++ queryID: ' + queryId  );
+                		
+                		var saveState = "0";//DataObject.NEW default
+                		if (queryId > 0){
+                			saveState = "1";//DataObject.IN_DB
+                		}else{
+                			saveState = "0";//DataObject.NEW
+                		}
+                	
+                		var queryName = txtWebServiseQueryName.getText();
+                		var queryDescription = txtWebServiseQueryDescription.getText();
+                        
+                		
+                		var p = qb_query.getPointer();
+                		var ok = p.selectChild(2);
+                		Debug.write("qb_query: " + p);
+                		
+						
+		        		var valueOrConditions = [];
+		        		var ids = [];
+		        		var rows = [];
+		        		var types = [];
+		        		var useds = [];
+		        		var indents = [];
+		        		var parents = [];
+		        		var numbers = [];
+		        		var fields = [];
+		        		var compIDs = [];	
+		        		var comparisons = [];
+		        		var values = [];
+		        		var connections = [];
+		        		var value2s = [];	// The second value field, 'value2'. It is only used and visible when
+											//	dealing with the 'is between' and 'is not between' operators.					
+		        		var groupings = [];
+		        		var userInputSeqs = [];
+		        		var userInputSeqs2 = [];
+						
+						var tableIndex = 0;
+		        		
+		        		while (ok){
+							var id = p.getNodeAttribute("id");
+		        			var row = p.getNodeAttribute("row");
+		        			var type = p.getNodeAttribute("type");
+		        			var used = p.getNodeAttribute("used");
+		        			var indent = p.getNodeAttribute("indent");
+			        		var valueOrCondition = p.getNodeAttribute("valueOrCondition");
+		        			var number = p.getNodeAttribute("number");	
+		        			var parent = p.getNodeAttribute("parent");		        		
+			        		var field = p.getNodeAttribute("field");  			        		
+			        		var compID = p.getNodeAttribute("compID");
+		        			var comparison = p.getNodeAttribute("comparison");			        		
+			        		var value = p.getNodeAttribute("value");  			        		
+			        		var connection = p.getNodeAttribute("connection");
+		        			var value2 = p.getNodeAttribute("value2");			        		
+			        		var grouping = p.getNodeAttribute("grouping");
+			        		var userInputSeq = p.getNodeAttribute("valueUserInput");
+			        		var userInputSeq2 = p.getNodeAttribute("value2UserInput");
+			        		
+			        		ids[tableIndex] = id;
+			        		rows[tableIndex] = row;
+			        		types[tableIndex] = type;
+							useds[tableIndex] = used;
+							indents[tableIndex] = indent;
+		        			valueOrConditions[tableIndex] = valueOrCondition;
+		        			numbers[tableIndex] = number;
+		        			parents[tableIndex] = parent;
+		        			fields[tableIndex] = field;
+		        			compIDs[tableIndex] = compID;	
+			        		comparisons[tableIndex] = comparison;
+			        		values[tableIndex] = value;
+			        		connections[tableIndex] = connection;
+			        		value2s[tableIndex] = value2;
+			        		groupings[tableIndex] = grouping;
+			        		userInputSeqs[tableIndex] = userInputSeq;
+			        		userInputSeqs2[tableIndex] = userInputSeq2;
+		        			
+		        			tableIndex++;
+		        			ok = p.selectNext();
+		        		}		
+		        						
+		        		controller.saveQuery(saveState, null, queryId, queryName, queryDescription, null, "webservice", webServiceUrlConstants, ids, rows, types, useds, indents, valueOrConditions, parents, numbers, fields, compIDs, comparisons, values, connections, value2s, groupings, userInputSeqs, userInputSeqs2, webServiceOperationConstants, null);							
+						]]>
+		              </method>
+				</button>	            		
+		  	</view>
+<!-- Query Result -->
+			<view width="${immediateparent.width}" height="220">
+				<simplelayout axis="y" spacing="10"/>
+		        <view id="gridview" initstage="defer">
+				    <ftdynamicgrid datapath="db_query_result:/"
+				    			   contentdatapath="resultset/row"
+				                   metadatapath="metadata/column"
+				                   height="125" 
+				                   rowheight="20" 
+				                   /> 
+				</view>
+		    </view>			  	
+	   </view>
+   <!-- </class> -->     
+
+			    
+    <soap id="webServicesSoap" wsdl="http://api.google.com/GoogleSearch.wsdl"><!-- name="webServicesSoap"  wsdl="http://soap.amazon.com/schemas2/AmazonWebServices.wsdl" -->
+        <attribute name="isloaded" value="false" />
+        <!-- <attribute name="handlerDel" value="null" type="expression" /> -->
+        <attribute name="myobject1" value="null" type="expression" />
+        
+        <method name="init">
+			LzSOAPService.__LZloader.timeout = 60000;
+			Debug.write("================ INIT webServiceOperationConstants: " + webServiceOperationConstants);
+			Debug.write('================ INIT wsdl at ' + this.wsdl);
+			super.init();
+		</method>
+		
+		<method name="getParams">
+			<![CDATA[    
+			
+			Debug.write("get params************* 1");
+			
+       		var params = [];
+             // You can find full source for LzSOAP.prototype.invoke in 
+            // lps/components/rpc/library/soap.js.
+            var save = LzSOAP.prototype.invoke;
+
+            //------------------------------------------------------------------
+            // Invoke knows about paramter names and types. See source code at
+            // com.laszlosystems.remote.soap.ClientSOAPService.createObjectProgram() 
+            // for details. Entry point for all soap calls (including
+            // fetching/parsing WSDL) is in 
+            // com.laszlosystems.data.SOAPDatasource.
+            //------------------------------------------------------------------
+
+
+            LzSOAP.prototype.invoke = function (delegate, args, header, opts,
+                                                secure, secureport) {
+
+                Debug.write("get params************* 2");
+                var parts = opts['parts'];
+                for (var i=0; i < parts.length; i++) {
+                    Debug.write("get params************* 3");
+                    var p=parts[i];
+                    var portType = p[1];
+                    Debug.write('  param ' + i + ') name:', p[0], "length: ", p[0].length , 'type:', portType);	 	 			
+	 	 			
+	 	 			
+	 	 			var pointer = qb_query.getPointer();
+	 	 			Debug.write("$$$$$$$$$", pointer);
+	 	 			
+					var ok = pointer.selectChild(2);                  
+                    
+                    var localPart = portType.getLocalPart();
+                    var namespace = portType.getNamespaceURI();
+                    
+		       		while (ok){	        		
+		        		var type = pointer.getNodeAttribute("valueOrCondition");
+		        		var field = pointer.getNodeAttribute("field");
+		        		var value = pointer.getNodeAttribute("value");		        		
+		        		var pos = field.indexOf(".");
+		        		var name;
+		        		if (pos == -1)
+		        			name = field;
+		        		else 
+		        			name = field.substring(pos+1);
+
+		        		if (type == "SIMPLE"){
+			        		if (name == p[0]){
+	                        	pointer.setNodeAttribute("row", i+1);
+	                        	pointer.setNodeAttribute("number", i+1);
+								
+	                        	Debug.write('  update param ' + i + ') name:', field);
+	                        	
+	                        	params[i] = value;                        	
+	                        	break;
+	                        }
+	                    }
+	                                           
+		       			ok = pointer.selectNext();
+		       			
+		       		} 		       			       		
+		       		                
+                }
+            }
+
+            for (var k in this.proxy) {
+                
+                if (k == webServiceOperationConstants){
+	                Debug.write('-- function:', k); 
+	                this.proxy[k]();                       
+                }        
+            }  
+            
+            LzSOAP.prototype.invoke = save;  
+            
+            return params;    		
+            
+			]]>
+		</method>
+        <method event="onload">
+            <![CDATA[
+            Debug.write("================ LOAD webServiceOperationConstants: " + webServiceOperationConstants);
+            
+            Debug.write('================ LOAD wsdl at ' + this.wsdl);
+            Debug.write('webServicesSoap soap service loaded');
+            Debug.write('----------------');
+            Debug.write('webServicesSoap proto:');
+            
+            //Debug.inspect(webServicesSoap.proto)
+            var test = webServicesSoap.proto;
+            //Debug.inspect(test);
+            
+            Debug.write("namespace: " + test.namespace);
+            
+            Debug.write("members: " + test[1]);
+                     
+            // You can find full source for LzSOAP.prototype.invoke in 
+            // lps/components/rpc/library/soap.js.
+            var save = LzSOAP.prototype.invoke;
+
+            //------------------------------------------------------------------
+            // Invoke knows about paramter names and types. See source code at
+            // com.laszlosystems.remote.soap.ClientSOAPService.createObjectProgram() 
+            // for details. Entry point for all soap calls (including
+            // fetching/parsing WSDL) is in 
+            // com.laszlosystems.data.SOAPDatasource.
+            //------------------------------------------------------------------
+
+
+            LzSOAP.prototype.invoke = function (delegate, args, header, opts,
+                                                secure, secureport) {
+
+                var parts = opts['parts'];
+                for (var i=0; i < parts.length; i++) {
+                    var p=parts[i]
+                    Debug.write('  param ' + i + ') name:', p[0], 'type:', p[1]);            
+                }
+            }
+
+            for (var k in this.proxy) {
+                Debug.write('-- function:', k); 
+	            this.proxy[k]();        
+            }  
+            
+            LzSOAP.prototype.invoke = save;       
+            
+            /*
+            var loadObj = LzSOAP.prototype.loadObject;
+            LzSOAP.prototype.loadObject = function(delegate, opts, secure, secureport){
+            	var service = opts['service']
+    			var port = opts['port']
+            	Debug.write('service:', service, ' port:', port);
+            }  
+            LzSOAP.prototype.loadObject = loadObj;              
+            */        
+                      
+                      
+            this.setAttribute('isloaded', true);
+            ]]>
+        </method>
+
+        <handler name="onerror" args="error">
+            Debug.write('error:', error);
+        </handler>
+        
+  		<remotecall name="remotecallFunc" dataobject="Resultset" funcname="doGoogleSearch" 
+                    >
+
+			<method name="init">
+				super.init();
+			</method>          
+            
+            <method event="ondata" args="value">
+            <![CDATA[    
+                Debug.write('one:', value);
+                
+                
+				var element = LzDataNode.stringToLzData(value);				
+				Debug.inspect("element", element);
+				
+				var dsPntr = Resultset.getPointer();
+				Debug.write("dsPntr: ", dsPntr);					
+
+				
+				var howDeep = 0;
+				
+				this.n = new LzDataElement('dataset', {name: 'db_query_result'});
+
+				this.metadata = new LzDataElement('metadata');
+				
+			
+				db_query_result.appendChild(this.metadata);
+
+           		var itemcount = getTagNum(dsPntr,"Resultset:/");
+           		
+           		var j =0;
+           		for (var i=0; i<itemcount;i++){
+           			j = i+1;
+           			this.metadata.appendChild(new LzDataElement('column', {name:"column"+j, display:"  Title" + j + "  ", editable:"false", resizable:"true"}));
+           		
+           		}            		
+           		
+           		this.resultset = new LzDataElement('resultset');
+          		
+				db_query_result.appendChild(this.resultset);
+				
+				
+				var nodename;
+				var nodeText;
+				var attributes;				
+
+				var ok = true;//dsPntr.selectChild();
+
+				i=1;
+				while(ok){
+
+					i--;
+
+					while (ok){
+						
+						while ( ok ){								
+								nodename = dsPntr.getNodeName();
+								Debug.write("child " + i + " nodename: ", nodename);
+								nodeText = dsPntr.getNodeText();
+								Debug.write("child " + i + " nodeText: ", nodeText);
+
+								if (nodename != "«undefined»"  && nodeText != "«undefined»"){
+									this.row = new LzDataElement('row');
+									this.resultset.appendChild(this.row);
+									this.column = new LzDataElement('column'+i, {value: nodename + " : " + nodeText})
+									this.row.appendChild(this.column);	
+								}								
+
+							ok = dsPntr.selectChild();	
+							if (ok){
+								i++;
+							}														
+						}
+						ok = dsPntr.selectNext();
+					
+					}
+					ok = dsPntr.selectParent();	
+					ok = dsPntr.selectNext();							
+				}
+						
+				gridview.completeInstantiation();
+				
+				Debug.write(this.n);
+				Debug.write(this.metadata);
+				Debug.write(this.resultset);
+			]]>							                
+            </method>
+        
+        </remotecall>
+        
+    </soap>			    
+		
+		
+			    
+	<class name="WebServiceUrlConstants" />
+	<WebServiceUrlConstants id="webServiceUrlConstants" />   
+
+	<class name="WebServiceOperationConstants" />
+	<WebServiceOperationConstants id="webServiceOperationConstants" />
+	
+</canvas>	

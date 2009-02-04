@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+JDBC Data Store Properties
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">JDBC Data Store Properties</font>
+<p>
+The <i>JDBC Data Store</i> properties panel is used by the <i>Mirror Data Stores</i>
+screen (as part of a <a href="../fw/MaintenancePanel.html#List">List Maintenance Panel</a>),
+by the <i>Edit JDBC Data Stores</i> screen (as part of a <a href="../fw/MaintenancePanel.html#OKCancel">OK-Cancel Panel</a>)
+and by the <i>Data Store <a href="../fw/WizardPanel.html">Wizard</a></i>.
+<p>
+For information on mirrors see the <a href="#Mirror">Mirror</a> section below.
+<p>
+The JDBC Data Store properties panel is used to define the JDBC connection
+information used by MDN to connect to one of your company's databases.
+
+<p><br>
+Below is the JDBC Data Store properties panel as shown in an
+<a href="../fw/MaintenancePanel.html#OKCancel">OK-Cancel Panel</a> by pressing
+the <b>Properties</b> button with a Data Store selected in the
+<a href="DataStores.html">Data Stores</a> screen. A similar panel is
+displayed in the <i>Data Store Wizard</i> for entering the Data Store details.
+<p>
+<img src="images/dsJdbc.gif">
+<p>
+The <b>Name</b> field is the name of the data store, it should describe the
+content or purpose of the data store and <b>must</b> be unique within this
+installation of MDN.
+<p>
+<b>Description</b> is any additional text to describe the data store.
+<p>
+The <b>Driver</b> combo box displays the set of JDBC drivers available to MDN,
+as configured in the <a href="JDBC.html">JDBC Drivers</a> screen. Select the
+appropriate driver for your database. You may need to install a driver for your
+database if a suitable driver is not shown here.
+<p>
+The <b>URL</b> field specifies the JDBC URL to connect to your database. The
+format of this URL is specific to the selected JDBC driver. See the
+documentation for the JDBC driver to determine the correct format.
+<br>
+The format for the JDBC/ODBC Bridge driver is <b>jdbc:odbc:<i>dsn</i></b>, where
+<i>dsn</i> is the ODBC data source name.
+<p>
+<b>Catalog</b> is the database catalog. Usually left blank.
+<p>
+<b>User</b> is the username used to log into the database.
+<p>
+<b>Password</b> is the password used to log into the database.
+<p>
+The <b>Mirrored Data Store?</b> checkbox is used to select this Data Store for
+mirroring. This means that MDN will use a mirror copy of the source Data
+Store rather than accessing it directly. You may use
+<a href="DataTransfers.html">Data Transfers</a> to copy data from the source
+Data Store to the mirror. If mirroring is selected then a combo box will be
+displayed to allow the selection of the desired <a href="#Mirror">Mirror Data Store</a>.
+
+<p><br>
+<a name="Mirror"><font size="+3">Mirror Data Stores</font></a>
+
+<p>
+A <i>Mirror Data Store</i> is a location where mirrored data is stored separately
+from the source data. This is distinct from a <i>Mirror<b>ed</b> Data Store</i>
+which defines the source of the data, but has the <i>Mirrored Data Store?</i>
+box checked to indicate that MDN will access the mirror copy rather than the
+source.
+<p>
+To use mirroring you must first define one or more Mirror Data Stores, using the
+<i>Mirror Data Stores</i> screen shown below, and then select a Data Store and
+enable mirroring for it by checking the <i>Mirrored Data Store?</i> checkbox
+for that Data Store using its properties screen.
+
+<p>
+<img src="images/Mirror.gif">
+<p>
+
+This screen has the same fields as the <i>Edit JDBC Data Stores</i> screen with
+the exception of the <i>Mirrored Data Store?</i> checkbox, as it is not valid
+for a Mirror Data Store to be mirrored.
+<p>
+The Mirror Data Stores screen uses a
+<a href="../fw/MaintenancePanel.html#List">List Maintenance Panel</a>
+to show the list of mirrors, add mirrors, delete mirrors and edit the attributes
+of a mirror.
+</BODY>
+
+</HTML>
+

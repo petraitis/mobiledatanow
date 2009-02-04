@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+How To
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">How To</font>
+<p>
+This document describes at a high level how to configure Mobile Data Now to
+deliver data to mobile devices.
+<br>
+This document acts primarily as an index to other help documents that describe
+in detail each of the screens and processes used to administer Mobile Data Now.
+<p>
+Before you can use Mobile Data Now you must first install and licence MDN as
+described in the <a href="install/install.html">Installation and Configuration</a>
+guide and start the MDN Server.
+<p>
+Also see <a href="index.html">MDN Administrator</a> and
+<a href="Definitions.html">Definitions and Terminology</a> for more information
+on using the MDN Administrator and the terms and terminology used in this
+documentation.
+
+<p><br>
+<font size="+3">Using MDN Overview</font>
+
+<p>
+To deliver data to mobile users you must perform the following sequence of steps
+using the MDN Administrator:
+<p>
+1. <a href="#Start">Start the Administrator and Login</a>.<br>
+2. <a href="#DataStore">Import Data Store Definitions</a>.<br>
+3. <a href="#ViewQuery">Build Data Views and Queries</a>.<br>
+4. <a href="#UserGroup">Create Groups, Users and Permissions</a>.<br>
+5. <a href="#Presentation">Build Presentation Menus</a>.<br>
+
+<p><br>
+<a href="#MirrorAndTransfer"><font size="+3">Mirroring and Data Transfers</font></a>
+<p>
+To make use of the optional Mirror Data Store and Data Transfer features you
+must:
+<p>
+1. <a href="#Mirror">Create Mirror Data Stores</a>.<br>
+2. <a href="#Mirrored">Mirror External Data Stores</a>.<br>
+3. <a href="#DataTransfer">Create Data Transfers</a>.<br>
+4. <a href="#Schedule">Schedule Data Transfers</a> (optional).<br>
+
+<p><br><font size="+3">Tips, Testing and Troubleshooting</font>
+<p>
+<a href="#Tips">Tips</a><br>
+<a href="#Testing">Testing</a><br>
+<a href="#Troubleshooting">Troubleshooting</a><br>
+
+<p><br>
+<a name="Start"><font size="+3">Start the Administrator and Login</font></a>
+<p>
+To start the <a href="index.html#Start">MDN Administrator</a> choose
+<b>Mdn Administrator</b> from the <em>Start|Programs|Mobile Data Now</em> menu
+under Windows, or type <em>mdnadmin</em> from a command shell window under
+Linux/Solaris.
+
+<br>
+The MDN Administrator will display an error message and exit if the MDN
+Server is not running or if MDN has not been licensed.
+<br>
+Enter a username and password and log in.
+
+
+
+<p><br>
+<a name="DataStore"><font size="+3">Import Data Store definitions</font></a>
+<p>
+Use the <a href="DataStores.html#Wizard">Data Store Wizard</a> to create a new
+Data Store to access your database and import the table definitions of the
+tables you wish to present with MDN.
+
+<p><br>
+<a name="ViewQuery"><font size="+3">Build Data Views and Queries</font></a>
+<p>
+Use the <a href="ViewQuery.html#ViewWizardSplash">View Wizard</a> to create one
+or more views of your Data Stores.
+<p>
+Use the <a href="ViewQuery.html#QueryWizardSplash">Query Wizard</a> to create
+one or more queries to select data from a view for presentation to your users.
+
+<p><br>
+<a name="UserGroup"><font size="+3">Create Groups, Users and Permissions</font></a>
+<p>
+Use the <a href="../fw/UserGroupMaintenance.html#GroupMaint">Groups</a> screen
+to create the groups to which your users will belong. Each different group
+can be configured with a different set of menus using the
+<a href="PresentationBuilder.html">Presentation Builder</a>.
+<p>
+Use the <a href="../fw/UserGroupMaintenance.html#UserMaint">Users</a> screen to
+create a user account for each user and to assign the users to groups.
+
+
+<p><br>
+<a name="Presentation"><font size="+3">Build Presentation Menus</font></a>
+<p>
+Use the <a href="PresentationBuilder.html">Presentation Builder</a> to build
+a menu structure for each group.
+
+<p><br><p>
+<a name="MirrorAndTransfer"><font size="+3">Mirroring and Data Transfers</font></a>
+<p>
+Mirroring is optional feature of MDN that allows you to create a
+<a href="#Mirror">mirror</a> copy of your <a href="#Mirrored">source data store</a>.
+MDN will then access the mirror instead of the source data store. This can be
+useful to reduce load or protect the source data store.
+<br>
+You can use automatically <a href="#Schedule">scheduled</a> or manual
+<a href="#DataTransfer">data transfers</a> to populate the mirror with data from
+the source data store.
+
+<p><br>
+<a name="Mirror"><font size="+3">Create Mirror Data Stores</font></a>
+<p>
+Use the <a href="Mirror.html#Mirror">Mirror Data Stores</a> screen to create
+a Mirror Data Store.
+
+<p><br>
+<a name="Mirrored"><font size="+3">Mirror External Data Stores</font></a>
+<p>
+In the <a href="DataStores.html">Data Stores</a> screen select a Data Store,
+press the <b>Properties</b> button to display the
+<a href="Mirror.html">JDBC Data Store</a> properties screen. Check the
+<b>Mirrored Data Store?</b> check box then select the desired Mirror Data
+Store to activate mirroring for this Data Store.
+
+<p><br>
+<a name="DataTransfer"><font size="+3">Create Data Transfers</font></a>
+<p>
+Use the <a href="DataTransfers.html">Data Transfers</a> screen to create a
+Data Transfer that will populate the Mirror Data Store with the desired data
+from the source (mirror<b>ed</b>) Data Store. Press the <b>Execute</b> button to
+execute the transfer and copy the data.
+
+<p><br>
+<a name="Schedule"><font size="+3">Schedule Data Transfers</font> (optional)</a>
+<p>
+If you want the Data Transfer to be run periodically use the
+<a href="Schedule.html">Schedule</a> screen to schedule a Data Transfer for
+future execution.
+
+<p><br>
+<a name="Tips"><font size="+3">Tips</font></a>
+<p>
+Keep it small. Mobile devices and WAP phones usually have a very small screen.
+When defining views use as few fields, especially naming fields, as possible and
+keep the field display names short.
+
+<p>
+Delete extraneous fields from your data stores. When the data store wizard
+imports a table it gets all fields. If you do not need to use a field in a view,
+and it is not a key fields for the table then it is safe to delete it from the
+data store. This will not affect the source table.
+
+<p>
+Assign keys for the tables in your data stores. Update and delete operations in
+MDN may not work correctly if MDN cannot uniquely identify the correct record.
+
+<p>
+Show keys in the views or use auto key generation. When a new record is added in
+MDN it must have valid keys which are unique. The user needs to be able to enter
+values for the keys and any other fields that are required by your database,
+otherwise the database will generate an error when inserting or updating the
+record.
+<br>
+Alternatively the database could generate the keys using a trigger or
+auto-number field. In this case the key field(s) need to be in the data store
+so MDN can uniquely identify the record, but need not be shown in the view.
+
+<p>
+Use mirrors. If the data you are presenting with MDN is read-only, the source
+database is heavily loaded or for security reasons you wish to reduce MDN's
+access to the source database, then you can use mirror data stores and have
+MDN work from  the mirror copy. It is usually best to use a separate mirror for
+each data source because sharing a mirror between data sources may degrade
+performance and will cause an error if the different data sources have tables
+with the same name.
+
+<p><br>
+<a name="Testing"><font size="+3">Testing</font></a>
+<p>
+After you have defined you data stores, views and menus it is necessary to test
+your MDN system. Most functions will work correctly, but it is possible that
+database errors will occur if required fields or keys are omitted from the views
+or if relationships have not been specified correctly.
+<br>
+Using the MDN Administrator select each query in each view and execute it by
+pressing the <b>Execute</b> button.
+<br>
+Use a WAP browser or web browser to navigate through all the menu options in your MDN
+system to ensure that they work correctly.
+
+<p><br>
+<a name="Troubleshooting"><font size="+3">Troubleshooting</font></a>
+<p>
+Errors when inserting or updating records may be due to a key or constraint
+error in the underlying database. This can be caused by not correctly specifying
+the keys for the data store entities, not including all required fields and keys
+in the view or the user entering a key value which is already in use.
+<br>
+It is preferable in many cases for the database to generate the keys using
+triggers or auto-number fields rather than requiring the user to enter the key
+data.
+
+<p>
+An error when inserting records during a data transfer may be caused if two data
+stores use the same mirror and they have a table name in common. Since a mirror
+can not have two tables with the same name one definition will be overwritten,
+leading to errors when transferring or viewing the data  in the data store.
+<br>
+To resolve this problem ensure that data stores that share a mirror do not have
+any tables with the same name. It is preferable to use a separate mirror for
+each mirrored data store.
+
+<p>
+Some databases treat tables, views and queries in a similar manner. Because of
+this it may be possible to use the data store wizard import a &quot;table&quot;
+that is in fact a <i>query</i>. Is may cause problems if the database does not
+allow some operations, such as insert or update, to be performed on a query.
+There will also be problems if the query requires run time parameters to
+execute. In this case you will see an SQL exception with the message
+<i>Too few Parameters</i>.
+
+</BODY>
+
+</HTML>
+

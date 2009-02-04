@@ -1,0 +1,41 @@
+<canvas debug="true">
+    <include href="lib/ftcheckbox.lzx" />
+
+    <dataset name="gui">
+        <gui-labels>
+            <lbl-unique-key1 label="unique Key 1st"/>
+            <lbl-field2 label="Field 2nd"/>
+            <lbl-field3 text="Field 3rd"/>
+        </gui-labels>
+    </dataset>
+
+    <dataset name="guiValue">
+        <gui-values>
+            <val-field3 type="boolean" value="false"/>
+        </gui-values>
+    </dataset>
+
+    <dataset name="dbTable">
+        <root>
+            <table>
+                <field>
+                    <!-- value from primary dataset and label from different dataset -->
+                    <checkbox uniqueKey="false" valueXpath="@uniqueKey" labelXpath="gui:/gui-labels/lbl-unique-key1/@label"/>
+                    <checkbox uniqueKey="true" valueXpath="@uniqueKey" labelXpath="gui:/gui-labels/lbl-field2/@label"/>
+                    
+                    <!-- value from primary dataset and label from primary dataset -->
+                    <checkbox val="true" lbl="Cool! I like what I see." valueXpath="@val" labelXpath="@lbl"/>
+                    
+                    <!-- value from different dataset and label from different dataset -->
+                    <checkbox valueXpath="guiValue:/gui-values/val-field3/@value" labelXpath="gui:/gui-labels/lbl-field3/@text"/>
+                </field>
+            </table>
+        </root>
+    </dataset>
+    
+
+    <simplelayout spacing="10" />
+
+    <ftcheckbox name="mycb"
+        datapath="dbTable:/root/table/field/checkbox"/>
+</canvas>

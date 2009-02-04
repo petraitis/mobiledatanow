@@ -1,0 +1,196 @@
+<library>
+	<class name="loginView" width="${canvas.width}" height="139" y="${(canvas.height / 2) - (this.height / 2)}">
+					
+		<method name="init">
+			super.init();
+			Debug.write("................LOGIN initialing.................");
+    		controller.setLanguage("English");
+		</method>
+		
+		<method event="onx">
+			/*var currX = login.getAttribute("x");
+			if (currX >= immediateparent.width){
+				login.loginAnimator.stop();
+
+				Debug.write("all height--------------------", all.getAttribute("height"));
+				all.setAttribute("height", all.getAttribute("height")+1);
+				all.setAttribute("height", all.getAttribute("height")-1);
+				Debug.write("all height--------------------", all.getAttribute("height"));
+
+				mdnHeaderView.setAttribute("width", mdnHeaderView.getAttribute("width")+1);
+				mdnHeaderView.setAttribute("width", mdnHeaderView.getAttribute("width")-1);
+			}*/
+		</method>
+			 
+		<method name="logOut">
+            //this.setAttribute("width", 320);
+            //this.setAttribute("height", 260);
+			//this.setAttribute("x", -419);			
+            this.logOutAnimator.doStart();
+            this.logOutAnimator2.doStart();
+		</method>
+				
+		<animator attribute="width" name="loginAnimator" to="0" duration="500" start="false">
+            <handler name="onstop">
+                // Removes the parent view (and all the views below it) from the stack of modal views   
+                LzModeManager.release(parent);
+                grayout.allAnimator.doStart();
+                 
+	            var p = dbProjectDefault.getPointer();
+	            p.selectChild(1);
+	            Debug.write("logging in ---------------- refresh the project data",p);
+	            var projectId = p.p.getAttr('id');
+	            var projectName = p.p.getAttr('name'); 
+                projectTabs.currTab.tab.setText(projectName);
+                projectTabs.currTab.setAttribute("currProjectId", projectId);
+                projectTabs.newtabpaneIdArray[0]= projectId;		
+                
+                controller.displayHome(projectId);
+                
+                parent.setAttribute("visible", false);
+            </handler>			
+		</animator>
+		<animator attribute="x" name="loginAnimator2" to="${classroot.width / 2}" duration="500" start="false"></animator>
+		<animator attribute="width" name="logOutAnimator" to="${canvas.width}" duration="500" start="false">
+            <handler name="onstart">
+                Debug.write("Hide the project detail.......");
+                grayout.bringToFront();
+                grayout.blackout.doStart();
+                // Pushes parent view onto the stack of modal views      
+                LzModeManager.makeModal(parent);
+                parent.bringToFront();
+                
+                parent.setAttribute("visible", true);
+            </handler>
+            <handler name="onstop">
+            	parent.tabView.logoutAnimator.doStart();
+            	parent.containerView.logoutAnimator.doStart();
+            </handler>
+		</animator>
+		<animator attribute="x" name="logOutAnimator2" to="0" duration="500" start="false"></animator>
+		
+		<view name="tabView" width="192" height="136" x="${(classroot.width / 2) + 98}" y="3">
+			<attribute name="isOpen" type="boolean" value="false" />
+			<animator attribute="y" name="openLanguageTab" to="70" duration="1000" start="false">
+				<handler name="onstart">
+					loginLanguage.setAttribute("visible", true);
+				</handler>
+			</animator>
+			<animator attribute="y" name="closeLanguageTab" to="3" duration="1000" start="false">
+				<handler name="onstop">
+					loginLanguage.setAttribute("visible", false);
+				</handler>
+			</animator>
+			<animator attribute="opacity" name="loginAnimator" to="0" duration="250" start="false"></animator>
+			<animator attribute="opacity" name="logoutAnimator" to="1" duration="250" start="false"></animator>
+			<view height="33" x="${(parent.width - this.width)}" y="103">
+				<simplelayout axis="x" spacing="0" />
+				<method event="onclick">
+					if(!parent.isOpen) {
+						parent.openLanguageTab.doStart();
+						parent.isOpen = true;
+					} else {
+						parent.closeLanguageTab.doStart();
+						parent.isOpen = false;
+					}
+				</method>
+				<view width="16" height="33" resource="../customresources/login/login_tab_lh.png" /> 
+				<view>
+					<view width="${parent.width}" height="33" resource="../customresources/login/login_tab_mid.png" stretches="width" />
+					<text datapath="gui:/gui-labels/lbl-chooselang/@label" fgcolor="0xFFFFFF" resize="true" y="7" />
+				</view>
+				<view width="7" height="33" resource="../customresources/login/login_tab_rh.png" />
+			</view>
+			<view width="192" height="107" resource="../customresources/login/login_background_language.png">
+				<text x="21" y="51" datapath="gui:/gui-labels/lbl-avail-languages/@label" resize="true" fgcolor="0xFFFFFF" />
+				<datacombobox width="150" x="21" y="67" editable="false" 
+									id="loginLanguage" selectfirst="false" 
+									itemdatapath="lang:/root/lang" textdatapath='@name' valuedatapath='@id' visible="false">
+					<method event="onselect">
+						Debug.write(getValue());
+						controller.setLanguage(this.getText());
+						controller.saveLanguageAsDefault(this.getValue());
+					</method>
+				</datacombobox>
+			</view>
+		</view>
+		<view width="${classroot.width}" height="111" resource="../customresources/login/login_background_repeat.png" stretches="width" />
+		<view name="containerView" width="950" height="97" x="${(classroot.width / 2) - (this.width / 2)}" y="11" resource="../customresources/login/login_background_mid.png">
+			<animator attribute="opacity" name="loginAnimator" to="0" duration="500" start="false">
+				<handler name="onstop">
+					classroot.loginAnimator.doStart();
+					classroot.loginAnimator2.doStart();
+				</handler>			
+			</animator>
+			<animator attribute="opacity" name="logoutAnimator" to="1" duration="500" start="false"></animator>
+			<view x="190" y="60">
+				<text id="loginError1" text="" resize="true" fgcolor="0xFFFFFF" />
+				<text id="loginError2" text="" resize="true" fgcolor="0xFFFFFF" x="${loginError1.width}" />
+				<text id="loginError3" text="" resize="true" fgcolor="0xFFFFFF" x="${loginError1.width}" />
+			</view>
+			<view datapath="gui:/gui-labels" x="505" y="9">
+				<view>
+					<text datapath="lbl-username/@label" valign="middle" fgcolor="0xFFFFFF" />
+					<edittext id="username" name="username" width="186" text="admin" x="70" />
+				</view>
+				<view y="24">
+					<text datapath="lbl-password/@label" valign="middle" fgcolor="0xFFFFFF" />
+					<edittext id="password" name="password" password="true" width="186" text="admin" x="70" />
+				</view>
+				<mdn_button height="22" datapath="btn-login/@label" isdefault="true" x="${parent.width - this.width}" y="48">
+					<method event="onclick">
+				        loginError1.setText('');
+				        loginError2.setText('');
+				        loginError3.setText('');
+						var _username = username.text;
+						var _password = password.text;
+						var error = null;
+						var rootNode = gui.getFirstChild();
+						var compNodeArray = null;
+						if (_username == null || _username == ""){
+							compNodeArray = rootNode.getElementsByTagName("error-username-missing");
+							error = compNodeArray[0].getAttr("label");
+						}
+						if (_password == null || _password == ""){
+							if (error == null){
+								compNodeArray = rootNode.getElementsByTagName("error-password-missing");
+								error = compNodeArray[0].getAttr("label");	
+							} else {
+								compNodeArray = rootNode.getElementsByTagName("error-credentials-missing");
+								error = compNodeArray[0].getAttr("label");
+							}
+						}
+						if (error != null){
+							loginError1.setAttribute('text', error);
+						} else {
+							compNodeArray = rootNode.getElementsByTagName("action-submitting");
+							loginError1.setAttribute('text', compNodeArray[0].getAttr("label"));
+							var d = canvas.datasets.loginData;
+							d.setQueryParam("action", "login");
+							d.setQueryParam("username", _username);
+							d.setQueryParam("password", _password);
+							d.doRequest();
+							//loginForm.submit();
+						}
+					</method>
+				</mdn_button>
+			</view>	
+		</view>
+		<!-- Deals with the language file upload request. -->
+		<datapointer xpath="defaultLang:/root" rerunxpath="true"
+			ondata="processData();" onerror="canvas.showError(this);"
+			ontimeout="canvas.showTimeout();">
+			<method name="processData">
+		        
+		        var currLang = this.getNodeAttribute('name');
+		        Debug.write("====================received defaultLang return data===========================", currLang);
+		        controller.setLanguage(currLang);
+
+				//Debug.write("===========================currLang=============", this.getValue());
+				//if (currLang != undefined || currLang != null){
+					loginLanguage.setAttribute("defaulttext",currLang);
+				//}
+			</method>
+		</datapointer>
+	</class>
+</library> 

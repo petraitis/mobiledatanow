@@ -1,0 +1,17 @@
+<script type="text/javascript">
+
+var str="Hello,world";
+var startPos = 0;
+var currPos = 0;
+while (currPos >= 0){
+   currPos = str.indexOf(",", startPos);
+   if (currPos > 0){
+     document.write(currPos);
+     var substr = str.substring(startPos, currPos);
+     document.write(substr);
+     startPos = currPos + 1;
+   }
+}
+
+
+</script>

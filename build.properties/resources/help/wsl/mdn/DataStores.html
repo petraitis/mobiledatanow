@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Data Stores
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Data Stores</font>
+
+<p>
+<img src="images/DataStores.gif">
+<p>
+The Maintain Data Stores screen is used to create or modify data store
+definitions that define which tables in your company's databases may
+be accessed by MDN.
+<br>
+Each Data Store has a unique name. A data store may contain multiple entities
+(tables), each of which may contain multiple fields. This hierarchy is displayed
+in a tree.
+<br>
+You may set up <a href="#Relationships">relationships</a> between the entities
+in a data store to reflect the relationships within your database. These
+relationships will be used to <i>join</i> the entities when they are used in a
+<a href="ViewQuery.html">view</a> that includes fields from more than one
+entity.
+
+<p>
+The Maintain Data Stores screen has the following buttons:<br>
+<a href="#bWizard">Data Store Wizard</a><br>
+<a href="#Entity">Add Entity</a><br>
+<a href="#Field">Add Field</a><br>
+<a href="#bRelationships">Relationships</a><br>
+<a href="#bDelete">Delete</a><br>
+<a href="#bProperties">Properties</a><br>
+<a href="#bSetKey">Set Key</a><br>
+<a href="#bRecreateMirror">Recreate Mirror</a>
+
+<p><br><a name="bWizard"></a>
+The <b>Data Store Wizard</b> button displays the
+<a href="#Wizard">Data Store Wizard</a> which
+guides you through the main steps of creating a Data Store. The wizard may be
+used to create a new Data Store or modify an existing one.
+<br>
+While it is possible to manually add entities and fields to a data store this
+requires exact knowledge of the correct names of those entities and fields in
+your database. It is easier to use the <a href="#Wizard">Data Store Wizard</a>
+to add the entities and fields as it automatically imports all the required
+names and allows you to simply select them from a list.
+
+<p><br><a name="Entity"><font size="+2">The Edit Entity Screen</font></a>
+<p>
+The <b>Add Entity</b> button displays the <i>Edit Entity</i>
+screen to add a new entity to the currently selected Data Store.
+<br>
+This screen is also displayed to edit an entity when the <b>Properties</b>
+button is pressed while an entity is selected.
+<br>
+Normally you will add entities using the <a href="#Wizard">Data Store Wizard</a>.
+<p>
+<img src="images/dsEntity.gif">
+<p>
+<b>Name</b> is the name of the entity (table) in the source database. MDN will
+produce errors when accessing this entity if the name is not correct and does
+not match a table in the database.
+<br>
+<b>Description</b> is any additional text to describe the entity.
+
+<p><br><a name="Field"><font size="+2">The Edit Field Screen</font></a>
+<p>
+The <b>Add Field</b> button displays the <i>Edit Field</i>
+screen to add a new field to the currently selected Entity.
+<br>
+This screen is also displayed to edit a field when the <b>Properties</b> button
+is pressed while a field is selected.
+<br>
+Normally you will add fields using the <a href="#Wizard">Data Store Wizard</a>,
+but after the fields have been added it may be necessary to edit the individual
+fields to set their <i>Unique Key</i> or <i>Read Only</i> attributes.
+<p>
+The performance of MDN may be improved if you set keys on the appropriate fields.
+If no keys are set MDN will try to identify a record using all the fields.
+Editing and deleting records may not work correctly if MDN is not provided with
+a key to uniquely identify a record.
+
+<p>
+<img src="images/dsField.gif">
+<p>
+<b>Name</b> is the name of the field in the entity.
+<br>
+<b>Field Type</b> is the data type to be used for the field (i.e. String,
+integer etc.). If the field is a string a <b>Size</b> field will also be
+displayed to allow the specification of the maximum size of the string.
+<br>
+The <b>Unique Key</b> checkbox indicates that this field is a key field for this
+entity. If more than one field has the <i>Unique Key</i> attribute then the
+entity has a composite key including all the fields with the <i>Unique Key</i>
+attribute. Note that it is important to correctly specify the key fields as
+incorrect keys may cause an error when saving records in the database due to a
+key collision.
+<br>
+The <b>Read Only</b> checkbox indicates that MDN may not write data into this
+field.
+<br>
+<b>Description</b> is any additional text to describe the field.
+
+<p><br><a name="bRelationships"></a>
+The <b>Relationships</b> button displays the <i>Relationships</i> screen for the
+currently selected Data Store to allow you to select the relationships (joins)
+between the entities in the data store. The Relationships screen is the same
+as that shown in the <a href="#Relationships">Relationship</a> screen in the
+Data Store Wizard.
+
+<p><br><a name="bDelete"></a>
+The <b>Delete</b> button will delete the currently selected Data Store, Entity
+or Field.
+<p>
+After importing table definitions with the <a href="#Wizard">Data Store Wizard</a>
+it is a good idea to delete fields that will not be used to display data in MDN,
+especially if the fields is used to hold a lager amount of data. Removing
+extraneous fields may improve performance, but be sure not to remove any fields
+that are mandatory in your database.
+
+<p><br><a name="bProperties"></a>
+The <b>Properties</b> button will display an edit screen to view or edit the
+properties of the currently selected Data Store, Entity or Field.
+<br>
+For Data Stores this displays the same <a href="Mirror.html">JDBC Data Store</a>
+screen used by the Data Store Wizard and the Mirror Data Stores screen.
+<br>
+For Entities this displays the same <a href="#Entity">Edit Entity</a> screen
+displayed by the Add Entity button.
+<br>
+For Fields this displays the same <a href="#Field">Edit Field</a> screen
+displayed by the Add Field button.
+
+<p><br><a name="bSetKey"></a>
+The <b>Set Key</b> button will toggle the <i>Unique Key</i> attribute of the
+selected field. This has the same effect as using the <b>Unique Key</b> check
+box in the <a href="#Field">Edit Field</a> screen. The image for the field will
+change to show a <i>Key</i> icon when the field has key status.
+
+<p><br><a name="bRecreateMirror"></a>
+The <b>Recreate Mirror</b> button will delete and rebuild the mirror tables for
+the currently selected Data Store. The selected Data Store must be mirrored to
+use this function.
+
+<p><br><p>
+<font size="+4"><a name="Wizard">Data Store Wizard</a></font>
+<p>
+The Data Store <a href="../fw/Wizardpanel.html">Wizard</a> guides you through
+the steps required to create a Data Store. The wizard may be used to create a
+new Data Store or modify an existing one.
+<p>
+The Data Store Wizard has the following wizard panels:<br>
+<a href="#Splash">Select Import or Update</a><br>
+<a href="#wsJdbcDataStore">JDBC Data Store</a><br>
+<a href="#ImportTables">Import Tables</a><br>
+<a href="#Relationships">Relationships</a><br>
+<a href="#KeyHelp">Key Help</a>
+
+<p><br><font size="+2"><a name="Splash">Select Import or Update</a></font>
+<p>
+<img src="images/dsSplash.gif">
+<p>
+The Select Import or Update wizard panel displays information on how to use the
+Data Store Wizard and allows you to select whether to create a new Data Store or
+modify the currently selected Data Store.
+
+<p><br><a name="wsJdbcDataStore"><font size="+2">JDBC Data Store</font></a>
+<p>
+This wizard panel is the same <a href="Mirror.html">JDBC Data Store</a>
+screen used by the Data Store Properties button and the Mirror Data Stores
+screen. Enter or edit the details required to connect to your database.
+
+<p><br><font size="+2"><a name="ImportTables">Import Tables</a></font>
+<p>
+<img src="images/dsImportTables.gif">
+<p>
+The Import Tables wizard panel displays a list of the data store's
+<i>Available Tables</i> (entities) in the left pane and the <i>Imported Tables</i>
+(selected entities) in the right pane. Select one or more tables and use the
+<b>&gt;&gt;</b> and <b>&lt;&lt;</b> buttons to select and deselect the tables.
+Only the tables you select will be accessible to MDN through this data store.
+
+<p><br><a name="Relationships"><font size="+2">Relationships</font></a>
+<p>
+<img src="images/dsRelationships.gif">
+<p>
+The Relationships wizard panel shows the relationships (joins) between the
+tables in the Data Store. It is necessary to create relationships if you wish to
+create a <a href="ViewQuery.html">view</a> that will display data from multiple
+tables in a data store. The relationships specified here will usually be the
+same as those in the source database, or a subset of those relationships.
+<p>
+To create a relationship select the desired left entity for the join in the
+<b>Left Entity</b> combo then select the desired field in that Entity using the
+<b>Left Field</b> combo. Repeat the procedure for the <b>Right Entity</b> and
+<b>Right Field</b> then press the <b>Add</b> button to add the relationship.
+<p>
+To delete a relationship select it in the <b>Relationships</b> list and press
+the <b>Remove</b> button.
+
+<p><br><a name="KeyHelp"><font size="+2">Key Help</font></a>
+<p>
+<img src="images/dsKeyHelp.gif">
+<p>
+
+The Key Help wizard panel displays information on the use of keys in MDN Data
+Stores and suggests you use the <a href="#Field">Field Properties</a> screen to
+edit fields in the entities imported by the wizard to set the correct key fields.
+
+</BODY>
+
+</HTML>
+

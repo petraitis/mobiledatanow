@@ -1,0 +1,24 @@
+<canvas width="500" height="200" debug="true" bgcolor="#cccccc">
+	<debug width="480" height="${immediateparent.height - 20}" x="120" y="10"/>
+	
+	<include href="mdn_button.lzx"/>
+	
+	<simplelayout axis="y" spacing="3"/>
+		<mdn_button text="One">
+			<method event="onclick">
+				Debug.write(this.text);
+			</method>
+		</mdn_button>
+		
+		<mdn_button text="Two">
+			<method event="onclick">
+				Debug.write(this.text);
+			</method>
+		</mdn_button>
+		
+		<mdn_button text="Three" width="200">
+			<method event="onclick">
+				Debug.write(this.text);
+			</method>
+		</mdn_button>
+</canvas>

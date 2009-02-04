@@ -1,0 +1,18 @@
+# $Id: windows.sym,v 1.1 2002/11/12 22:02:40 tecris Exp $
+#
+# conf file substitution symbols for Win32
+
+# the rmi server jdbc driver
+SERVER_JDBC_DRIVER=sun.jdbc.odbc.JdbcOdbcDriver
+
+# the rmi server jdbc url
+SERVER_JDBC_URL=jdbc:odbc:mdn
+
+# the rmi server jdbc username
+SERVER_JDBC_USERNAME=db_user_id
+
+# the rmi server jdbc password
+SERVER_JDBC_PASSWORD=db_user_password
+
+# system datasource pool size
+SYSTEM_DS_POOLSIZE=20

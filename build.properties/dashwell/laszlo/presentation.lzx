@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library>
+	<!-- The PresenationView class. -->
+	<class name="presentationView" width="${projectTabs.currTab._borderView._projectView._rightView.width - 1}" 
+			height="${projectTabs.currTab._borderView._projectView._rightView._upperPart.height - projectTabs.currTab._borderView._projectView._rightView._upperPart._header.height - 1}" extends="mdn_roundrect">
+		<attribute name="currDB"/>
+		<attribute name="user"/>
+		<view width="${immediateparent.width}" height="${immediateparent.height}" >
+			<view width="300" height="${immediateparent.height - 80}" x="40" y="40">
+				<simplelayout axis="y" spacing="2"/>
+				<!-- The upper part. -->
+				<view width="${immediateparent.width}">
+					<simplelayout axis="x" spacing="10"/>
+					<text datapath="gui:/gui-labels/lbl-name/@label" width="170"/>
+					<edittext text="Presentation 1" width="250" fontstyle="bold"/>
+				</view>
+				<view width="${immediateparent.width}">
+					<simplelayout axis="x" spacing="10"/>
+					<text datapath="gui:/gui-labels/lbl-ex-css/@label" width="170"/>
+					<combobox editable="false" width="250" datapath="dbCSS:/csss" shownitems="8">
+						<textlistitem datapath="css/@name"/>
+					</combobox>
+					<mdn_button datapath="gui:/gui-labels/btn-mng-css/@label" width="200" >
+						<method event="onclick">
+							canvas.MngCSSWindow.open();
+						</method>
+					</mdn_button>
+				</view>
+				<view width="${immediateparent.width}">
+					<simplelayout axis="x" spacing="10"/>
+					<text datapath="gui:/gui-labels/lbl-ex-screen-def/@label" width="170"/>
+					<combobox editable="false" width="250" datapath="screenDef:/screens" shownitems="8">
+						<textlistitem datapath="screen/@displayname"/>
+					</combobox>
+					<mdn_button datapath="gui:/gui-labels/btn-mng-screen-def/@label" width="200">
+						<method event="onclick">
+							canvas.MngScreensWindow.open();
+						</method>
+					</mdn_button>
+				</view>
+				<view height="20"/>
+				<text datapath="gui:/gui-labels/lbl-present-usergroups/@label" resize="true"/>
+				<view height="300" width="400" bgcolor="white" clip="true">
+					<checktree id="treeGroupsPresentation" datapath="dbUsergroups:/root"
+		                nodepath="node" nodeclass="checkfiletreenode" selectable="true"
+		                width="${immediateparent.width}"
+		                showtreelines="false">
+		             <method event="onselect">
+		            	  Debug.write("Current selection: " + this.getSelection());
+		             </method>
+		         	</checktree>
+				</view>
+			</view>
+		</view>
+	</class>
+	
+	<!-- Manage Style Sheet window. -->
+	<modaldialog name="MngCSSWindow" width="500" height="400" datapath="gui:/gui-labels" title="/title-mng-css/@label">
+		<view width="${immediateparent.width-40}" x="${(immediateparent.width - this.width)/2}"
+					height="${immediateparent.height-40}" y="${(immediateparent.height - this.height)/2}">
+			<simplelayout axis="y" spacing="2"/>
+			
+			<!-- Panel of the two lists -->
+			<view width="${immediateparent.width}" height="${immediateparent.height - 50}">
+				<simplelayout axis="x" spacing="20"/>
+				
+				<!-- The CSS listing. -->
+				<view width="${immediateparent.width / 2 - 10}"
+							height="${immediateparent.height}">
+					<simplelayout axis="y" spacing="2"/>
+					<text text="Style Sheets:" resize="true" fontstyle="bold"/>
+					<list width="${immediateparent.width}" 
+								height="${immediateparent.height - 20}"
+								datapath="dbCSS:/csss">
+						<textlistitem datapath="css/@name"/>
+					</list>
+				</view>
+				
+				<!-- The Preview panel. -->
+				<view width="${immediateparent.width / 2 - 10}"
+							height="${immediateparent.height}">
+					<simplelayout axis="y" spacing="2"/>
+					<text text="Preview:" resize="true" fontstyle="bold"/>
+					<edittext width="${immediateparent.width}" height="${immediateparent.height - 20}"/>
+				</view>
+			</view>
+			
+			<!-- The Open button. -->
+			<view width="${immediateparent.width}">
+				<mdn_button text="Open" align="left"/>
+			</view>
+			
+			<!-- The Close button. -->
+			<view width="${immediateparent.width}">
+				<mdn_button text="Close" align="right" onclick="MngCSSWindow.close()"/>
+			</view>
+		</view>
+	</modaldialog>
+	
+	<!-- Manage Screen Sizes -->
+	<modaldialog name="MngScreensWindow" width="500" height="400" title="gui:/gui-labels/title-mng-screen-def/@label" >
+		<view width="${immediateparent.width-40}" x="${(immediateparent.width - this.width)/2}"
+					height="${immediateparent.height-40}" y="${(immediateparent.height - this.height)/2}">
+			<simplelayout axis="y" spacing="5"/>
+			
+			<grid width="${immediateparent.width}" height="${immediateparent.height - 35}"
+						datapath="screenDef:/screens" bgcolor="#eeeeee">
+				<gridtext datapath="@displayname" width="${parent.width / 3}" bgcolor="#eeeeee">Display Name
+				</gridtext>
+				<gridtext datapath="@name" width="${parent.width / 6}" bgcolor="#eeeeee">Name
+				</gridtext>
+				<gridtext datapath="@width" width="${parent.width / 6}" bgcolor="#eeeeee">Width
+				</gridtext>
+				<gridtext datapath="@height" width="${parent.width / 6}" bgcolor="#eeeeee">Height
+				</gridtext>
+			</grid>
+
+			<!-- The Close button. -->
+			<view width="${immediateparent.width}">
+				<mdn_button text="Close" align="right" onclick="MngScreensWindow.close()"/>
+			</view>
+		</view>
+	</modaldialog>
+	
+	
+	<!-- The Messaging. -->
+ 	<class name="filetreenode2" extends="icontreenode" labelx="40">
+	<method event="ondata">
+            var tipid = this.data.getAttr("hinttip");
+            
+            if (tipid) {
+                if(!this['hasHinttip']){
+                    Debug.write("filetreenode.ondata | creating hinttip child for the firsttime and assign it tipid="+tipid);
+
+                    this.makeChild({name: 'hinttip', attrs: {name: '_hinttip',tipid : tipid}});
+                    this.setAttribute("hasHinttip",true);
+                }else{
+                    Debug.write("filetreenode.ondata | reusing a hinttip child and assign it tipid="+tipid);
+                    this._hinttip.setAttribute("tipid",tipid);
+                }
+            }
+        </method>    
+	    <method name="updateIcon">
+	      var frameNum = 1;
+	      switch (this.iconstate) {
+	        case "email":
+	            frameNum = 10;
+	            break;
+	        case "presentation":
+	            frameNum = 18;
+	            break;
+	        case "presentationGeneral":
+	            frameNum = 19;
+	            break;
+	        case "designer":
+	            frameNum = 20;
+	            break;
+	        case "deployment":
+	            frameNum = 21;
+	            break;
+	        case "emailNotification":
+	            frameNum = 22;
+	            break;
+	        case "generalSettings":
+	            frameNum = 23;
+	            break;
+	        case "language":
+	            frameNum = 24;
+	            break;
+	        case "dbDrivers":
+	          	frameNum = 25;
+	            break;
+	        case "mirroredDB":
+	          	frameNum = 26;
+	            break;
+	        case "lookAndFeel":
+	          	frameNum = 30;
+	            break;
+	        case "add":
+	          	frameNum = 40;
+	            break;
+	        case "sms":
+	          	frameNum = 41;
+	            break;
+	        case "im":
+	          	frameNum = 42;
+	            break;
+	      }
+
+	      if (frameNum == 1) {
+	          this.setAttribute("labelx", 20);
+	      } else {
+	          this.setAttribute("labelx", 35);
+	      }
+	      if (this["icon"]) {
+	          this.icon.setResourceNumber(frameNum);
+	      }
+	    </method>
+	    <view name="icon" resource="navigationIcons" x="${parent.leafindent+16}" width="16" height="16" stretches="both" /> 
+  	</class>
+
+	<!-- Deals with the new connection result in Windows. -->
+	<datapointer name="apples_dp" id="apples_dp_id" xpath="dbData:/root/node[1]/node[6]/node[2]" />
+
+</library>

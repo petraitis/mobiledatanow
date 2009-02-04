@@ -1,0 +1,229 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- saved from url=(0029)http://www.helpandmanual.com/ -->
+<head><script type="text/javascript" src="helpman_topicinit.js"></script>
+<!-- Redirect browser to frame page if page is not in the content frame. -->
+<script type="text/javascript">
+<!--
+if(top.frames.length==0) { top.location.href="index.html?end_user_access.htm"; }
+else { parent.quicksync('a12'); }
+//-->
+</script>
+<script type="text/javascript" src="highlight.js"></script>
+   <title>Queries</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <style>
+          a { color:#27496f; }
+   </style>
+</head>
+<body style="margin: 0px 220px 0px 20px; background: #FFFFFF;" onload="highlight();">
+<div id="hmpopupDiv" style="visibility:hidden; position:absolute; z-index:1000; "></div>
+<br><br>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="white">
+  <tr valign="middle">
+    <td align="left">
+      <p class="p_Heading1"><span class="f_Heading1">Queries</span></p>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a style="font-weight:bold; color:#27496f" href="introduction.htm">Top </a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="users__groups.htm">&laquo; Previous</a>&nbsp;
+     <a style="font-weight:bold; color:#27496f" href="mdn_server_settings.htm">Next &raquo;</a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p>This section deals with setting up the queries to extract the data from the database for users and then deliver the result to users when they request it. </p>
+<p>&nbsp;</p>
+<p>There are 3 parts:</p>
+<p>&nbsp;</p>
+<p>1. Properties: Choose a data source, view and what type of query to use.</p>
+<p>&nbsp;</p>
+<p>2. Query Builder: Build a query to extract the relevant data.</p>
+<p>&nbsp;</p>
+<p>3. Message Builder: Decide how the message will be accessed by the end user and how it will be formatted when retrieved. </p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ffff99;">We will create a simple query to extract customer details based on entering the first letter of their name.</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Properties tab</span></p>
+<p>&nbsp;</p>
+<p>Enter a name and description for the first query to find customer details beginning with the first letter of their name, say 'Customer Names'.</p>
+<p>&nbsp;</p>
+<p><img src="queries - properties.png" width="800" height="604" border="0" alt="Queries - Properties"></p>
+<p>&nbsp;</p>
+<p>We will use <span style="font-weight: bold;">Select Query</span> as this extracts data from the database. <span style="font-weight: bold;">Update Query</span> edits existing data and <span style="font-weight: bold;">Insert Query</span> adds new data.</p>
+<p>&nbsp;</p>
+<p>Next, select the database and view we created. Click <span style="font-weight: bold;">Save</span>.</p>
+<p>&nbsp;</p>
+<p>Ignore the<span style="font-weight: bold;"> timeout</span> field for now, as it's only used when we setup for the user to reply to their first request for data if <span style="font-weight: bold;">user replies</span> have been implemented. If a user does not respond in a given time frame, the query expires. </p>
+<p>&nbsp;</p>
+<p><img src="queries - properties2.png" width="800" height="595" border="0" alt="Queries - Properties2"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Query Builder tab</span></p>
+<p>&nbsp;</p>
+<p>Next, move to the <span style="font-weight: bold;">Query Builder</span> Tab. In the <span style="font-weight: bold;">Define Criteria</span> window you can write your queries using the easy to understand Query Builder, or if you're comfortable with writing SQL, you can edit it directly below. The SQL Syntax created in the bottom window is always used to run the queries.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><img src="query builder - overview.png" width="800" height="595" border="0" alt="Query builder - overview"></p>
+<p>&nbsp;</p>
+<p>Click the link <span style="font-weight: bold; color: #0000ff;">&lt;Click here to add a new condition &gt;</span></p>
+<p>&nbsp;</p>
+<p>The query builder uses drop down menus which you select to build your query. </p>
+<p>&nbsp;</p>
+<p>The Query Builder writes SQL in the SQL Editor as you create it, and you can also write SQL directly in to the SQL Editor tab below and test it.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 2.png" width="800" height="595" border="0" alt="Query builder - 2"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Click the red colored <span style="font-weight: bold;">Customers.CustomerID</span> (Table.Field) to select the appropriate field, in this case it will be <span style="font-weight: bold;">ContactName</span></p>
+<p>&nbsp;</p>
+<p><img src="query builder - 3.png" width="800" height="596" border="0" alt="Query builder - 3"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Next, select the appropriate operator for this query, in this case it is <span style="font-weight: bold;">Starts with</span></p>
+<p>&nbsp;</p>
+<p><img src="query builder - 4.png" width="800" height="593" border="0" alt="Query builder - 4"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Next we select the <span style="font-weight: bold;">User Input</span> item from the drop down menu. The <span style="font-weight: bold;">User Input</span> item is used for the end-user as their input field when they send their queries from their mobile device. You can add more conditions and use multiple <span style="font-weight: bold;">User Input</span> items combined with values or dates. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 5.png" width="800" height="599" border="0" alt="Query builder - 5"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Now we have a sentence which reads:</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">Choose records where</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; color: #0000ff;">all</span><span style="font-weight: bold;"> </span><span style="font-weight: bold;">of the following apply: Where </span><span style="font-weight: bold; color: #0000ff;">Customers Contact Names</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; color: #ff0000;">start with</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; color: #339966;">[User Input]</span></p>
+<p>&nbsp;</p>
+<p>Note, you can also change how records are chosen with the drop down menu item like below</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 6a.png" width="629" height="177" border="0" alt="Query builder - 6a"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Another menu is also available by clicking the number next to each condition as shown below. </p>
+<p>&nbsp;</p>
+<p>This allows you to Add, Delete, Enable/Disable and Add a bracket to the query. </p>
+<p>&nbsp;</p>
+<p><img src="query builder - 6b.png" width="630" height="228" border="0" alt="Query builder - 6b"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>As the wizard has been completed, the SQL statements have been written automatically below and can be edited directly. Any queries which are run, are always based on the manual SQL statement.</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 6.png" width="800" height="594" border="0" alt="Query builder - 6"></p>
+<p>&nbsp;</p>
+<p>Next, click the <span style="font-weight: bold;">Sorting and Grouping of Results</span> tab slider.</p>
+<p>&nbsp;</p>
+<p>Here you can specify the order the data is reported back to the end user. For this example we will just order by company name from A to Z (ascending).</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 7.png" width="800" height="591" border="0" alt="Query builder - 7"></p>
+<p>&nbsp;</p>
+<p>If you click back to the <span style="font-weight: bold;">Define Criteria</span> tab, you'll see the SQL statement has been updated to reflect these new conditions. (The Wizard does not get updated).</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 7a.png" width="643" height="132" border="0" alt="Query builder - 7a"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Testing the Query</span></p>
+<p>&nbsp;</p>
+<p>Next we will test the query to make sure we get the correct results back.</p>
+<p>&nbsp;</p>
+<p>Click the <span style="font-weight: bold;">Query Result</span> tab</p>
+<p>&nbsp;</p>
+<p>For testing, we'll input the letter <span style="font-weight: bold;">a</span> and press the <span style="font-weight: bold;">Test</span> button. </p>
+<p>&nbsp;</p>
+<p><img src="query builder - 8.png" width="800" height="595" border="0" alt="Query builder - 8"></p>
+<p>&nbsp;</p>
+<p>You will see a result like below.</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 8a.png" width="800" height="596" border="0" alt="Query builder - 8a"></p>
+<p>&nbsp;</p>
+<p>This shows the query is working and sending back the desired results. It lists all the Contact Names beginning with the letter a.</p>
+<p>&nbsp;</p>
+<p>Next we will define which email address, or SMS and IM keywords to use for this query and define how the results look when sent back to the end-user.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Message Separator (Optional)</span></p>
+<p>&nbsp;</p>
+<p>The message separator option lets you choose how each argument of a query will be separated. For simplicity you could choose a space or maybe it's easier to separate your data by commas. </p>
+<p>&nbsp;</p>
+<p>Go to the <span style="font-weight: bold;">Message separator</span> screen and select how you will separate user inputs for query requests.</p>
+<p>eg. [user input 1],[user input 2],....,[user input n]  <span style="font-weight: bold;">or</span>  [user input 1];[user input 2];....;[user input n] etc</p>
+<p>&nbsp;</p>
+<p>This can be changed at any time but it does affect all queries on a global scale.</p>
+<p>&nbsp;</p>
+<p><img src="messaging separator.png" width="800" height="577" border="0" alt="messaging separator"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="p_Heading1"><span class="f_Heading1" style="font-size: 12pt;">Message Builder tab</span></p>
+<p>&nbsp;</p>
+<p>Click the <span style="font-weight: bold;">Message Builder</span> tab</p>
+<p>&nbsp;</p>
+<p>Here you select if you want to make available email, sms or IM (or all 3) for accessing this query and if a keyword is used to distinguish between other queries.</p>
+<p>&nbsp;</p>
+<p>First, we will attach an email address to this query. The email address we setup earlier appears in the drop down menu and we select that. </p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold; background-color: #ffff99;">Note on Keywords:</span><span style="background-color: #ffff99;">&nbsp;Because we can have unique email addresses for each query, we don't need to assign a keyword to separate this query from others. Although if you only have one email address you would separate each query by a keyword. The same case is for SMPP, but not instant messaging or using a GSM Modem (see below)&nbsp;</span></p>
+<p>&nbsp;</p>
+<p>eg: <a href="mailto:contacts@company.com" class="weblink">contacts@company.com</a> finds contacts, <a href="mailto:employees@company.com" class="weblink">employees@company.com</a> finds employee data, <a href="mailto:sales@company.com" class="weblink">sales@company.com</a> finds sales data</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">Or,</span> use one email address for all queries and separate them by a keyword.</p>
+<p>eg. <a href="mailto:queries@company.com" class="weblink">queries@company.com</a> is the only email address used. Keywords are contacts, employees and sales. These are entered before the [User Input} item we setup earlier. </p>
+<p>&nbsp;</p>
+<p>The <span style="font-weight: bold;">Results</span> area lets you choose how many results are to be returned to the end-user.</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 8.5.png" width="800" height="592" border="0" alt="Query builder - 8.5"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>We fill in the rest of the fields if we wish to use SMS and IM. </p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold; background-color: #ffff99;">Note:</span><span style="background-color: #ffff99;">&nbsp;GSM Modem and IM&nbsp;</span><span style="font-weight: bold; background-color: #ffff99;">must</span><span style="background-color: #ffff99;">&nbsp;use keywords to separate each query because there can be only one instance of each running at a time on the host computer. Email and SMPP can be unique for each query, or can use unique keywords for each query.</span></p>
+<p>&nbsp;</p>
+<p><span style="background-color: #ffff99;">In this example we have used the word&nbsp;</span><span style="font-weight: bold; background-color: #ffff99;">cont</span><span style="background-color: #ffff99;">&nbsp;as a keyword (short for contacts).</span></p>
+<p>&nbsp;</p>
+<p>This means our query will be written like:</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">cont [User Input]</span></p>
+<p>&nbsp;</p>
+<p><img src="query builder - 8.6.png" width="800" height="595" border="0" alt="Query builder - 8.6"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Click the <span style="font-weight: bold;">Response Message Format</span> tab at the bottom of the screen.</p>
+<p>&nbsp;</p>
+<p>This screen shows the format of the message the end user will receive when they send their query to MobileDataNow. This information is taken from the View created earlier and is automatically populated for this query. </p>
+<p>&nbsp;</p>
+<p><img src="query builder - 9.png" width="800" height="595" border="0" alt="Query builder - 9"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>You can add additional text to the message as needed. Data is shown as %Table.Field% and can be deleted as required.</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 9b.png" width="800" height="591" border="0" alt="Query builder - 9b"></p>
+<p>&nbsp;</p>
+<p>Test your query in the <span style="font-weight: bold;">Message Test Result</span> tab to see the format of the message end-users will see. (<span style="font-weight: bold;">Note:</span> Data is often case sensitive!)</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 10.png" width="800" height="591" border="0" alt="Query builder - 10"></p>
+<p>&nbsp;</p>
+<p>The result should look like the following.</p>
+<p>&nbsp;</p>
+<p><img src="query builder - 10b.png" width="800" height="597" border="0" alt="Query builder - 10b"></p>
+<p>&nbsp;</p>
+<p>Now, you will need to <a href="mdn_server_settings.htm">start the MDN Services</a>.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

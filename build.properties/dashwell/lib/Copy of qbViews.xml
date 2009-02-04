@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<node field="Customer">
+		<subnode field="Age" />
+		<subnode field="First Name" />
+		<subnode field="Last Name" />
+		<subnode field="Middle Name" />
+	</node>
+	<node field="Order">
+		<subnode field="Order Number" />
+		<subnode field="Order Item" />
+	</node>
+	<node field="Address">
+		<subnode field="House Number" />
+		<subnode field="Street" />
+		<subnode field="Suburb" />
+		<subnode field="Zip" />
+		<subnode field="Postal" />
+		<subnode field="City" />
+		<subnode field="Country" />
+	</node>
+	<node field="Invoice Number"/>
+</root>

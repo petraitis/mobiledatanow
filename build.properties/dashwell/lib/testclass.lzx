@@ -1,0 +1,20 @@
+<canvas debug="true">
+	<class name="class2" width="50" height="50" bgcolor="blue">
+		<attribute name="parentclass"/>
+		<simplelayout axis="y" spacing="5"/>
+		<button text="inside tag" onclick="Debug.write(classroot.parentclass.currProjectId);"/>
+		<button text="inside method">
+			<method  event="onclick">
+				Debug.write(classroot.parentclass.currProjectId);
+			</method>
+		</button>	
+	</class>
+	
+	<class name="class1" width="50" height="50" bgcolor="red">
+		<attribute name="currProjectId"/>
+		<class2 parentclass="${classroot}"/>
+	</class>
+	
+	<class1 currProjectId="1"/>
+</canvas>
+	

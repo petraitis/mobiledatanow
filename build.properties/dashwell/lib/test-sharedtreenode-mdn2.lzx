@@ -1,0 +1,127 @@
+<canvas debug="true">
+
+	<include href="opttree/library.lzx" />
+
+	<dataset name="navDbs">
+        <root><node name="Databases" type="databases" _fontstyle="bold" __OPTTREE_META_open="true" _iconstate="database"><node name="Northwind" id="10" type="database" _fontstyle="bold" _iconstate="database"><node name="Connection" type="connection" _fontstyle="plain" _iconstate="connection" /><node name="Tables" type="tables" _fontstyle="plain" _iconstate="tables"><node name="Relationships" type="relationships" _fontstyle="plain" _iconstate="relationship" /></node><node name="Views" type="views" _fontstyle="plain" _iconstate="view" /><node name="Queries" type="queries" _fontstyle="plain" _iconstate="query" /></node></node><node name="Other Sources" type="datasources" _fontstyle="bold" _iconstate="db_othersources"><node name="E-Mail" type="email" _fontstyle="bolditalic"  _iconstate="db_email" /><node name="Web Services" type="web-services" _fontstyle="bolditalic"  _iconstate="db_webservices" /></node></root>
+	</dataset>
+
+   <window x="20" y="20" width="200" height="200"
+           resizable="true" bgcolor="0xc0c0c0" >
+
+
+				<view align="left" width="${immediateparent.width}" height="${immediateparent.height}" clip="true">
+					<!--  simplelayout axis="y" spacing="5" /-->
+					<opttree id="treeDbs" datapath="navDbs:/root"
+                           nodepath="node" nodeclass="sharedtreenode"
+                           width="${immediateparent.width}"
+                           showtreelines="true"><!--SL:08/29/2006 -->
+	          <method event="onselect" args="sel">
+
+		          Debug.write("CURRENT SELECTION: ", this.getSelection());
+		          Debug.write("sel: ", sel);
+		          var selNode = sel.data;
+		          var selNodeType = selNode.attributes.type;
+		          Debug.write("node: " + selNode);
+		          Debug.write("node.name: " + selNode.attributes.name);
+		          Debug.write("node.type: " + selNodeType);
+		          var selNodeDepth = selNode.attributes.__OPTTREE_META_depth;
+		          Debug.write("node.depth: " + selNodeDepth);
+	            // Get the database parent node which gives us the database name.
+	            if (selNodeDepth > 1){
+	            	var parentNode = selNode.parentNode;
+	            	var dbName = null;
+	            	var connID = 0;
+	            	while (true){
+		             	var parentNodeDepth = parentNode.attributes.__OPTTREE_META_depth;
+		             	if (parentNodeDepth == 1){
+		             		Debug.write("Got database parent:");
+		             		Debug.write("parent.node.type: " + parentNode.attributes.type);
+		             		dbName = parentNode.attributes.name;
+		             		connID = parentNode.attributes.id;
+	             		Debug.write("parent.node.name: " + dbName);
+	              	Debug.write("parent.node.depth: " + parentNodeDepth);
+	             		break;
+		             	} else {
+		             		parentNode = parentNode.parentNode;
+		             	}
+    		}
+		            if (selNodeType == 'connection'){
+			              controller.displayDBConnection(dbName);
+		            } else if (selNodeType == 'tables'){
+		            		controller.getTablesTree(connID);
+		            		controller.displayTables(dbName);
+		            } else if (selNodeType == 'relationships'){
+		            	controller.displayRelationships(dbName);
+		            } else if (selNodeType == 'views'){
+		            	controller.displayViews(dbName);
+		            } else if (selNodeType == 'queries'){
+		            	controller.displayQueries(dbName);
+		            }
+     	}
+    </method>
+	        </opttree>
+	        <scrollbar />
+		    </view>
+   </window>
+   
+
+   <window x="20" y="20" width="200" height="200"
+           resizable="true" bgcolor="0xc0c0c0" >
+
+
+				<view align="left" width="${immediateparent.width}" height="${immediateparent.height}" clip="true">
+					<!--  simplelayout axis="y" spacing="5" /-->
+					<opttree id="treeDbs2" datapath="navDbs:/root"
+                           nodepath="node" nodeclass="sharedtreenode"
+                           width="${immediateparent.width}"
+                           showtreelines="true"><!--SL:08/29/2006 -->
+	          <method event="onselect" args="sel">
+
+		          Debug.write("CURRENT SELECTION: ", this.getSelection());
+		          Debug.write("sel: ", sel);
+		          var selNode = sel.data;
+		          var selNodeType = selNode.attributes.type;
+		          Debug.write("node: " + selNode);
+		          Debug.write("node.name: " + selNode.attributes.name);
+		          Debug.write("node.type: " + selNodeType);
+		          var selNodeDepth = selNode.attributes.__OPTTREE_META_depth;
+		          Debug.write("node.depth: " + selNodeDepth);
+	            // Get the database parent node which gives us the database name.
+	            if (selNodeDepth > 1){
+	            	var parentNode = selNode.parentNode;
+	            	var dbName = null;
+	            	var connID = 0;
+	            	while (true){
+		             	var parentNodeDepth = parentNode.attributes.__OPTTREE_META_depth;
+		             	if (parentNodeDepth == 1){
+		             		Debug.write("Got database parent:");
+		             		Debug.write("parent.node.type: " + parentNode.attributes.type);
+		             		dbName = parentNode.attributes.name;
+		             		connID = parentNode.attributes.id;
+	             		Debug.write("parent.node.name: " + dbName);
+	              	Debug.write("parent.node.depth: " + parentNodeDepth);
+	             		break;
+		             	} else {
+		             		parentNode = parentNode.parentNode;
+		             	}
+    		}
+		            if (selNodeType == 'connection'){
+			              controller.displayDBConnection(dbName);
+		            } else if (selNodeType == 'tables'){
+		            		controller.getTablesTree(connID);
+		            		controller.displayTables(dbName);
+		            } else if (selNodeType == 'relationships'){
+		            	controller.displayRelationships(dbName);
+		            } else if (selNodeType == 'views'){
+		            	controller.displayViews(dbName);
+		            } else if (selNodeType == 'queries'){
+		            	controller.displayQueries(dbName);
+		            }
+     	}
+    </method>
+	        </opttree>
+	        <scrollbar />
+		    </view>
+   </window>
+</canvas>

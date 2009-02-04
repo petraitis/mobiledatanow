@@ -1,0 +1,18 @@
+# $Id: unix.sym,v 1.1 2002/11/12 22:02:40 tecris Exp $
+#
+# conf file substitution symbols for Unix
+
+# the rmi server jdbc driver
+SERVER_JDBC_DRIVER=FILL_THIS_IN
+
+# the rmi server jdbc url
+SERVER_JDBC_URL=FILL_THIS_IN
+
+# the rmi server jdbc username
+SERVER_JDBC_USERNAME=FILL_THIS_IN
+
+# the rmi server jdbc password
+SERVER_JDBC_PASSWORD=FILL_THIS_IN
+
+# system datasource pool size
+SYSTEM_DS_POOLSIZE=20

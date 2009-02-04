@@ -1,0 +1,259 @@
+<hinttip-root>
+
+<!-- 
+to begin bold text use &lt;b&gt;
+to end bold text use &lt;/b&gt;
+
+-->
+
+<!-- The Login screen -->
+    <hinttip tipid="LOGIN-username" desc="Enter your username. The default is &lt;b&gt;admin&lt;/b&gt;"/>
+    <hinttip tipid="LOGIN-password" desc="Enter your password. The default is &lt;b&gt;admin&lt;/b&gt; and should be changed once you login." />
+    <hinttip tipid="LOGIN-login" desc="Login in Mobile Data Now."/>
+    <hinttip tipid="LOGIN-forgot_password" desc="If you forget your password, enter your username and then click here and a new password will be sent to your email address."/>
+    <hinttip tipid="LOGIN-language" desc="Select the language you want to change Mobile Data Now to."/>
+
+<!-- The Projects screen -->
+    <hinttip tipid="PROJECTS-name" desc="The name of your project. eg &lt;b&gt;CRM Project&lt;/b&gt;"/>
+    <hinttip tipid="PROJECTS-description" desc="A description of your project." />
+    <hinttip tipid="PROJECTS-tree" desc="This tree lists your projects."/>
+    <hinttip tipid="PROJECTS-open" desc="Opens a project after selecting it above."/>
+    <hinttip tipid="PROJECTS-create_new" desc="Create a new project."/>
+    <hinttip tipid="PROJECTS-import" desc="Import an existing project."/>
+    <hinttip tipid="PROJECTS-export" desc="Export your project to an xml file."/>
+    
+<!-- The screen header -->
+
+	<hinttip tipid="HEADER-logout" desc="Logout from Mobile Data Now."/>
+    <hinttip tipid="HEADER-settings" desc="Access the general settings for Mobile Data Now."/>
+    <hinttip tipid="HEADER-account-details" desc="Show details of your licensing, installation reference and email address."/>
+	<hinttip tipid="HEADER-manage-projects" desc="Open the projects window to manage your projects."/>
+	<hinttip tipid="HEADER-buy" desc="Information to contact a reseller to purchase more licenses."/>
+    <hinttip tipid="HEADER-event-log" desc="Open the event log which shows activity of each messaging tool."/>
+    <hinttip tipid="HEADER-help" desc="Opens and closes the help window."/>
+    
+<!-- The Connection screen -->
+	<hinttip tipid="DATASOURCES-connection-name" desc="Enter a name for the database you wish to access. This will appear on the database tree for your reference. eg &lt;b&gt;Business Data&lt;/b&gt;." />
+	<hinttip tipid="DATASOURCES-connection-drivers" desc="Choose an appropriate database driver to connect your database to. e.g. &lt;b&gt;JDBC/ODBC Bridge&lt;/b&gt;. If the database driver you need is not present, go to &lt;b&gt;Settings&lt;/b&gt; then &lt;b&gt;Database Drivers&lt;/b&gt; to add an appropriate driver" />
+	<hinttip tipid="DATASOURCES-connection-url" desc="Enter the database URL. The format of the URL for this database driver should be entered as shown in the example to the right. Please see the configuration guide for further details about connecting to databases." />
+	<hinttip tipid="DATASOURCES-connection-schema" desc="Add in the schema name for the database. eg &lt;b&gt;biz&lt;/b&gt;" />
+	<hinttip tipid="DATASOURCES-connection-username" desc="Some databases may require the input of a User &amp; Password in order to login. If so, then enter the username here, otherwise leave blank." />
+	<hinttip tipid="DATASOURCES-connection-password" desc="Some databases may require the input of a User &amp; Password in order to login.  If so, then enter the password here, otherwise leave blank." />
+	<hinttip tipid="DATASOURCES-connection-test" desc="Test the connection between the server Mobile Data Now is installed on and the server hosting the database." />
+	<hinttip tipid="DATASOURCES-connection-save" desc="Saves the connection." />
+	<hinttip tipid="DATASOURCES-connection-reset" desc="Clears the data from this screen so you can re-enter the data." />
+	
+	<hinttip tipid="DATASOURCES-connection-tableproperties" desc="Lists the tables in the database and their properties. For informational purposes only. If you need to make changes to your database, please use an appropriate database administration tool." />
+	<hinttip tipid="DATASOURCES-connection-tablename" desc="The table name. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-tabledescription" desc="The table description. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-fieldproperties" desc="Lists the fields in the database and their properties. For informational purposes only. If you need to make changes to your database, please use an appropriate database administration tool." />
+	<hinttip tipid="DATASOURCES-connection-fieldname" desc="The field name. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-fieldtype" desc="The field type. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-fieldsize" desc="The field size. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-decimaldigits" desc="The decimal digits for this field. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-uniquekey" desc="If this field contains a unique key, this will be ticked. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-readonly" desc="If this field is read only, this will be ticked. This is for display purposes only and is not editable in Mobile Data Now." />
+	<hinttip tipid="DATASOURCES-connection-descriptions" desc="A description of the field. This is for display purposes only and is not editable in Mobile Data Now." />
+	
+<!-- The Views Screen -->
+	<hinttip tipid="DATASOURCES-views-table" desc="Views are used to simplify and organize the table data. For example, you might be accessing multiple databases with many tables, so Views help you sort out and simplify which tables will be accessed and used. By creating a View, you select a subset of tables in the database to use rather than using all the tables." />
+	<hinttip tipid="DATASOURCES-views-table_name" desc="Enter a name for the View you wish to create. eg &lt;b&gt;Orders for Customers&lt;/b&gt;" />
+	<hinttip tipid="DATASOURCES-views-tables_view_description" desc="Enter a description of the View you wish to create." />
+	<hinttip tipid="DATASOURCES-views-tree" desc="The database tree shows the database tables and fields along with checkboxes next to each. Tick the tables and fields you want to be included in this view." />
+	<hinttip tipid="DATASOURCES-views-hide" desc="If this checkbox is ticked, the tree will show only the tables and fields in the view you have created." />
+	<hinttip tipid="DATASOURCES-views-field" desc="This shows the field details when selected on the tree." />
+	<hinttip tipid="DATASOURCES-views-field_name" desc="The name of the selected field." />
+	<hinttip tipid="DATASOURCES-views-field_description" desc="Write an optional description of the contents of the field." />
+	<hinttip tipid="DATASOURCES-views-field_display_name" desc="You may wish to change each field name to a more friendly name when users receive query results if the field name is confusing. eg 'CtName' to 'Contact Name'" />
+	<hinttip tipid="DATASOURCES-views-save" desc="Saves the database view." />
+	<hinttip tipid="DATASOURCES-views-field-save" desc="Saves the field description and display name changes." />
+
+<!-- The Users & Groups Screen -->
+	<hinttip tipid="USERSGROUPS-users-first-name" desc="Enter the users first name." />
+	<hinttip tipid="USERSGROUPS-users-last-name" desc="Enter the users last name." />
+	<hinttip tipid="USERSGROUPS-users-username" desc="Enter a username for the user here. This is used if the user is to be given login priviliges" />
+	<hinttip tipid="USERSGROUPS-users-password" desc="Enter a password for this user." />
+	<hinttip tipid="USERSGROUPS-users-new-password" desc="Enter a new password for this user if their old password is to be changed." />
+	<hinttip tipid="USERSGROUPS-users-privilege" desc="Select if this user is to be given login privileges to Mobile Data Now (Administrator), or if they are a common user without login privileges." />
+	<hinttip tipid="USERSGROUPS-users-groups" desc="Choose a group this user will be part of. You can also drag a user(s) to the appropriate group. Data access privileges are set within each group screen." />
+	<hinttip tipid="USERSGROUPS-users-notes" desc="Enter any relevant notes about this user." />
+	<hinttip tipid="USERSGROUPS-users-email_address" desc="Enter the email address the user will send email queries from and receive email queries to." />
+	<hinttip tipid="USERSGROUPS-users-mobile" desc="Enter the mobile phone number the user will send SMS queries from and receive SMS queries to. &lt;b&gt;NOTE:&lt;/b&gt; The mobile number must be in international format." />
+	<hinttip tipid="USERSGROUPS-users-im" desc="Enter the instant messaging username/contact the user will send instant messaging queries from and receive instant messaging queries to." />
+	<hinttip tipid="USERSGROUPS-users-save" desc="Saves this information about the user." />
+
+<!-- Custom Query Values -->
+	<hinttip tipid="USERSGROUPS-custom-qv" desc="Create a system variable which can be used in queries, assign them to individual users and then filter based on this criteria. eg. EmployeeID. See the help for more details. " />
+	<hinttip tipid="USERSGROUPS-custom-qv-delete" desc="To delete a query value, select an existing one and press the delete button. " />
+	<hinttip tipid="USERSGROUPS-users-assignvalue" desc="Choose a parameter for this user which has previously been setup in the Custom Query Values screen and assign an appropriate value. " />
+
+<!--groups -->
+	<hinttip tipid="USERSGROUPS-users-custom_fields" desc="Enter a query value which can be used in generic queries so only information relevant to the end-user is sent back. eg. EmployeeID, UserID, StudentID." />
+	<hinttip tipid="USERSGROUPS-users-messagelog" desc="This screen shows each message sent and received by the user." />
+	
+	<hinttip tipid="USERSGROUPS-groups-group" desc="Choose a name for this group. Users in this group are given data access permission based on which tables and fields are selected below." />
+	<hinttip tipid="USERSGROUPS-groups-data_view_permissions" desc="To enable users in this group to view data, tick the appropriate boxes. Any boxes not ticked will not enable the user to view data from that table or field. " />
+	<hinttip tipid="USERSGROUPS-groups-save" desc="Saves the group settings." />
+	<hinttip tipid="USERSGROUPS-groups-messagelog" desc="This screen shows all the messages sent and received by the group." />
+	<hinttip tipid="USERSGROUPS-groups-public group" desc="Tick this box if you wish this group to be accessed by anyone (any member of the public)." />
+
+<!-- The Queries Screen -->
+	<hinttip tipid="ENDUSERACCESS-msgquery-Properties" desc="The properites tab shows details of the data source and query type for this query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-name" desc="Enter a name for this query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-description" desc="Enter a description about what this query does." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-select_datasource" desc="Select the datasource you will use for this query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_type" desc="&lt;p&gt;Select the type of query you wish to use.&lt;/p&gt;&lt;p&gt;&lt;b&gt; SELECT&lt;/b&gt; = retrieves existing record, &lt;/p&gt;&lt;p&gt; &lt;b&gt;UPDATE&lt;/b&gt; = updates an existing record, &lt;/p&gt;&lt;p&gt; &lt;b&gt;INSERT&lt;/b&gt; = creates a new record." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-select_query" desc="The SELECT query retrieves an existing record." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-update_query" desc="The UPDATE query updates an existing record." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-insert_query" desc="The INSERT query creates a new record." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-select_database" desc="Select the database you will use for this query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-select_view" desc="Choose the view you want to use for this query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-select_table" desc="Choose the table you need to insert the new record in to." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-timeout" desc="If you intended to use User Replies, enter a timeout value in seconds that a user has to reply in, otherwise the message times out." />
+	
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_builder_tab" desc="Construct your queries here." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_all" desc="&lt;p&gt;Select how you want to choose the records: &lt;/p&gt;&lt;p&gt; &lt;b&gt;ALL&lt;/b&gt; = All of the conditions must be satisfied (Logical AND) &lt;/p&gt;&lt;p&gt; &lt;b&gt;ANY&lt;/b&gt; = At least one of the conditions must be satisfied (Logical OR) &lt;/p&gt;&lt;p&gt; &lt;b&gt;NONE&lt;/b&gt; = Record is rejected if any of the conditions are satisfied (Logical AND-NOT) &lt;/p&gt;&lt;p&gt; &lt;b&gt;NOT ALL&lt;/b&gt; = Record is included if at least one of the conditions is false. If all of them are met, the record is rejected (Logical OR-NOT).&lt;/p&gt;" />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_row_checkbox" desc="Enable or disable a condition." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_row_button" desc="The number of the condition. Click on this to get a submenu with options: Add Condition (after current), to add a new condition; Add Bracket (after current), to add a bracket with a new condition on how to choose records; Delete Current Row, to delete the row; Enable/Disable Row, to enable or disable a row." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_field" desc="Choose a field to use from your selected view or table." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_operator" desc="Select the logical operator you need to use." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_value" desc="&lt;p&gt;Select the appropriate value.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Value:&lt;/b&gt; Enter any value. &lt;/p&gt;&lt;p&gt;&lt;b&gt;Custom User:&lt;/b&gt; A value which is unique to each user, such as a User ID or username/password for that user. These need to be defined in the users section of Users &amp; Groups. &lt;/p&gt;&lt;p&gt;&lt;b&gt;User Input:&lt;/b&gt; This is a value the user will enter to get their query results. You can define many user inputs but they must be entered by the user in the order they are setup here to return the correct query results. &lt;/p&gt;&lt;p&gt;&lt;b&gt;Calendar:&lt;/b&gt; Choose a date. &lt;/p&gt;&lt;p&gt;&lt;b&gt;Boolean:&lt;/b&gt; Condition is true or false.&lt;/p&gt;"/>
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_set" desc="Define the records which need to be updated based on conditions below. eg. daily task from [UserInput] updates the daily task from the user subject to conditions defined below. " />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_and_group_tab" desc="After you have created a query, this area allows you to sort the results to display as you like." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_field" desc="Select the field to work with. Indicated by &lt;b&gt;table.field&lt;/b&gt;." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_order" desc="Select if you want the results in ascending or descending order. A Sort has a Field and a direction. Sorting is alphabetical based on the field that you have specified. An Ascending sort will sort from A-Z, Descending from Z-A." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_sort" desc="&lt;p&gt;Shows the order of the sort.&lt;/p&gt;If you have more than one sort they are applied hierarchically. The first sort is the primary one, and where there are several records with the same value for the first sort field, they will be sorted on the second Sort field. You can choose the priority by which they are sorted with the arrow keys to the right." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_add" desc="Adds a sort condition." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_remove" desc="Deletes a sort condition." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sort_group" desc="This allows you to group your query by a field in the view. Select the desired field or none if grouping is not required. When the mobile user executes this query it will show a unique list of the values of the grouping field. When they request one of these records it will show them a list of the records that have that value in the grouping field." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_tab" desc="Here you can select which email address, instant messaging name or mobile number to query the data source with. Additionally you can select how to separate each user input." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_email" desc="This email address is where users send queries to, and is used to send the results back to users. Select an email address to be used for this query. If you have not setup an email address yet, select 'Add New' and you will be promoted to setup an email address for this query. You may setup unique email addresses for each query, with or without a keyword." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_sms" desc="This SMS number is where users send queries to, and is used to send the results back to users. Select an SMS number to be used for this query. If you have not setup an SMS number yet, select 'Add New' and you will be promoted to setup an SMS number for this query. You can only use one SMS number to send all queries to, so you need to use keywords to distinguish between queries." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_im" desc="This instant messaging name is where users send queries to, and is used to send the results back to users. Select an instant messaging name to be used for this query. If you have not setup an instant messaging name yet, select 'Add New' and you will be promoted to setup an instant messaging name for this query. You can only use one instant messaging name per network to send all queries to, so you need to use keywords to distinguish between queries." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_keyword" desc="&lt;p&gt;Enter a keyword which is unique to this query.&lt;/p&gt;A keyword is used to specify which query is executed where there is only one email address, SMS number or instant messaging name used for all queries. If unique email addresses are used for each query, then keywords are not necessary for each email address. SMS numbers and instant messaging names are limited to one of each, so you need to use keywords for these to distinguish between queries." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_results" desc="Enter a number to determine how many results to return from the query. Be mindful that displays on mobile devices are small and 1-2 results are probably enough." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgdetails_separator" desc="Here you decide how each User Input condition will be separated when entered by an end user. If you used commas, the entry would be like [Keyword],[UserInput 1],[UserInput 2] etc." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-response-button" desc="Edit the format of the message which is sent back to the user when they query the database." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-error-button" desc="Edit the format of the message which is sent back to the user when they send an incorrectly formatted query to the database." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-directsql-button" desc="A Direct SQL query is a free-form query that may be created by the database administrator and include more complex SQL than is supported by the Mobile Data Now query wizard. You first need to save the query, then select it in the tree to use the Direct SQL option. Type the query you wish to execute in the SQL query field." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-test-button" desc="Click to test your query and view the results below." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-save-button" desc="Saves the query. You will need to save the query each time you make changes to it." />
+	
+	<hinttip tipid="ENDUSERACCESS-msgquery-default-button" desc="Restores the default tables and field results." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-restore-button" desc="Steps back to the message format you had before saving." />
+	
+	<hinttip tipid="ENDUSERACCESS-msgquery-query_results-tab" desc="This tab shows the results of running the query with all the data." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-message_result-tab" desc="This tab shows the typical result the end user will receive when they request the query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-sql-tab" desc="This tab shows the SQL language. You can change this manually instead of using the query builder." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-directsql-test" desc="Test your query." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgtest-email" desc="Use this to test your query for email." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgtest-sms" desc="Use this to test your query for SMS." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgtest-im" desc="Use this to test your query for IM." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-msgtest-enter" desc="Enter the query as an end user would. Make sure you use the correct separator from the settings in between each parameter." />
+	
+	<hinttip tipid="ENDUSERACCESS-msgquery-userreply" desc="Setup User Replies below so users can query more information from an initial query. "/>
+	<hinttip tipid="ENDUSERACCESS-msgquery-userreply-pre_defined_reply" desc="This is the reply the end user would enter to execute the query. eg 'Yes' or 'No' or a user input from the query screen." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-userreply-Description" desc="Enter a description for this user reply." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-userreply-timeout" desc="If the user does not return a reply in the time stated, the query times out." />
+	<hinttip tipid="ENDUSERACCESS-msgquery-response-format" desc="This is the default format of the response, taken from the View. Edit it as appropriate with free form text or use fields contained within percent marks." />
+
+
+<!-- The Settings Screen -->
+
+	<hinttip tipid="GLOBALSETTINGS-my-mdn-account-refnumber" desc="This is the reference number of the installation. It is used when purchasing a license so that the license is attributed to the correct user and installation." />
+	<hinttip tipid="GLOBALSETTINGS-my-mdn-account-email" desc="This is your registered email address." />
+	<hinttip tipid="GLOBALSETTINGS-language-select" desc="Select the language below and press &lt;b&gt;Apply&lt;/b&gt;." />
+	<hinttip tipid="GLOBALSETTINGS-language-apply" desc="Apply the selected language to the Mobile Data Now user interface." />
+    <hinttip tipid="GLOBALSETTINGS-language-language" desc="Enter the name of the language you want to add." />
+    <hinttip tipid="GLOBALSETTINGS-language-browse" desc="Browse for your translated xml language file in your file system." />
+	<hinttip tipid="GLOBALSETTINGS-language-upload" desc="Upload your new language file to Mobile Data Now." />							
+
+<!-- Drivers -->
+    <hinttip tipid="GLOBALSETTINGS-dbdrivers-listing_of_drivers" desc="Select the database driver to connect to. A database driver is used to access data located in different location or systems. \nYou can also install additional drivers by clicking the button 'Import Driver'" />
+	<hinttip tipid="GLOBALSETTINGS-dbdrivers-datasources-name_of_driver" desc="Enter a name for the database driver. e.g. ODBC/JDBC Driver." />
+    <hinttip tipid="GLOBALSETTINGS-dbdrivers-url-of-driver" desc="Enter the url of the driver to connect to." />
+    <hinttip tipid="GLOBALSETTINGS-dbdrivers-description-of-driver" desc="Write a description of the driver for your own reference." />
+	<hinttip tipid="GLOBALSETTINGS-dbdrivers-Add-button-driver" desc="Add a new database driver." />							
+	<hinttip tipid="GLOBALSETTINGS-dbdrivers-update-button-driver" desc="Update an existing database driver." />							
+	<hinttip tipid="GLOBALSETTINGS-dbdrivers-clear-button-driver" desc="Clear the properties of an existing database driver." />							
+	<hinttip tipid="GLOBALSETTINGS-dbdrivers-delete-button-driver" desc="Delete an existing database driver from the database list." />
+
+<!-- message separator -->
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-note" desc="You need to select an appropriate separator for the data you will use. For example, if you select 'space' you will need to be aware that entering data which has two arguments separated by a space in a single userinput, will not work properly." />							
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-space" desc="Your queries will be separated by a space. eg [userinput1] [userinput2] [userinput3] etc." />
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-comma" desc="Your queries will be separated by a comma. eg [userinput1],[userinput2],[userinput3] etc." />
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-semicolon" desc="Your queries will be separated by a semi-colon. eg [userinput1];[userinput2];[userinput3] etc." />
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-other" desc="Your queries will be separated by your own choice. eg, a fullstop. [userinput1].[userinput2].[userinput3] etc." />
+	<hinttip tipid="GLOBALSETTINGS-msg-separator-save" desc="Save the settings." />
+
+<!-- public messaging controls-->
+	<hinttip tipid="GLOBALSETTINGS-pmc-remainaing" desc="During your trial you have 200 free messages for each type of messaging service. These are counted here. Once these run out, you will need to purchase credits to keep using public messaging." />
+	<hinttip tipid="GLOBALSETTINGS-pmc-received" desc="This counts how many public messages have been received by your installation of Mobile Data Now." />
+	<hinttip tipid="GLOBALSETTINGS-pmc-temporary-block" desc="To prevent abuse, Mobile Data Now can permanently or temporarily block users from sending queries. Enter the details appropriate to your situation." />
+
+<!-- message keywords search -->
+	<hinttip tipid="GLOBALSETTINGS-mks-searchterm" desc="This screen lets you define a word end-users can send in to remind them of the keywords they can use. The default is currently 'help' and when a user sends in this query, it will return a list of keywords. If a user sends in 'help keyword' where keyword is one of the results sent back, the result will return a description of the keyword." />	
+
+<!-- email settings -->	
+	<hinttip tipid="GLOBALSETTINGS-email-emailaddress" desc="Enter the email address that users will send queries to, and receive replies from." />							
+	<hinttip tipid="GLOBALSETTINGS-email-smtp" desc="Enter the SMTP host name (outgoing)." />
+	<hinttip tipid="GLOBALSETTINGS-email-imap" desc="Enter the IMAP host name (incoming)." />
+	<hinttip tipid="GLOBALSETTINGS-email-username" desc="Enter the username for this email address." />
+	<hinttip tipid="GLOBALSETTINGS-email-password" desc="Enter the password for this email address." />
+	<hinttip tipid="GLOBALSETTINGS-email-save" desc="Save the settings." />
+	<hinttip tipid="GLOBALSETTINGS-email-encryption" desc="If you use SSL or TLS select the appropriate encryption type." />
+	<hinttip tipid="GLOBALSETTINGS-email-port" desc="Select your port, by default IMAP is 143 and SMTP is 25." />
+
+<!-- instant messaging -->	
+	<hinttip tipid="GLOBALSETTINGS-im-name" desc="Enter the instant messaging name that users will send queries to, and receive replies from." />
+	<hinttip tipid="GLOBALSETTINGS-im-id" desc="Enter the instant messaging user id/login name." />
+	<hinttip tipid="GLOBALSETTINGS-im-password" desc="Enter the instant messaging password." />
+	<hinttip tipid="GLOBALSETTINGS-im-provider" desc="Select the instant messaging network to connect to for the instant messaging ID." />
+	<hinttip tipid="GLOBALSETTINGS-im-save" desc="Save the settings. Next you need to select the IM connection you just created and on that screen, press the 'Connect' button to connect to the network." />
+	<hinttip tipid="GLOBALSETTINGS-im-connect" desc="To use this instant messaging ID, you need to connect to its network by pressing the connect button." />
+	<hinttip tipid="GLOBALSETTINGS-im-status" desc="Shows the status of the connection, if it is connected or disconnected and for how long." />
+
+<!-- GSM modem settings -->	
+	<hinttip tipid="GLOBALSETTINGS-sms-simphone-number" desc="Enter the phone number of the SIM card. This needs to be in the format: (country code)number, leaving out any zeros at the beginning of the mobile number." />
+	<hinttip tipid="GLOBALSETTINGS-sms-comport" desc="Enter the com port used eg. COM1" />
+	<hinttip tipid="GLOBALSETTINGS-sms-baudrate" desc="Select the baudrate for the modem eg. 9600" />
+	<hinttip tipid="GLOBALSETTINGS-sms-manufacturer" desc="Enter the manufacturer name." />
+	<hinttip tipid="GLOBALSETTINGS-sms-model" desc="Enter the model number of the modem." />
+	<hinttip tipid="GLOBALSETTINGS-sms-save" desc="Save the connection. Next you need to select the SMS connection you just created and on that screen, press the 'Connect' button to connect the modem." />
+	<hinttip tipid="GLOBALSETTINGS-sms-connect" desc="To use this SMS Modem, you need to connect to the phone network by pressing the connect button." />
+
+<!--SMPP settings -->
+	<hinttip tipid="GLOBALSETTINGS-smpp-sourcenumber" desc="Enter the mobile number MSISN,APN your SMPP service provider has given you. This must be in international format." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-host" desc="Enter the host address your provider has given you." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-port" desc="Enter the port number your SMPP service provider has given you." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-usernamepass" desc="Enter the username and password your SMPP service provider has given you." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-Source-npi" desc="Enter the Source NPI number your SMPP service provider has given you. The will usually be 1." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-source-ton" desc="Enter the Source TON number your SMPP service provider has given you. This will usually be 1." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-use-source" desc="Ticking this box makes the SMPP provider use the mobile number as the reply number if it does not do this by default." />
+	<hinttip tipid="GLOBALSETTINGS-smpp-use-tlv" desc="Concatenated messages are individual messages joined together to make them look as one long message. Most modern mobile phones support concatenation and you will need to find out from your SMPP provider whether they use TLV or UDH to concatenate messages." />	
+	<hinttip tipid="GLOBALSETTINGS-smpp-enquire-link" desc="Some providers require a link to be sent periodically to keep the connection alive. Enter the time period here." />
+
+	
+	<hinttip tipid="GLOBALSETTINGS-look-feel" desc="Select the colour to change Mobile Data Now to." />
+	
+	
+<!-- Recycle Bin -->
+
+
+	
+<!-- Deployment screen -->
+	<hinttip tipid="ENDUSERACCESS-deployment_usersgroups_windows" desc="Select which users and/or groups are to receive the deployment email, which details how they can query the data sources." />
+	<hinttip tipid="ENDUSERACCESS-deployment_usersgroups_send" desc="Sends the deployment email to the users." />
+	<hinttip tipid="ENDUSERACCESS-deployment_templates_name" desc="Enter the name of the person who the email is from." />
+	<hinttip tipid="ENDUSERACCESS-deployment_templates_emailaddress" desc="Enter the senders email address." />
+	<hinttip tipid="ENDUSERACCESS-deployment_templates_subject" desc="Enter the subject of the email." />
+	<hinttip tipid="ENDUSERACCESS-deployment_templates_body" desc="Type how you want the email to read to your users. Some basic information has already been included." />
+
+<!-- Old and not used -->
+	<hinttip tipid="HEADER-user licenses" desc="Shows the maximum number of users licensed for this installation of Mobile Data Now. You can add more users buy purchasing additional users licenses through the 'User Licenses' link."/>
+	<hinttip tipid="HEADER-more users" desc="Buy additional users for your installation of Mobile Data Now."/>
+    <hinttip tipid="HEADER-days" desc="Indicates the number of days left before the license expires and the need to re-purchase the license. If this is a perpetual license, you never need to re-purchase a license."/>
+	
+	
+	
+</hinttip-root>	

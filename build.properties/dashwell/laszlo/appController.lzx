@@ -1,0 +1,1723 @@
+<library>
+	<class name="appController" >
+		
+		<attribute name="userID" />
+		<attribute name="currDB" type="string" value="null"/>
+		<attribute name="currLanguage" type="string" value="null">		
+		</attribute>
+		<attribute name="currProject" type="string" value="null"/>
+		<!-- <attribute name="fileUploadURL" type="string" value="null"/>
+		<attribute name="driverFileUploadURL" type="string" value="null"/>
+		<attribute name="projectFileUploadURL" type="string" value="null"/> -->
+		<attribute name="secureLoginLink" type="string" value="null"/>
+		
+		<attribute name="MdnServerLog" type="string" value="null"/>
+		<attribute name="MdnServerError" type="string" value="null"/>
+		<attribute name="EmailServerLog" type="string" value="null"/>
+		<attribute name="EmailServerError" type="string" value="null"/>
+		<attribute name="SmsServerLog" type="string" value="null"/>
+		<attribute name="SmsServerError" type="string" value="null"/>
+		<attribute name="IMServerLog" type="string" value="null"/>
+		<attribute name="IMServerError" type="string" value="null"/>
+		
+		<attribute name="stime"/>
+		
+		<method name="getLanguages" >
+			var d = canvas.datasets.lang;
+			d.setQueryParam("action", "lang");
+			d.doRequest();			
+		</method>
+		<!-- Sets the selected language. The language argument is in the short form,
+		     e.g., en, de, sp, ... -->
+		<method name="setLanguage" args="selLanguage">
+			Debug.write('Current language is ' + this.getAttribute("currLanguage"));
+			if (selLanguage == ''){
+				Debug.write("no language stated");
+				return;
+			}
+			if (selLanguage != this.getAttribute("currLanguage")){
+				this.currLanguage = selLanguage;
+				Debug.write('Change language to ' + this.getAttribute("currLanguage"));
+				var d = canvas.datasets.gui;
+				d.setQueryParam("action", "gui-definition");
+				d.setQueryParam("language", selLanguage);
+				d.doRequest();
+			}
+		</method>
+		<method name="getNewLanguage">
+			var d = canvas.datasets.langReq;
+			d.setQueryParam("action", "getNewLanguage");
+			d.doRequest();			
+		</method>
+		<method name="getLanguage" args="languageId">
+			var d = canvas.datasets.langReq;
+			d.setQueryParam("action", "getLanguage");
+			d.setQueryParam("languageId", languageId);
+			d.doRequest();			
+		</method>
+		<method name="requestFileUpload" args="languageId, language">
+			var params = new LzParam();
+			params.addValue('action', 'uploadLanguageFile');
+			params.addValue('languageId', languageId);
+			params.addValue('language', language);
+			var d = canvas.datasets.dbFileUpload;
+			d.setQueryString(params);
+			d.doRequest();
+		</method>
+		<method name="saveLanguage" args="languageId, languageName, fileName, defaultLang">
+			var d = canvas.datasets.langReq;
+			d.setQueryParam("action", "saveLanguage");
+			d.setQueryParam("languageId", languageId);
+			d.setQueryParam("languageName", languageName);
+			d.setQueryParam("fileName", fileName);
+			d.setQueryParam("defaultLang", defaultLang);
+			d.doRequest();			
+		</method>
+		<method name="saveLanguageAsDefault" args="languageId">
+			var d = canvas.datasets.langReq;
+			d.setQueryParam("action", "saveLanguageAsDefault");
+			d.setQueryParam("languageId", languageId);
+			d.doRequest();			
+		</method>
+		<method name="recycleLanguage" args="languageId">
+			var d = canvas.datasets.langDelete;
+			d.setQueryParam("action", "recycleLanguage");
+			d.setQueryParam("languageId", languageId);
+			d.doRequest();		
+		</method>		
+		<!-- **************************************************************************************** -->
+		<!-- Project -->
+		<!-- **************************************************************************************** -->		
+		<method name="navHome">
+            var d = canvas.datasets.navHome;
+            d.setQueryParam("action", "navHome");
+            d.doRequest();	
+            Debug.write("received navHome: " + d.serialize());            	
+		</method>
+		<method name="getDefaultProject">
+			var params = new LzParam();
+			params.addValue('action', 'getDefaultProject');
+			dbProjectDefault.setQueryString(params);
+			dbProjectDefault.doRequest();
+		</method>
+		<method name="getProjectReadOnly" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getProject');
+			params.addValue('projectId', projectId);
+			dbProjectReadOnly.setQueryString(params);
+			dbProjectReadOnly.doRequest();
+		</method>
+		<method name="getProject" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getProject');
+			params.addValue('projectId', projectId);
+			dbProject.setQueryString(params);
+			dbProject.doRequest();
+		</method>		
+		<method name="displayHome" args="projectId">
+			getProject(projectId);
+			projectTabs.currTab.setCaptions('Project Summary', 'Project Information');
+			//this.currProject = projectName;
+			canvas.switchMainView('_home');
+		</method>
+		
+		<method name="displayNewHome">
+			projectTabs.currTab.setCaptions('Project Summary', 'New Project');
+			canvas.switchMainView('_newHome');
+			newProjectHomeView.clearData();
+		</method>
+				
+		<method name="displayExport" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getExportStructure');
+			params.addValue('projectId', projectId);
+			dbExportStruc.setQueryString(params);
+			dbExportStruc.doRequest(); 
+			projectTabs.currTab.setCaptions('Export Project');//, 'Selected Project: ' + projectName
+			//this.currProject = projectName;
+			canvas.switchMainView('_export');
+		</method>
+		<method name="recycleProject" args="projectID">
+			var params = new LzParam();
+			params.addValue('action', 'recycleProject', true);
+			params.addValue('projectID', projectID, true);
+			dbProjectDelete.setQueryString(params);
+			dbProjectDelete.doRequest();
+		</method>		
+		<method name="updateProjectRecycleBin" >
+			var params = new LzParam();
+			params.addValue('action', 'updateProjectRecycleBin', true);
+			recycleData.setQueryString(params);			
+			recycleData.doRequest();
+		</method>
+		<method name="navigateProject" args="projectId">
+            var d = canvas.datasets.navProject;
+            d.setQueryParam("action", "navigateProject");
+            d.setQueryParam("projectId", projectId);
+            d.doRequest();	
+            Debug.write("received navProject: " + d.serialize());
+		</method>
+		<method  name="importProject" args="filename">
+            var d = canvas.datasets.importprojectFile;
+            d.setQueryParam("action", "importProject");
+            d.setQueryParam("filename", filename);
+            d.doRequest();				
+		</method>
+		<!-- **************************************************************************************** -->
+		<!-- Databases -->
+		<!-- **************************************************************************************** -->
+		<method name="updateDatabases" args="projectId">
+			var d = canvas.datasets.dbNavDbs;
+			d.setQueryParam("action", "navDbs");
+			d.setQueryParam("projectId", projectId);
+			d.doRequest();
+		</method>
+		
+		<method name="getTablesTree" args="projectId, connID">
+			var params = new LzParam();
+			params.addValue('action', 'getTables', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			dbTablesTree.setQueryString(params);
+			dbTablesTree.doRequest();
+		</method>
+<!-- 
+		<method name="getJoins" args="connID">
+			var params = new LzParam();
+			params.addValue('action', 'getJoins', true);
+			params.addValue('connID', connID, true);
+			dbJoins.setQueryString(params);
+			dbJoins.doRequest();
+		</method>
+ -->		
+		<method name="getTablesViewTreeNew" args="projectId, connID, viewID">
+			var params = new LzParam();
+			params.addValue('action', 'getTablesView', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			dbTablesViewTreeNew.setQueryString(params);
+			dbTablesViewTreeNew.doRequest();
+		</method>
+
+		<method name="getTablesViewTree" args="projectId, connID, viewID">
+			var params = new LzParam();
+			params.addValue('action', 'getTablesView', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			dbTablesViewTree.setQueryString(params);
+			dbTablesViewTree.doRequest();
+		</method>
+		
+		<method name="displayViews" args="selDB">
+			projectTabs.currTab.setCaptions(selDB, 'Add View');
+			canvas.switchMainView('_dbViews');
+			this.maintab.setAttribute("currDBView", '_dbViews');
+		</method>
+
+		<method name="displayView" args="selDB, viewID">
+			projectTabs.currTab.setCaptions(selDB, 'View Definition' );
+			canvas.switchMainView('_dbView');
+			//this.maintab.setAttribute("currDBView", '_dbView');
+		</method>
+				
+		<method name="getTable" args="tableID,includeFields">
+			var params = new LzParam();
+			params.addValue('action', 'getTable', true);
+			params.addValue('tableID', tableID, true);
+			params.addValue('includeFields', includeFields, true);
+			dbTable.setQueryString(params);
+			dbTable.doRequest();
+		</method>
+
+		<method name="getLeftTable" args="tableID,includeFields">
+			var params = new LzParam();
+			params.addValue('action', 'getTable', true);
+			params.addValue('tableID', tableID, true);
+			params.addValue('includeFields', includeFields, true);
+			dbLeftTable.setQueryString(params);
+			dbLeftTable.doRequest();
+		</method>
+
+		<method name="getRightTable" args="tableID,includeFields">
+			var params = new LzParam();
+			params.addValue('action', 'getTable', true);
+			params.addValue('tableID', tableID, true);
+			params.addValue('includeFields', includeFields, true);
+			dbRightTable.setQueryString(params);
+			dbRightTable.doRequest();
+		</method>
+		
+		<method name="getField" args="fieldID,includeTable">
+			var params = new LzParam();
+			params.addValue('action', 'getField', true);
+			params.addValue('fieldID', fieldID, true);
+			params.addValue('includeTable', includeTable, true);
+			dbField.setQueryString(params);
+			dbField.doRequest();
+		</method>
+		
+		<method name="getTableField" args="fieldID,includeTable">
+			var params = new LzParam();
+			params.addValue('action', 'getField', true);
+			params.addValue('fieldID', fieldID, true);
+			params.addValue('includeTable', includeTable, true);
+			dbTable.setQueryString(params);
+			dbTable.doRequest();
+		</method>
+<!-- 		
+		<method name="getViewsTree" args="connID">
+			var params = new LzParam();
+			params.addValue('action', 'getViews', true);
+			params.addValue('connID', connID, true);
+			dbViewsTree.setQueryString(params);
+			dbViewsTree.doRequest();
+		</method>
+ -->		
+		<method name="getView" args="viewID,includeFields">
+			<!-- 
+			var params = new LzParam();
+			params.addValue('action', 'getView', true);
+			params.addValue('viewID', viewID, true);
+			params.addValue('includeFields', includeFields, true);
+			dbView.setQueryString(params);
+			dbView.doRequest();
+			-->
+			
+			var viewDataset = canvas.datasets.dbView;
+			viewDataset.setQueryParam('action', 'getView');
+			viewDataset.setQueryParam('viewID', viewID);
+			viewDataset.setQueryParam('includeFields', includeFields);
+			viewDataset.doRequest();
+		</method>		
+
+		<method name="getViewField" args="fieldID">
+			var params = new LzParam();
+			params.addValue('action', 'getViewField', true);
+			params.addValue('fieldID', fieldID, true);
+			dbViewField.setQueryString(params);
+			dbViewField.doRequest();
+		</method>
+
+		<method name="saveViewField" args="action, fieldID, fieldDescription, fieldDisplayName">
+			var params = new LzParam();
+			params.addValue('action', action, true);
+			params.addValue('fieldID', fieldID, true);
+			params.addValue('fieldDescription', fieldDescription, true);
+			params.addValue('fieldDisplayName', fieldDisplayName, true);
+			//params.addValue('namingField', namingField, true);
+			dbViewField.setQueryString(params);
+			dbViewField.doRequest();
+		</method>
+
+		<method name="addNewView" args="projectId, connID, viewName, viewDescription, selectedTables">
+			var params = new LzParam();
+			params.addValue('action', 'addNewView', true);
+			params.addValue('projectId', projectId, true);	
+			params.addValue('connID', connID, true);
+			params.addValue('viewName', viewName, true);
+			params.addValue('viewDescription', viewDescription, true);
+			params.addValue('selectedTables', selectedTables, true);
+			dbViewReq.setQueryString(params);
+			dbViewReq.doRequest();
+		</method>
+		
+		<method name="saveView" args="projectId, connID, viewName, viewDescription, selectedTables">
+			var params = new LzParam();
+			params.addValue('action', 'saveView', true);
+			params.addValue('projectId', projectId, true);	
+			params.addValue('connID', connID, true);
+			params.addValue('viewName', viewName, true);
+			params.addValue('viewDescription', viewDescription, true);
+			params.addValue('selectedTables', selectedTables, true);
+			dbViewReq.setQueryString(params);
+			dbViewReq.doRequest();
+		</method>
+		
+		<method name="saveQuery" args="saveState, connID, queryId, tableID, queryType, sqlText, ids, rows, types, useds, indents, valueOrConditions, parents, numbers, fields, compIDs, comparisons, values, connections, value2s, groupings, userInputSeqs, userInputSeqs2, sorts, groupFieldId, projectId">
+		<![CDATA[
+			var params = new LzParam(); 
+			params.addValue('action', 'saveQuery', true);
+			params.addValue('saveState', saveState, true);
+			params.addValue('connID', connID, true);
+			params.addValue('queryId', queryId, true);
+//			params.addValue('queryName', queryName, true);
+//			params.addValue('queryDescription', queryDescription, true);
+			params.addValue('tableID', tableID, true);
+			params.addValue('queryType', queryType, true);
+			params.addValue('sqlText', sqlText, true);
+			params.addValue('ids', ids, true);
+			params.addValue('rows', rows, true);
+			params.addValue('types', types, true);
+			params.addValue('useds', useds, true);
+			params.addValue('indents', indents, true);
+			params.addValue('valueOrConditions', valueOrConditions, true);
+			params.addValue('parents', parents, true);
+			params.addValue('numbers', numbers, true);
+			params.addValue('fields', fields, true);
+			params.addValue('compIDs', compIDs, true);			
+			params.addValue('comparisons', comparisons, true);
+			params.addValue('values', values, true);
+			params.addValue('connections', connections, true);
+			params.addValue('value2s', value2s, true);
+			params.addValue('groupings', groupings, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('groupFieldId', groupFieldId, true);
+			params.addValue('userInputSeqs', userInputSeqs, true);
+			params.addValue('userInputSeqs2', userInputSeqs2, true);
+			params.addValue('projectId', projectId, true);			
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();
+		]]>
+		</method>		
+
+		<method name="saveQueryAndMsgInfo" args="saveState, projectId, queryId, queryName, queryDescription, tableID, queryType, sqlText, ids, rows, types, 
+		useds, indents, valueOrConditions, parents, numbers, fields, compIDs, comparisons, values, connections, value2s, groupings, userInputSeqs, userInputSeqs2, sorts,  
+		groupFieldId, dsType, dbId, emailId, emailKeyword, smsKeyword, imKeyword, mobileStatus, imStatus, emailDisplayResult, mobileDisplayResult,
+		 imDisplayResult, responseFormat, dsStatus, timeout, wsID" >
+		<![CDATA[
+			var params = new LzParam(); 
+
+			if(saveState == '0') {
+				params.addValue('action', 'addQueryAndMsgInfo', true);
+			}else{
+				params.addValue('action', 'editQueryAndMsgInfo', true);
+			}
+
+			params.addValue('saveState', saveState, true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('queryId', queryId, true);
+			params.addValue('queryName', queryName, true);
+			params.addValue('queryDescription', queryDescription, true);
+			
+			params.addValue('tableID', tableID, true);
+			
+			if(queryType != 'insert'){
+				params.addValue('viewID', tableID, true);
+			}
+			params.addValue('queryType', queryType, true);
+            params.addValue('dsStatus', dsStatus, true);            			
+			params.addValue('sqlText', sqlText, true);
+			params.addValue('ids', ids, true);
+			params.addValue('rows', rows, true);
+			params.addValue('types', types, true);
+			params.addValue('useds', useds, true);
+			params.addValue('indents', indents, true);
+			params.addValue('valueOrConditions', valueOrConditions, true);
+			params.addValue('parents', parents, true);
+			params.addValue('numbers', numbers, true);
+			params.addValue('fields', fields, true);
+			params.addValue('compIDs', compIDs, true);			
+			params.addValue('comparisons', comparisons, true);
+			params.addValue('values', values, true);
+			params.addValue('connections', connections, true);
+			params.addValue('value2s', value2s, true);
+			params.addValue('groupings', groupings, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('groupFieldId', groupFieldId, true);
+			params.addValue('userInputSeqs', userInputSeqs, true);
+			params.addValue('userInputSeqs2', userInputSeqs2, true);
+			
+            params.addValue('dsType',1);	 
+            params.addValue('dbId',dbId);     
+            params.addValue('queryId',queryId);	    
+            params.addValue('emailId',emailId);	    
+            	
+            params.addValue('emailKeyword',emailKeyword);	    
+            params.addValue('smsKeyword',smsKeyword);
+            params.addValue('imKeyword',imKeyword);	                	
+            	
+            params.addValue('mobileStatus',mobileStatus);	    
+            params.addValue('imStatus',imStatus);	    
+            params.addValue('emailDisplayResult',emailDisplayResult);
+            params.addValue('mobileDisplayResult',mobileDisplayResult);
+            params.addValue('imDisplayResult',imDisplayResult);
+            params.addValue('newResponseFormat', responseFormat, true);
+            params.addValue('timeout', timeout, true);            
+            params.addValue('wsID', wsID, true);            
+                        			
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();
+		]]>
+		</method>		
+
+		<method name="saveUserReply" args="saveState, userReplyId, tableID, queryType, sqlText, ids, rows, types, 
+		useds, indents, valueOrConditions, parents, numbers, fields, compIDs, comparisons, values, connections, value2s, groupings, userInputSeqs, userInputSeqs2, sorts,  
+		groupFieldId, dsType, dbId, textMsgType, textMsg, timeoutUr, newResponseFormat, queryId, parentId" >
+			var params = new LzParam(); 
+			
+			params.addValue('action', 'addUserReply', true);
+
+			params.addValue('saveState', saveState, true);
+			params.addValue('userReplyId', userReplyId, true);
+			
+			params.addValue('tableID', tableID, true);
+			
+			if(queryType != 'insert'){
+				params.addValue('viewID', tableID, true);
+			}
+			params.addValue('queryType', queryType, true);
+			params.addValue('sqlText', sqlText, true);
+			params.addValue('ids', ids, true);
+			params.addValue('rows', rows, true);
+			params.addValue('types', types, true);
+			params.addValue('useds', useds, true);
+			params.addValue('indents', indents, true);
+			params.addValue('valueOrConditions', valueOrConditions, true);
+			params.addValue('parents', parents, true);
+			params.addValue('numbers', numbers, true);
+			params.addValue('fields', fields, true);
+			params.addValue('compIDs', compIDs, true);			
+			params.addValue('comparisons', comparisons, true);
+			params.addValue('values', values, true);
+			params.addValue('connections', connections, true);
+			params.addValue('value2s', value2s, true);
+			params.addValue('groupings', groupings, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('groupFieldId', groupFieldId, true);
+			params.addValue('userInputSeqs', userInputSeqs, true);
+			params.addValue('userInputSeqs2', userInputSeqs2, true);
+			
+            params.addValue('dsType',1);	 
+            params.addValue('dbId',dbId);     
+            	
+			params.addValue('queryId', queryId, true);
+			params.addValue('parentId', parentId, true);
+						
+			params.addValue('textMsgType', textMsgType, true);
+			params.addValue('textMsg', textMsg, true);			            
+			params.addValue('timeoutUr', timeoutUr, true);			            
+			params.addValue('newResponseFormat', newResponseFormat, true);			            
+            	
+			saveUserReply.setQueryString(params);
+			saveUserReply.doRequest();
+		</method>		
+
+
+		<method name="saveQueryMsgProps" args="saveState, projectId, queryId, queryName, queryDescription, tableID, queryType, dsType, dbId, viewOrTableIdInDB, timeout, queryDSName, queryDSId" >
+			var params = new LzParam(); 
+			params.addValue('action', 'saveQueryMsgProps', true);
+			params.addValue('saveState', saveState, true);
+			params.addValue('queryId', queryId, true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('queryName', queryName, true);
+			params.addValue('queryDescription', queryDescription, true);
+			
+			params.addValue('tableID', tableID, true);
+			
+			if(queryType == 'select'){
+				params.addValue('viewID', tableID, true);
+			}
+			params.addValue('queryType', queryType, true);
+			
+            params.addValue('dsType',1);	 
+            params.addValue('dbId',dbId);     
+            params.addValue('queryId',queryId);	    
+            params.addValue('emailId',emailId);	    
+            params.addValue('viewOrTableIdInDB',viewOrTableIdInDB);	                
+
+			params.addValue('timeout', timeout, true);			            
+			params.addValue('queryDSName', quaryDSName, true);			            
+			params.addValue('queryDSId', quaryDSId, true);			            						
+            	
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();
+		</method>		
+
+		<method name="saveUserReplyProps" args="saveState, urId, msgTxt, msgDesc, queryType, dsType, dbId, viewOrTableIdInDB, parentName, parentDesc, timeout, parentId, projectId " >
+			var params = new LzParam(); 
+			params.addValue('action', 'saveUserReplyProps', true);
+			params.addValue('saveState', saveState, true);
+			params.addValue('urId', urId, true);
+			params.addValue('msgTxt', msgTxt, true);
+			params.addValue('msgDesc', msgDesc, true);
+			params.addValue('timeout', timeout, true);
+			
+			params.addValue('tableID', tableID, true);
+			
+			if(queryType == 'select'){
+				params.addValue('viewID', tableID, true);
+			}
+			params.addValue('queryType', queryType, true);
+			
+            params.addValue('dsType',1);	 
+            params.addValue('dbId',dbId);     
+            params.addValue('parentName',parentName);	    
+            params.addValue('parentDesc',parentDesc);	  
+            params.addValue('parentId',parentId);	                  
+            params.addValue('viewOrTableIdInDB',viewOrTableIdInDB);
+            params.addValue('projectId',projectId);	                
+            	
+			db_save_ur.setQueryString(params);
+			db_save_ur.doRequest();
+			
+		</method>		
+
+		<method name="saveMsgDetailsInfo" args="msgId, saveState, emailId, mobileStatus, imStatus, 
+		emailKeyword, smsKeyword, imKeyword, emailDisplayResult, mobileDisplayResult, imDisplayResult, responseFormat" >
+		<![CDATA[
+			var params = new LzParam(); 
+
+			params.addValue('action', 'saveMsgDetailsInfo', true);
+			params.addValue('saveState', saveState, true);
+			params.addValue('msgId', msgId);
+
+            params.addValue('emailId',emailId);	    
+            params.addValue('mobileStatus',mobileStatus);	    
+            params.addValue('imStatus',imStatus);	    
+			
+            params.addValue('emailKeyword',emailKeyword);	    
+            params.addValue('smsKeyword',smsKeyword);
+            params.addValue('imKeyword',imKeyword);	                	
+            	
+            params.addValue('emailDisplayResult',emailDisplayResult);
+            params.addValue('mobileDisplayResult',mobileDisplayResult);
+            params.addValue('imDisplayResult',imDisplayResult);
+            
+            params.addValue('responseFormat',responseFormat, true);   
+            			
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();
+		]]>
+		</method>		
+
+		<method name="getTableFieldForView" args="fieldID">
+			var params = new LzParam();
+			params.addValue('action', 'getTableFieldForView', true);
+			params.addValue('fieldID', fieldID, true);
+			params.addValue('includeTable', 'false', true);
+			dbViewField.setQueryString(params);
+			dbViewField.doRequest();
+		</method>
+<!--  		
+		<method name="getQuery" args="queryID">
+			var params = new LzParam();
+			params.addValue('action', 'getQuery', true);
+			params.addValue('queryID', queryID, true);
+			dbQuery.setQueryString(params);
+			dbQuery.doRequest();
+		</method>		
+
+		<method name="getQueryUr" args="queryID">
+			var params = new LzParam();
+			params.addValue('action', 'getQuery', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', 'UR', true);			
+			dbQuery.setQueryString(params);
+			dbQuery.doRequest();
+		</method>		
+
+		<method name="getNewQuery" args="ID, queryType">
+			var params = new LzParam();
+			params.addValue('action', 'getNewQuery', true);
+			params.addValue('ID', ID, true);
+			params.addValue('queryType', queryType, true);
+			dbQuery.setQueryString(params);
+			dbQuery.doRequest();
+		</method>
+-->
+<!--  	<method name="getNewSelectQueryBuilder" args="viewID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewSelectQueryBuilder', true);
+			params.addValue('viewID', viewID, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>
+-->
+		<method name="getNewSelectQueryBuilderForQueryMessage" args="viewID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewSelectQueryBuilder', true);
+			params.addValue('viewID', viewID, true);
+			qb_query_builder_query_msg_new.setQueryString(params);
+			qb_query_builder_query_msg_new.doRequest();
+		</method>
+		<method name="getNewSelectQueryBuilderForUserReply" args="viewID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewSelectQueryBuilder', true);
+			params.addValue('viewID', viewID, true);
+			qb_query_builder_user_reply_new.setQueryString(params);
+			qb_query_builder_user_reply_new.doRequest();
+		</method>
+<!--  
+		<method name="getNewUpdateQueryBuilder" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewUpdateQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>
+-->
+		<method name="getNewUpdateQueryBuilderForQueryMessage" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewUpdateQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder_query_msg_new.setQueryString(params);
+			qb_query_builder_query_msg_new.doRequest();
+		</method>
+		<method name="getNewUpdateQueryBuilderForUserReply" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewUpdateQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder_user_reply_new.setQueryString(params);
+			qb_query_builder_user_reply_new.doRequest();
+		</method>
+<!--  
+		<method name="getNewInsertQueryBuilder" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewInsertQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>
+-->
+		<method name="getNewInsertQueryBuilderForQueryMessage" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewInsertQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder_query_msg_new.setQueryString(params);
+			qb_query_builder_query_msg_new.doRequest();
+		</method>
+		<method name="getNewInsertQueryBuilderForUserReply" args="tableID">
+			var params = new LzParam();
+			params.addValue('action', 'getNewInsertQueryBuilder', true);
+			params.addValue('tableID', tableID, true);
+			qb_query_builder_user_reply_new.setQueryString(params);
+			qb_query_builder_user_reply_new.doRequest();
+		</method>
+		
+<!--  		<method name="getSelectQueryBuilder" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>-->
+
+		<method name="getSelectQueryBuilderForQueryMessage" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_query_msg.setQueryString(params);
+			qb_query_builder_query_msg.doRequest();
+		</method>
+		<method name="getSelectQueryBuilderForUserReply" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_user_reply.setQueryString(params);
+			qb_query_builder_user_reply.doRequest();
+		</method>
+<!-- 		<method name="getUpdateQueryBuilder" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>-->
+
+		<method name="getUpdateQueryBuilderForQueryMessage" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_query_msg.setQueryString(params);
+			qb_query_builder_query_msg.doRequest();
+		</method>
+		<method name="getUpdateQueryBuilderForUserReply" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_user_reply.setQueryString(params);
+			qb_query_builder_user_reply.doRequest();
+		</method>
+<!--  		<method name="getInsertQueryBuilder" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder.setQueryString(params);
+			qb_query_builder.doRequest();
+		</method>-->
+
+		<method name="getInsertQueryBuilderForQueryMessage" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_query_msg.setQueryString(params);
+			qb_query_builder_query_msg.doRequest();
+		</method>
+		<method name="getInsertQueryBuilderForUserReply" args="queryID, objType">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryBuilder', true);
+			params.addValue('queryID', queryID, true);
+			params.addValue('objType', objType, true);
+			qb_query_builder_user_reply.setQueryString(params);
+			qb_query_builder_user_reply.doRequest();
+		</method>
+		
+		
+		<method name="getSelectQueryResultNew" args="projectId, connID, viewID, sqlString, sorts, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_new.setQueryString(params);
+			qb_query_result_new.doRequest();
+		</method>
+		<method name="getEmptySelectQueryResultNew">
+			var params = new LzParam();
+			params.addValue('action', 'getEmptySelectQueryResult', true);
+			qb_query_result_new.setQueryString(params);
+			qb_query_result_new.doRequest();
+		</method>
+		<method name="getSelectQueryResultEdit" args="projectId, connID, viewID, sqlString, sorts, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_edit.setQueryString(params);
+			qb_query_result_edit.doRequest();
+		</method>
+		<method name="getEmptySelectQueryResultEdit">
+			var params = new LzParam();
+			params.addValue('action', 'getEmptySelectQueryResult', true);
+			qb_query_result_edit.setQueryString(params);
+			qb_query_result_edit.doRequest();
+		</method>		
+		<method name="getSelectQueryResultUrNew" args="projectId, connID, viewID, sqlString, sorts, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_new.setQueryString(params);
+			qb_query_result_ur_new.doRequest();
+		</method>				
+		<method name="getEmptySelectQueryResultUrNew">
+			var params = new LzParam();
+			params.addValue('action', 'getEmptySelectQueryResult', true);
+			qb_query_result_ur_new.setQueryString(params);
+			qb_query_result_ur_new.doRequest();
+		</method>
+		<method name="getSelectQueryResultUrEdit" args="projectId, connID, viewID, sqlString, sorts, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getSelectQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('viewID', viewID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('sorts', sorts, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_edit.setQueryString(params);
+			qb_query_result_ur_edit.doRequest();
+		</method>
+		<method name="getEmptySelectQueryResultUrEdit">
+			var params = new LzParam();
+			params.addValue('action', 'getEmptySelectQueryResult', true);
+			qb_query_result_ur_edit.setQueryString(params);
+			qb_query_result_ur_edit.doRequest();
+		</method>		
+		<method name="getUpdateQueryResultNew" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_new.setQueryString(params);
+			qb_query_result_new.doRequest();
+		</method>
+		<method name="getUpdateQueryResultEdit" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_edit.setQueryString(params);
+			qb_query_result_edit.doRequest();
+		</method>		
+		<method name="getUpdateQueryResultUrNew" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_new.setQueryString(params);
+			qb_query_result_ur_new.doRequest();
+		</method>		
+		<method name="getUpdateQueryResultUrEdit" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getUpdateQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_edit.setQueryString(params);
+			qb_query_result_ur_edit.doRequest();
+		</method>
+				
+		<method name="getInsertQueryResultNew" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_new.setQueryString(params);
+			qb_query_result_new.doRequest();
+		</method>
+		<method name="getInsertQueryResultEdit" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_edit.setQueryString(params);
+			qb_query_result_edit.doRequest();
+		</method>
+		<method name="getInsertQueryResultUrNew" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_new.setQueryString(params);
+			qb_query_result_ur_new.doRequest();
+		</method>
+		<method name="getInsertQueryResultUrEdit" args="projectId, connID, sqlString, userInputTestValues">
+			var params = new LzParam();
+			params.addValue('action', 'getInsertQueryResult', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('connID', connID, true);
+			params.addValue('sql', sqlString, true);
+			params.addValue('userInputTestValues', userInputTestValues, true);
+			qb_query_result_ur_edit.setQueryString(params);
+			qb_query_result_ur_edit.doRequest();
+		</method>
+						
+		<method name="updateQueryDeleteStatus" args="action,queryID">
+			var params = new LzParam();
+			params.addValue('action', action, true);
+			params.addValue('queryID', queryID, true);
+			dbQueryDelete.setQueryString(params);
+			dbQueryDelete.doRequest();
+		</method>		
+		
+		<method name="recycleDataView" args="viewID">
+			var params = new LzParam();
+			params.addValue('action', 'recycleDataView', true);
+			params.addValue('viewID', viewID, true);
+			dbViewDelete.setQueryString(params);
+			dbViewDelete.doRequest();
+		</method>
+		
+		<method name="updateUsersRecycleBin" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'recycleUsersGroups', true);
+			params.addValue('projectId', projectId, true);
+			recycleData.setQueryString(params);			
+			recycleData.doRequest();
+		</method>
+
+		<method name="updateDBRecycleBin" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'recycleDatabase', true);
+			params.addValue('projectId', projectId, true);
+			recycleData.setQueryString(params);			
+			recycleData.doRequest();
+		</method>
+		
+
+
+		<method name="getAllSampleWebServices">
+			var params = new LzParam();
+			params.addValue('action', 'getAllSampleWebServices', true);
+			dbSampleWebServices.setQueryString(params);
+			dbSampleWebServices.doRequest();
+		</method>			
+
+		<method name="getAllThirdPartyWebServices">
+			var params = new LzParam();
+			params.addValue('action', 'getAllThirdPartyWebServices', true);
+			dbThirdPartyWebServices.setQueryString(params);
+			dbThirdPartyWebServices.doRequest();
+		</method>	
+		
+		<method name="getWebServiceDescription" args="WSDLUrl, selectedOperation">
+			Debug.write("getWebServiceDescription ========================= " + selectedOperation + WSDLUrl);
+			var params = new LzParam();
+			params.addValue('action', 'getWebServiceDescription', true);
+			params.addValue('WSDLUrl', WSDLUrl, true);
+			Debug.write("selectedOperation", selectedOperation);
+			params.addValue('selectedOperation', selectedOperation, true);
+			dbWebServiceDescription.setQueryString(params);
+			dbWebServiceDescription.doRequest();
+		</method>		
+
+
+		<method name="getWebServiceOperation" args="id">
+			var params = new LzParam();
+			params.addValue('action', 'getWebServiceOperation', true);
+			params.addValue('id', id, true);
+			dbWebServiceOperation.setQueryString(params);
+			dbWebServiceOperation.doRequest();
+		</method>
+
+		<method name="saveWebServiceOperation" args="id, name, description, url, service, port, operation, projectId">
+			var params = new LzParam();
+			params.addValue('action', 'saveWebServiceOperation', true);
+			params.addValue('id', id, true);
+			params.addValue('name', name, true);
+			params.addValue('description', description, true);
+			params.addValue('url', url, true);
+			params.addValue('service', service, true);
+			params.addValue('port', port, true);
+			params.addValue('operation', operation, true);
+			params.addValue('projectId', projectId, true);
+			dbWebServiceOperationReq.setQueryString(params);
+			dbWebServiceOperationReq.doRequest();
+		</method>
+
+		<method name="getWebServiceDetails" args="WSDLUrl, operation">
+			var params = new LzParam();
+			params.addValue('action', 'getWebServiceDetails', true);
+			params.addValue('WSDLUrl', WSDLUrl, true);
+			params.addValue('operation', operation, true);
+			qb_views.setQueryString(params);
+			qb_views.doRequest();
+		</method>
+		
+		<method name="getNewQueryCriteriaOfWebServiceDetails" args="WSDLUrl, service, port,  operation">
+			var params = new LzParam();
+			params.addValue('action', 'getQueryCriteriaOfWebServiceDetails', true);
+			params.addValue('WSDLUrl', WSDLUrl, true);
+			params.addValue('service', service, true);
+			params.addValue('port', port, true);
+			params.addValue('operation', operation, true);
+			qb_query_builder_query_msg_new.setQueryString(params);
+			qb_query_builder_query_msg_new.doRequest();
+		</method>	
+		
+		<method name="getAllWebServiceOperations" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getAllWebServiceOperations', true);
+			params.addValue('projectId', projectId, true);
+			dbWebServiceOperations.setQueryString(params);
+			dbWebServiceOperations.doRequest();
+		</method>				
+		<!-- **************************************************************************************** -->
+		<!-- Finish Databases -->
+		<!-- **************************************************************************************** -->
+
+		
+		<!-- **************************************************************************************** -->
+		<!-- Group / User -->
+		<!-- **************************************************************************************** -->
+		<method name="getAllUsersGroups" args="projectId">
+            var d = canvas.datasets.dbUsergroups;
+            d.setQueryParam("action", "usergroups");
+            d.setQueryParam("projectId", projectId);
+            d.doRequest();		
+		</method>
+		
+		<method name="displayGroup" args="groupName,groupID">
+			Debug.write("Need to retrieve data for group with groupID=" + groupID);
+			projectTabs.currTab.setCaptions('Group Definition', groupName);
+			/*var d = canvas.datasets.dbGroup;
+			d.setQueryParam("action", "dbGroup");
+			d.setQueryParam("group-id", groupID);
+			d.doRequest();*/
+			
+		    var params = new LzParam();
+        	params.addValue('action', 'dbGroup', true);
+        	params.addValue('group-id', groupID, true);
+		    dbGroup.setQueryString(params);
+        	dbGroup.doRequest();			
+        	
+        	canvas.switchMainView('_group');
+		</method>
+		
+		<method name="displayUser" args="projectId, userName,userID">
+			projectTabs.currTab.setCaptions('User Definition', userName);
+		    var params = new LzParam();
+        	params.addValue('action', 'displayUser', true);
+        	params.addValue('user-id', userID, true);
+        	params.addValue('projectId', projectId, true);        	
+		    displayUserInfo.setQueryString(params);
+        	displayUserInfo.doRequest();
+			canvas.switchMainView('_user');
+		</method>
+
+		<method name="displayEmptyUser" args="projectId">
+			projectTabs.currTab.setCaptions('New User', '');
+			var params = new LzParam();
+        	params.addValue('action', 'displayNewUser', true);
+        	params.addValue('projectId', projectId, true);
+		    userNew.setQueryString(params);
+        	userNew.doRequest();
+			canvas.switchMainView('_newUser');
+		</method>
+
+		<method name="displayEmptyGroup">
+			projectTabs.currTab.setCaptions("New Group", "");
+			canvas.switchMainView('_newGroup');
+		</method>
+		
+		<method name="getGroupPermissions" args="projectId, groupID">
+			projectTabs.currTab.setCaptions("Group Permissions", "");
+			var params = new LzParam();
+			params.addValue('action', 'getGroupViewPermissions', true);
+			params.addValue('projectId', projectId, true);
+			params.addValue('groupID', groupID, true);
+			dbGroupViewPermissions.setQueryString(params);
+			dbGroupViewPermissions.doRequest();
+			
+			var params2 = new LzParam();
+			params2.addValue('action', 'getGroupTablePermissions', true);
+			params2.addValue('projectId', projectId, true);
+			params2.addValue('groupID', groupID, true);
+			dbGroupTablePermissions.setQueryString(params2);
+			dbGroupTablePermissions.doRequest();			
+		</method>			
+		
+		<method name="displayCustomQuery">
+			projectTabs.currTab.setCaptions("Custom Query Values", "");
+
+			var params = new LzParam();
+			params.addValue('action', 'displayCustomQuery', true);
+			addCustom.setQueryString(params);
+			addCustom.doRequest();			
+			
+			canvas.switchMainView('_customQuery');			
+		</method>		
+		 
+		<method name="updateDbUsergroups">
+			var d = canvas.datasets.dbUsergroups;
+			d.setQueryParam("action", "usergroups");
+			d.doRequest();
+		</method>				
+
+		<method name="updateUserDeleteStatus" args="action, userID,projectId">
+			var params = new LzParam();
+			params.addValue('action', action, true);
+			params.addValue('userID', userID, true);
+			params.addValue('projectId', projectId, true);
+			dbNew.setQueryString(params);
+			dbNew.doRequest();
+		</method>
+		
+		<method name="updateGroupDeleteStatus" args="action,groupID,projectId">
+			var params = new LzParam();
+			params.addValue('action', action, true);
+			params.addValue('group-id', groupID, true);
+			params.addValue('groupID', groupID, true);
+			params.addValue('projectId', projectId, true);
+			dbNew.setQueryString(params);
+			dbNew.doRequest();
+			displayEmptyGroup();//switch to _newGroup
+			newGroupView.clearDataFromNewGroupPage();			
+		</method>
+
+		<method name="copyUserToGroup" args="UserId,groupId,projectId">
+			var params = new LzParam();
+			params.addValue('action', 'copyUserToGroup', true);
+			params.addValue('userName', UserId, true);//UserId
+			params.addValue('groupId', groupId, true);			
+			params.addValue('projectId', projectId, true);
+			userGroup.setQueryString(params);
+			userGroup.doRequest();
+			//displayEmptyUser();//switch to _newUser
+			//dbUserView.clearDataFromNewUserPage();			
+		</method>
+
+		<method name="getAllView" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getGroupViewPermissions', true);
+			params.addValue('projectId', projectId, true);
+			dbGroupViewPermissionsNew.setQueryString(params);
+			dbGroupViewPermissionsNew.doRequest();
+			
+			
+			var params2 = new LzParam();
+			params2.addValue('action', 'getGroupTablePermissions', true);
+			params2.addValue('projectId', projectId, true);
+			dbGroupTablePermissionsNew.setQueryString(params2);
+			dbGroupTablePermissionsNew.doRequest();						
+			
+		</method>	
+		<!-- **************************************************************************************** -->
+		<!-- Finish Group / User -->
+		<!-- **************************************************************************************** -->
+				
+		
+
+		<!-- **************************************************************************************** -->
+		<!-- Settings -->
+		<!-- **************************************************************************************** -->		
+		<method name="generalSettings" args="selDB">
+			settingBox.setCaptions("General Settings", "");
+			settingBox.switchMainView('_generalSett');
+		</method>
+		<method name="updateSettingsRecycleBin" >
+			var params = new LzParam();
+			params.addValue('action', 'updateSettingsRecycleBin', true);
+			recycleData.setQueryString(params);			
+			recycleData.doRequest();
+		</method>				
+		<method name="showAccount" >
+			settingBox.setCaptions("", "");
+			settingBox.switchMainView('_accountSett');
+		</method>
+		<method name="showDbDrivers" >
+			settingBox.setCaptions("Database Driver Settings", "");
+			settingBox.switchMainView('_driversSett');
+		</method>
+		
+		<method name="showDbDriver" >
+			settingBox.setCaptions("Database Driver Settings", "");
+			settingBox.switchMainView('_driverSett');
+		</method>	
+			
+		<method name="showMirrorDB" args="selDB">
+			settingBox.setCaptions("Settings for Mirrored Databases", "");
+			settingBox.switchMainView('_mirrorSett');
+		</method>
+		
+		<method name="showLanguage">
+			settingBox.setCaptions("Language Setting", "");
+			settingBox.switchMainView('_LanguageSett');
+		</method>
+		
+		<method name="showLookAndFeel">
+			settingBox.setCaptions("Look &amp; Feel", "");
+			settingBox.switchMainView('_lookSett');
+		</method>
+		
+		<!--  IM connection methods. -->
+		<method name="showMessaging">
+			settingBox.setCaptions("Messaging Settings", "");
+			settingBox.switchMainView('_msg');
+		</method>
+		
+		<method name="displayEmptyIMConnection">
+			settingBox.setCaptions("Add Instant Messaging", "");		
+			Debug.write('Display Empty IM connection');
+			settingBox.switchMainView('_newIM');
+		</method>
+
+		<method name="getNavSett" >
+            var d = canvas.datasets.navSett;
+            d.setQueryParam("action", "navSett");
+            d.doRequest();
+		</method>
+
+		<method name="getDrivers" >
+            var d = canvas.datasets.dbDrivers;
+            d.setQueryParam("action", "getDrivers");
+            d.doRequest();
+		</method>
+
+		<method name="getDriver" args="id">
+            var d = canvas.datasets.dbDriver;
+            d.setQueryParam("action", "getDriver");
+            d.setQueryParam('id', id, true);
+            d.doRequest();
+		</method>
+
+		<method name="getNewDriver">
+            var d = canvas.datasets.dbDriver;
+            d.setQueryParam("action", "getNewDriver");
+            d.doRequest();
+		</method>
+		
+		<method name="requestDriverFileUpload" args="driverId, driverName">
+			var params = new LzParam();
+			params.addValue('action', 'uploadDriverFile');
+			params.addValue('driverId', driverId);
+			params.addValue('driverName', driverName);
+			var d = canvas.datasets.dbDriverFileUpload;
+			d.setQueryString(params);
+			d.doRequest();
+		</method>
+				
+		<method name="addNewDriver" args="driverName, driver, urlFormat, description, fileName">
+            var d = canvas.datasets.dbDriverReq;
+            d.setQueryParam("action", "addNewDriver");
+            d.setQueryParam("driverName", driverName);
+            d.setQueryParam("driver", driver);
+            d.setQueryParam("urlFormat", urlFormat);
+            d.setQueryParam("description", description);
+            d.setQueryParam("fileName", fileName);
+            d.doRequest();
+		</method>		
+
+		<method name="saveDriver" args="driverId, driverName, driver, urlFormat, description, fileName">
+            var d = canvas.datasets.dbDriverReq;
+            d.setQueryParam("action", "saveDriver");
+            d.setQueryParam("driverId", driverId);
+            d.setQueryParam("driverName", driverName);
+            d.setQueryParam("driver", driver);
+            d.setQueryParam("urlFormat", urlFormat);
+            d.setQueryParam("description", description);
+            d.setQueryParam("fileName", fileName);
+            d.doRequest();
+		</method>	
+
+		<method name="deleteDriver" args="driverName">
+            var d = canvas.datasets.dbDriverReq;
+            d.setQueryParam("action", "deleteDriver");
+            d.setQueryParam("driverName", driverName);
+            d.doRequest();
+		</method>	
+
+		<method name="recycleDriver" args="driverId">
+            var d = canvas.datasets.dbDriverReq;
+            d.setQueryParam("action", "recycleDriver");
+            d.setQueryParam("driverId", driverId);
+            d.doRequest();
+		</method>
+		
+		<method name="getAndDisplayConn" args="imID">
+			settingBox.setCaptions("Instant Messaging Definition", "");		
+			var params = new LzParam();
+			params.addValue('action', 'imConn', true);
+			params.addValue('imID', imID, true);
+			imView.setQueryString(params);
+			imView.doRequest();
+			settingBox.switchMainView('_imConn');
+		</method>
+		
+		<method name="deleteIMConn" args="id">
+			var params = new LzParam();
+			params.addValue('action', 'deleteIm', true);
+			params.addValue('id', id, true);
+			imView.setQueryString(params);
+			imView.doRequest();
+			settingBox.switchMainView('_newIM');
+		</method>			
+
+		<!--  Email methods. -->
+		<method name="editMdnEmail" args="id">
+			settingBox.setCaptions("MDN Email Setting", "");
+		    var params = new LzParam();
+        	params.addValue('action', 'displayEmailSett', true);
+        	params.addValue('emailId', id, true);
+		    dbEmail.setQueryString(params);
+        	dbEmail.doRequest();//dbSetsave
+			settingBox.switchMainView('_editMdnEmail');
+		</method>
+		<method name="addMdnEmail">
+			settingBox.setCaptions("Add MDN Email Setting", "");
+			settingBox.switchMainView('_addMdnEmail');
+		</method>
+		
+		<method name="deleteEmailSett" args="id">
+			var params = new LzParam();
+			params.addValue('action', 'deleteEmailSett', true);
+			params.addValue('emailId', id, true);
+			dbEmail.setQueryString(params);
+			dbEmail.doRequest();
+			settingBox.switchMainView('_addMdnEmail');
+		</method>			
+		
+		<method name="recycleSmpp" args="id">
+			var params = new LzParam();
+			params.addValue('action', 'recycleSmpp', true);
+			params.addValue('smppId', id, true);
+			dbSmppSave.setQueryString(params);
+			dbSmppSave.doRequest();
+			settingBox.switchMainView('_addSmpp');
+		</method>			
+		
+		<method name="displayPubMsgLog">
+			settingBox.setCaptions("Public Message Logs", "");
+			
+			var params = new LzParam();
+			params.addValue('action', 'displayPubMsgLog', true);
+			dbPubMsgLog.setQueryString(params);
+			dbPubMsgLog.doRequest(); 
+			
+			settingBox.switchMainView('_pubMsgLog');		
+		</method>
+		<!-- SMS Method -->
+		<method name="displaySmsSett">
+			settingBox.setCaptions("GSM Modem Setting", "");
+		    var params = new LzParam();
+        	params.addValue('action', 'showSms', true);
+		    dbSetsave.setQueryString(params);
+        	dbSetsave.doRequest();
+			settingBox.switchMainView('_smsSett');
+		</method>
+		<method name="displaySmsConn">
+			settingBox.setCaptions("GSM Modem Connection", "");		
+		    var params = new LzParam();
+        	params.addValue('action', 'showSms', true);
+		    dbSetsave.setQueryString(params);
+        	dbSetsave.doRequest();
+			settingBox.switchMainView('_smsConn');
+		</method>
+
+<!-- **************************************************************************************** -->
+<!-- End-User Access -->
+<!-- **************************************************************************************** -->
+		<method name="displayMsgSeperator" >
+			settingBox.setCaptionsNew("gui:/gui-labels/tree-msg-sep/@label", "");
+		    var params = new LzParam();
+        	params.addValue('action', 'displayMsgSeperator', true);
+		    dbSep.setQueryString(params);
+        	dbSep.doRequest();
+			settingBox.switchMainView('_conditionSeparator');
+			//canvas.switchMainView('_conditionSeparator');
+		</method>
+		
+		<method name="displayMsgControles" >
+			//settingBox.setCaptionsNew("gui:/gui-labels/tree-msg-controls/@label", "");
+			settingBox.setCaptions("Public Messaging Controls", "");
+			
+		    var params = new LzParam();
+        	params.addValue('action', 'msgControls', true);
+		    dbMsgControls.setQueryString(params);
+        	dbMsgControls.doRequest();
+			settingBox.switchMainView('_msgControles');
+			//canvas.switchMainView('_conditionSeparator');
+		</method>
+		
+		<method name="displaySearchMsg" >
+			settingBox.setCaptions("Message Keywords Search", "");
+			
+		    var params = new LzParam();
+        	params.addValue('action', 'displaySearchKeywords', true);
+		    dbSearch.setQueryString(params);
+        	dbSearch.doRequest();
+			settingBox.switchMainView('_searchMsg');
+		</method>		
+		
+		<method name="displaySmpp" args="id" >
+			settingBox.setCaptions("SMPP Connection", "");
+			
+		    var params = new LzParam();
+        	params.addValue('action', 'displaySmpp', true);
+        	params.addValue('id', id);
+		    dbSmppSett.setQueryString(params);
+        	dbSmppSett.doRequest();
+			settingBox.switchMainView('_gatewaySmppSett');
+		</method>				
+		
+		<method name="displayAddSmpp" >
+			settingBox.setCaptions("Add new SMPP connection", "");
+			
+		    var params = new LzParam();
+			settingBox.switchMainView('_addSmpp');
+		</method>						
+		
+		<method name="navEndUserAccess" args="projectId">
+            var d = canvas.datasets.navPres;
+            d.setQueryParam("action", "navPres");
+            d.setQueryParam("projectId", projectId);            
+            d.doRequest();	
+            Debug.write("received navPres: " + d.serialize());		
+			/*
+	        var params = new LzParam(); 
+	        params.addValue('action', 'navPres', true);
+			navPres.setQueryString(params);
+			navPres.doRequest();
+			*/
+		</method>
+		
+		<method name="displayAddUserReply" args="msgId,projectId">
+			projectTabs.currTab.setCaptions("Add User Reply", "");		
+		    var params = new LzParam();
+        	params.addValue('action', 'displayEmptyUserReply', true);
+        	params.addValue('msgId', msgId, true);
+        	params.addValue('projectId', projectId, true);    	        	
+		    dbUserReply.setQueryString(params);
+        	dbUserReply.doRequest();
+			canvas.switchMainView('_addUserReply');
+		</method>
+
+		<method name="displayUrPropsInfo" args="urId,projectId">
+			projectTabs.currTab.setCaptions("User Reply Definition", "");		
+		    var params = new LzParam();
+        	params.addValue('action', 'displayUserReplyProps', true);
+        	params.addValue('urId', urId, true);    
+        	params.addValue('projectId', projectId, true);    	
+		    dbUserReply.setQueryString(params);
+        	dbUserReply.doRequest();
+			canvas.switchMainView('_editUserReply');
+		</method>
+
+		
+		<method name="displayEmptyMsg" args="msgId, projectId">
+			projectTabs.currTab.setCaptions("Add Query Messaging", "Setup Your Queries Here");		
+		    var params = new LzParam();
+        	params.addValue('action', 'displayEmptyMsg', true);
+        	params.addValue('msgId', msgId, true);
+        	params.addValue('projectId', projectId, true);
+		    dbMsg.setQueryString(params);
+        	dbMsg.doRequest();
+			canvas.switchMainView('_newMsg');
+		</method>
+
+		<method name="displayMsgInfo" args="msgId,projectId">
+			projectTabs.currTab.setCaptions("Messaging Query Definition", "");
+			var params = new LzParam();
+			params.addValue('action', 'displayQueryProperties', true);
+			params.addValue('msgId', msgId, true);
+			params.addValue('projectId', projectId, true);
+			dbMsg.setQueryString(params);
+			dbMsg.doRequest();
+			canvas.switchMainView('_msgInfo');
+		</method>
+		
+		<method name="displayPresentation" args="selDB,presName">
+			projectTabs.currTab.setCaptions(selDB, 'Presentation Definition for ' + presName);
+			canvas.switchMainView('_displayPres');
+		</method>
+
+		<method name="deleteMsgInfo" args="id,projectId">
+			var params = new LzParam();
+			params.addValue('action', 'deleteQuery', true);
+			params.addValue('queryID', id, true);
+			dbDeleteQuery.setQueryString(params);
+			dbDeleteQuery.doRequest();
+			
+			this.displayEmptyMsg('-1',projectId);
+		</method>			
+		
+		<method name="deleteUR" args="id">
+			var params = new LzParam();
+			params.addValue('action', 'deleteUR', true);
+			params.addValue('urId', id, true);
+			dbUserReply.setQueryString(params);
+			dbUserReply.doRequest();
+			
+			canvas.switchMainView('_addUserReply');
+		</method>			
+
+
+		<method name="getEmptyRecycleBin" args="projectId">
+			var params = new LzParam();
+			params.addValue('action', 'getEmptyRecycleBin', true);
+			params.addValue('projectId', projectId, true);
+			recycleData.setQueryString(params);			
+			recycleData.doRequest();
+		</method>
+		
+		<method name="loadQueryBuilder">
+          	//load query builder info here 
+            var p = dbMsg.getPointer();
+            p.selectChild(1);
+            var msgId = p.p.getAttr('msgId');
+            
+            //var msgId = txtMsgId.getText();
+
+			if(ds == 1){
+	            var viewID = p.p.getAttr('viewOrTableId');
+	            var queryType = p.p.getAttr('queryTypeName');
+	            //var queryType = qTypeEdit.getText();
+		        Debug.write("!!!!!!!!!!!!!!!!!!!!!query message load Query Builder", queryType, "ID", msgId);
+				if( queryType == 'select'){
+					//controller.getView(viewID, true);
+	               	//controller.getQuery(msgId);
+					controller.getSelectQueryBuilderForQueryMessage(msgId);                    	
+	       		}else if(queryType == 'update'){//update 
+					var tableID = viewID;
+	               	//controller.getTable(tableID, true);
+	               	controller.getUpdateQueryBuilderForQueryMessage(msgId);
+	   	       	}else if(queryType == 'insert'){//Insert
+	               	var tableID = viewID;
+	              	//controller.getTable(tableID, true);
+	               	controller.getInsertQueryBuilderForQueryMessage(msgId);
+	           	}
+           	}else{
+				var params2 = new LzParam();
+				params2.addValue('action', 'getWebserviceQueryBuilder', true);
+				params2.addValue('queryID', msgId, true);
+				params.addValue('objType', objType, true);
+				qb_query_builder_query_msg.setQueryString(params2);
+				qb_query_builder_query_msg.doRequest();           	
+           	}
+          	
+          	
+<!-- 				           	 else{
+           	//=============== WEBSERVICE Start =>>>>>>
+			Debug.write("START WEBSERVICE ::::::::::::::::::::::::::::::: ");
+
+			var allCheckedNodes = webServiceTree.getAllCheckedNodes();
+			Debug.write("Current selection: " + allCheckedNodes);
+			
+			var operations = new Array();
+			var services = new Array();
+			var ports = new Array();
+            var count = allCheckedNodes.length;
+            for (var i=0;i< count;i++) {
+   	            operations.push(allCheckedNodes[i].getAttr("name"));
+   	            services.push(allCheckedNodes[i].getAttr("service"));
+   	            ports.push(allCheckedNodes[i].getAttr("port"));
+            }
+            
+            Debug.write("webServiceUrlConstants: " + webServiceUrlConstants);
+            controller.getWebServiceDetails(webServiceUrlConstants, operations);
+            controller.getQueryCriteriaOfWebServiceDetails(webServiceUrlConstants, operations);
+            controller.getSimpleComps();
+			controller.getNewQuery(null, "webservice");
+			
+			//load web service
+			webServiceOperationConstants = operations[0];
+			Debug.write("webServiceOperationConstants: " + webServiceOperationConstants);
+			webServicesSoap.setAttribute("wsdl", webServiceUrlConstants);
+			webServicesSoap.setAttribute("service", services[0]);
+			webServicesSoap.setAttribute("port", ports[0]);
+			webServicesSoap.setAttribute("autoload", false);
+			webServicesSoap.remotecallFunc.setAttribute("funcname", webServiceOperationConstants);
+			webServicesSoap.init();				            
+            webServicesSoap.remotecallFunc.init();
+            webServicesSoap.load();
+            
+            
+            //controller.displayWebServiceThirdPage();
+            //btnBackToSecondPage.setAttribute("visible", true);
+            //txtWebServiseURL.setText(webServiceUrlConstants);
+            //txtWebServiseOperation.setText(webServiceOperationConstants);				           	
+
+			Debug.write("END WEBSERVICE ::::::::::::::::::::::::::::::: ");
+           	//=============== WEBSERVICE END 			           	
+          	}  
+       	}-->			         							
+		</method>
+		
+		<method name="urLoadQueryBuilder">
+			var p = dbUserReply.getPointer();
+			p.selectChild(1);
+			var urId = p.p.getAttr('urId');
+			var queryType = p.p.getAttr('queryTypeName');
+			Debug.write("!!!!!!!!!!!!!!!!User Reply load Query Builder", queryType, "ID", urId);
+			if( queryType == 'select'){
+				controller.getSelectQueryBuilderForUserReply(urId, "UR");                 	
+	   		}else if(queryType == 'update'){//update
+	           	controller.getUpdateQueryBuilderForUserReply(urId, "UR");
+	       	}else if(queryType == 'insert'){//Insert
+	       		controller.getInsertQueryBuilderForUserReply(urId, "UR");
+	       	}		
+		</method>
+		
+		<method name="getDefaultTextMsgForResponse" args="queryType, ds, dbId, sql, viewID">
+			var params = new LzParam(); 
+			params.addValue('action', 'getDefaultTextMsgForResponse', true);
+			params.addValue('queryType', queryType, true);
+			params.addValue('dsStatus', ds, true);								
+			params.addValue('dbId', dbId, true);
+			params.addValue('sql', sql, true);
+			params.addValue('viewID', viewID, true);
+
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();		
+		</method>
+
+		<method name="getDefaultTextMsgForResponseWS" args="url, service, port, operation">
+			var params = new LzParam(); 
+			params.addValue('action', 'getDefaultTextMsgForResponse', true);
+			params.addValue('url', url, true);
+			params.addValue('service', service, true);								
+			params.addValue('port', port, true);
+			params.addValue('operation', operation, true);
+			params.addValue('dsStatus', '2', true);											
+
+			dbQueryReq.setQueryString(params);
+			dbQueryReq.doRequest();		
+		</method>
+		
+		<method name="displayMessagingInfo" args="msgId">
+			var params = new LzParam();
+			params.addValue('action', 'displayMessagingInfo', true);
+			params.addValue('msgId', msgId, true);
+			dbMsg.setQueryString(params);
+			dbMsg.doRequest();		
+		</method>
+		
+<!-- **************************************************************************************** -->
+<!-- Deployment -->
+<!-- **************************************************************************************** -->		
+		<method name="usergroupsDeployment" args="selDB">
+			projectTabs.currTab.setCaptions("Users and Groups Deployment", "");
+			canvas.switchMainView('_deploy');
+		</method>
+		
+		<method name="emailNotif" args="selDB,groupName">
+			projectTabs.currTab.setCaptions("Notification E-Mail to Users and Groups", "Group: " + groupName);
+			canvas.switchMainView('_emailNotif');
+		</method>
+		
+		<!-- 
+		<method name="handlerightclick">
+			var cm = new LzContextMenu();
+			// Set up a LzDelegate as a callback
+			var item1 = cm.makeMenuItem('Item1', new LzDelegate(this,"handlerightclick"));
+    		cm.addItem(item1);
+						   
+			var item3 = cm.makeMenuItem('Item3', new LzDelegate(this,"handlerightclick"));
+			item3.setEnabled(false);
+			cm.addItem(item3);
+
+			var item4 = cm.makeMenuItem('Item4', new LzDelegate(this,"handlerightclick"));
+			item4.setSeparatorBefore(true);
+			cm.addItem(item4);
+
+			var item5 = cm.makeMenuItem('Show Dialog', new LzDelegate(this,"handlerightclick"));
+			cm.addItem(item5);
+			// Menu items generate a "onselect" when they are selected
+			new LzDelegate(this, "showdialog", item5, "onselect");
+						   
+			this.setContextMenu(cm);
+
+    		// "onselect" event is to a LzContextMenu soon as the menu gets a mousedown on the right button.
+			// This gives you a chance to (quickly) rearrange the menu on the fly.
+			new LzDelegate(this, "menuselected", cm, "onselect");
+
+			// "onselect" event is sent to an LzContextMenuItem when it is selected from the menu
+			new LzDelegate(this, "menuitemselected", item1, "onselect");
+							
+			cm.open();	
+			cm.show();
+			Debug.write("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "+cm);
+		</method>
+		<method name="menuselected" args="val">
+		    Debug.write("%%%%%%%%%%%A right click on the menu was detected, val= ", val);
+		</method>
+
+		<method name="menuitemselected" args="val">
+		    Debug.write("%%%%%%%%%%%A right click on an item was detected, val= ", val);
+		</method>
+
+		<method name="handlerightclick" args="val">
+		    Debug.write("%%%%%%%%%%%handle item handlerightclick, val=", val);
+		</method>
+
+		<method name="showdialog">
+		    md.open();
+		</method> -->
+
+	</class>
+</library>

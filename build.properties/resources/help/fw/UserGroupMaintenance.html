@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Maintain Users and Groups
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Maintain Users and Groups</font>
+
+<p>
+The <em>Maintain Users and Groups</em> screen allows an administrator to create
+new users and groups and to modify the group membership of users and the
+privileges available to a group. The administrator must have the appropriate
+user-group administration privilege to use this screen.
+<p>
+Security access is controlled by granting access privileges to groups. A user
+may be a member of one or more groups and has all the privileges of the groups
+they are a member of.
+<p>
+The Maintain Users and Groups screen has two views of the user-group-privilege
+relationship. A user-centric view and a group-centric view. Each view is
+displayed in its own tab and you can switch between the views by clicking on the
+<a href="#UserMaint">Users</a> and <a href="#GroupMaint">Groups</a> tabs
+respectively.
+<p>
+
+
+<br><p><a name="UserMaint"></a>
+<font size="+2">The <em>Users</em> Maintenance Tab</font>
+<p>
+The Users tab displays a tree view of all the users. You can expand a User
+to show the groups the user is a member of by double clicking on the
+desired user icon or clicking the corresponding tree expand/collapse handle.
+<p>
+The <em>New User</em> button will open an <a href="#User">Edit User</a> screen
+to enter the details for the new user.
+<p>
+When a user is selected the <em>Add Group</em> button will display a
+<a href="SelectPanel.html">Search</a> screen. When you select a group and press
+the <em>Select</em> button in the Search screen the selected user will become a
+member of the currently selected group. This has exactly the same result as
+adding a User to a Group in the <a href="#GroupMaint">Groups</a> tab.
+<p>
+The <em>Properties</em> button will display an <a href="#User">Edit User</a> or
+<a href="#Group">Edit Group</a> screen allowing you to edit the selected User or
+Group.
+<p>
+If a User is selected the <em>Delete button</em> will permanently delete that
+user and all group memberships related to the user. For safety you are prompted
+for confirmation before the user is deleted.
+<br>
+If a Group is selected the <em>Delete button</em> will remove the User's
+membership in that group, but <em>not</em> delete the group itself. Other users
+that are members of the same group and the group itself are unaffected.
+<p>
+
+
+<br><p><a name="GroupMaint"></a>
+<font size="+2">The <em>Groups</em> Maintenance Tab</font>
+<p>
+The Group tab displays a tree view of all the groups. You can expand a Group
+to show the users that are members of that group and the <em>Privileges</em>
+that the group has. To expand a Group double click on the desired group icon
+or click the corresponding tree expand/collapse handle. Users and Privileges are
+displayed with different icons and sorted with the privileges first so that they
+can be easily distinguished.
+<p>
+The <em>New Group</em> button will open an <a href="#Group">Edit Group</a>
+screen to enter the details for the new group.
+<p>
+When a group is selected the <em>Add Priv</em> button will display a
+<a href="SelectPanel.html">Search</a> screen. When you select a
+<em>Privilege</em> in the Search screen and press the <em>Select</em> button
+that Privilege will be granted to the currently selected group.
+<p>
+When a group is selected the <em>Add User</em> button will display a
+<a href="SelectPanel.html">Search</a> screen. When you select a User and press
+the <em>Select</em> button the user will become a member of that group. This
+has exactly the same result as adding a group membership for a user in the
+<a href="#UserMaint">Users</a> tab.
+<p>
+The <em>Properties</em> button will display an <a href="#User">Edit User</a>,
+<a href="#Group">Edit Group</a> or <a href="#Feature">View Feature (Privilege)</a>
+screen allowing you to edit the selected User or Group or view the selected
+Privilege.
+<p>
+If a Group is selected the <em>Delete button</em> will permanently delete that
+Group and all user-group memberships related to the group. For safety you are
+prompted for confirmation before the group is deleted.
+<br>
+If a User is selected the <em>Delete button</em> will remove the User's
+membership in that group, but <em>not</em> delete the User itself. Other users
+that are members of the same group and the group itself are unaffected.
+<br>
+If a Privilege is selected the <em>Delete button</em> will remove the Privilege
+from that group, but <em>not</em> delete the Privilege itself. Other groups
+that have the same Privilege and the group itself are unaffected.
+<p>
+
+<br><p><a name="User"></a>
+<font size="+2">The <em>Edit User</em> Screen</font>
+<p>
+The Edit User screen is displayed when creating a new User or editing the
+properties of an existing user. The User's properties are displayed in a
+standard <a href="MaintenancePanel.html#OKCancel">OK-Cancel</a> screen. Enter
+data or make changes and then press OK to save the changes.
+<p>
+A User has the following fields:
+<br>
+Name: The user name used when logging in. User names must be unique.
+<br>
+Password: The password used when logging in. Passwords are never displayed in a
+readable format and are encrypted when they are stored. After a new user has
+been created the password and confirm password fields become read-only an the
+User's password is changed using the <em>Password</em> button.
+<br>
+Confirm Password: A confirmation of the password used to verify that the
+unreadable password has been entered correctly.
+<br>
+Details: Any additional text describing the user, such as name, phone number
+or department.
+<br>
+Config Settings: Application specific text that stores settings specific to this
+user. This is generally not intended to be edited manually.
+<p>
+The user also has a <em>Password</em> button which is used to change the
+password for an existing user. Pressing the Password button displays a
+<a href="ChangePasswordPanel.html">Change Password</a> screen.
+<p>
+
+<br><p><a name="Group"></a>
+<font size="+2">The <em>Edit Group</em> Screen</font>
+<p>
+The Edit Group screen is displayed when creating a new Group or editing the
+properties of an existing group. The Groups's properties are displayed in a
+standard <a href="MaintenancePanel.html#OKCancel">OK-Cancel</a> screen. Enter
+data or make changes and then press OK to save the changes.
+<p>
+A Group has the following fields:
+<br>
+Name: The name of the Group. Group names must be unique.
+<br>
+Description: Any additional text describing the group.
+<p>
+
+<br><p><a name="Feature"></a>
+<font size="+2">Viewing <em>Privilege</em> Details</font>
+<p>
+The View Feature screen is displayed when viewing the properties of a Privilege.
+The Feature/Privilege's properties are displayed in a
+standard <a href="MaintenancePanel.html#OK">OK</a> screen. A Feature is
+read-only, so Features cannot be created or edited.
+<p>
+The terms <em>Feature</em> and <em>Privilege</em> are sometimes used
+interchangably. A <em>Feature</em> is a system level identifier which can be
+checked before granting access to a secured operation. A <em>Privilege</em>
+grants access to a Feature for a given Group, and thereby to User's who are
+members of that group.
+<p>
+A Feature has the following fields:
+<br>
+Name: The name of the Feature/Privilege.
+<br>
+Description: Any additional text describing the Feature/Privilege.
+
+</BODY>
+
+</HTML>
+

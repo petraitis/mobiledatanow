@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+Users and Groups
+</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<font size="+4">Users and Groups</font>
+<p>
+A <i>User</i> represents a person who may log in to MDN either as an
+administrator or as a WAP user. Users belong to <i>Group</i>s that define their
+privileges and, in the case of WAP users, what menus, views and fields they can
+access.
+<p>
+
+To create users, assign them to groups and set privileges for those groups see
+the <a href="../fw/UserGroupMaintenance.html#UserMaint">Users</a> screen and the
+<a href="../fw/UserGroupMaintenance.html#GroupMaint">Groups</a> screen.
+
+<p>
+You can switch between the
+<a href="../fw/UserGroupMaintenance.html#UserMaint">Users</a>,
+<a href="../fw/UserGroupMaintenance.html#GroupMaint">Groups</a> and
+<a href="#DataViewPermissions">Data View Permissions</a> screens by clicking on
+the desired tab.
+<p>
+<i>Note that group privileges are not currently required as the MDN Administrator
+does not restrict function based on privileges.</i>
+<p>
+The <a href="PresentationBuilder.html">presentation</a> of menus to WAP users
+is specified at the Group level, so when creating users and assigning them to
+groups you will need to create separate groups for users that need different WAP
+menus.
+
+<p><br>
+<a name="DataViewPermissions"><font size="+2">Data View Permissions</font></a>
+<p>
+<img src="images/UserGroupDvPermission.gif">
+<p>
+<br>
+The Data View Permissions screen is used to limit which
+<a href="ViewQuery.html">views</a> and view fields are accessible to a given
+group. In general what a WAP user can see is determined by the structure of
+their group's menus in the
+<a href="PresentationBuilder.html">Presentation Builder</a> and by the fields
+included in the definition of the <a href="ViewQuery.html">views</a>. For
+security reasons it may be desirable for the members of a given group to see a
+restricted set of fields.
+<p>
+To restrict the view or field permissions for a group expand that group and view
+in the tree, select a view or field and press the <b>Enable</b> or <b>Disable</b>
+button to grant or restrict view access to the field or view.
+<p>
+<i>Note that if a view field has been designated as a
+<a href="ViewQuery.html#ViewFieldProperties">Naming Field</a> then that field
+will still be shown as a part of the record name even if the field permission
+has been removed. The disabled field will not be shown in view or edit screens.</i>
+<p>
+If a View is selected pressing the <b>Properties</b> button will display the
+<a href="#GroupDataView">Group Data View</a> screen.
+
+<p><br><a name="GroupDataView"><font size="+2">Group Data View</font></a>
+<p>
+<img src="images/GroupDataView.gif">
+<p><br>
+The Group Data View screen allows you to control what changes members of a
+group may make to the selected view.
+The <b>Allow Add</b>, <b>Allow Edit</b> and <b>Allow Delete</b> check boxes
+control whether the user may add, edit or delete records in the view.
+
+</BODY>
+
+</HTML>
+

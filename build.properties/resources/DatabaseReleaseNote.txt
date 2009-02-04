@@ -1,0 +1,11 @@
+/* This text file is using to comment all database modifications
+ * to add them in DatabaseUpdaterCustomAction.java class as SQL scripts as well
+ */
+ 
+Current DB version:1 ,MDN Version: 2.0
+Changes:
+1- Create new Table<TBL_GROUP_ENTITY_PERMISSION>
+2- Drop three columns <	FLD_CANADD BIGINT, FLD_CANEDIT BIGINT, FLD_CANDELETE BIGINT> of <TBL_GROUPDATAVIEW> table
+
+
+ 

@@ -1,0 +1,59 @@
+<library>
+    <!-- SL:08/31/2006 v1.0 : this scrollbar can be invisible if not needed/enabled and visible if needed -->
+    <class name="smartvscollbar"
+           extends="scrollbar">
+        <attribute name="repmanager" type="string" />
+        <attribute name="repmanagerref" value="null" />
+
+        <handler name="oninit">
+
+            this.d = new LzDelegate(this,"updateVisibility");
+            this.d.register(this,"onscrollable");
+
+            if(this['repmanager'] != null)
+                this.setAttribute("repmanagerref", parent.subviews[0][this.repmanager]);
+            Debug.write(this['repmanagerref']);
+			
+			Debug.write("************************************************************************************* UPDATE VISIBILITY 1");
+			
+            updateVisibility();
+        </handler>
+
+        <handler name="onrepmanagerref">
+        Debug.write("************************************************************************************* UPDATE VISIBILITY 2");
+            updateVisibility();
+        </handler>
+        
+        <method name="updateVisibility">
+        <![CDATA[
+            if(!this['repmanagerref']) return;
+
+            var childheight = this.repmanagerref.clones[0].height;
+            var childrenheight = (childheight * this.repmanagerref.clones.length);
+            var threshold =  (parent.height + Math.round(childheight/3)) ;
+
+            //if the height of total children less than threshold
+            var v = ( childrenheight > threshold) ? true : false;
+
+            //if children are less than height but scrollable, show it
+            if(!v && this.scrollable)
+                v=true;
+
+            //if not scrollable, just disable it
+            if(v && !scrollable)
+                v= false;
+
+            //based on the scrolling height
+            threshold =  ((scrollmax - height)/100) ;
+            /*if (threshold < .1 )
+                v=false;*/
+
+            Debug.write(v, "\nthreshold="+threshold, "\nchildheight="+childheight, "\nchildrenheight="+childrenheight, "\nthreshold="+threshold, this.repmanagerref);
+            this.setAttribute('visible',v);
+            
+            Debug.write("************************************************************************************* UPDATE VISIBILITY 3");
+        ]]>
+        </method>
+    </class>
+
+</library>
