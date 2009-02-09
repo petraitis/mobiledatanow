@@ -4,26 +4,17 @@ For configuration to build developer need to set below properties:<br>
 {{{ 
 JdbcDataSource.url
 DatabaseDriver.uploadUrl
-
 ExportProject.downloadUrl
-
 ImportProject.uploadUrl
-
 WebService.compileFilePath
-
 logFile.filePath 
-
 }}}
  
 on MobileDataNow\resources\config\development\wsl\config\mdn\MdnRmiServer.conf file<br>
 And tomcat.path property in build.xml to run ant target order to build.xml MDN<br>
 {{{
 -          “database.development” target to make a empty DB
-
 -          “all” target
-
 -          “deploy” target
-
 -          “setup.tomcat”
-
 }}}
