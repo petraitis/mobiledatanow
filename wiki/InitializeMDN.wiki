@@ -3,7 +3,6 @@ For configuration to build developer need to set below properties:<br>
 
 {{{ 
 JdbcDataSource.url
-
 DatabaseDriver.uploadUrl
 
 ExportProject.downloadUrl
