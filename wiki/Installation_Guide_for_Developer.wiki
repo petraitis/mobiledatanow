@@ -46,4 +46,4 @@ language_file_path=C://DevelopEnv//Tomcat5//webapps//dashwell//lang<br>
 Need to be changed to according location of your local language file.<br><br>
 
 28.	Deploy the dashwell project into Tomcat. Right click the project -> MyEclipse -> Add and Remove Project Deployments …<br>
-29.	Run the project, in the browser, type in http://localhost:8080/dashwell/. Presentation of the MDN should be started.<br>
+29.	Run the project, in the browser, type in http://localhost:8080/dashwell/. MDN should start.<br>
